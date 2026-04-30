@@ -1,0 +1,160 @@
+.screen {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── header ── */
+.header {
+  padding: 22px 24px;
+  background: var(--panel);
+  border: 3px solid var(--border);
+  border-left: 6px solid var(--yellow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.eyebrow {
+  font-size: clamp(5px, 0.65vw, 8px);
+  color: var(--yellow);
+  letter-spacing: 4px;
+}
+
+.title {
+  font-size: clamp(12px, 1.8vw, 22px);
+  color: var(--text);
+  text-shadow: 3px 3px 0 #000;
+  letter-spacing: 2px;
+}
+
+/* ── RPG dialogue box ── */
+.dialogBox {
+  background: var(--bg2);
+  border: 3px solid var(--border);
+  border-left: 6px solid var(--green);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 24px;
+  position: relative;
+}
+
+.dialogHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.speakerAvatar {
+  font-size: clamp(20px, 2.8vw, 36px);
+  width: clamp(40px, 5vw, 56px);
+  height: clamp(40px, 5vw, 56px);
+  background: var(--panel);
+  border: 2px solid var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  image-rendering: auto;
+}
+
+.speakerName {
+  font-size: clamp(6px, 0.75vw, 9px);
+  color: var(--green);
+  letter-spacing: 2px;
+}
+
+.dialogText {
+  font-size: clamp(7px, 0.85vw, 10px);
+  color: var(--text);
+  line-height: 2.6;
+}
+
+/* blinking cursor at end of dialogue */
+.dialogText::after {
+  content: "▌";
+  color: var(--green);
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+/* ── info section ── */
+.section {
+  background: var(--panel);
+  border: 3px solid var(--border);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionTitle {
+  font-size: clamp(7px, 0.9vw, 10px);
+  color: var(--yellow);
+  letter-spacing: 2px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+
+.sectionText {
+  font-size: clamp(6px, 0.78vw, 9px);
+  color: var(--text-dim);
+  line-height: 2.6;
+}
+
+/* ── objectives list ── */
+.objectives {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.objItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: clamp(6px, 0.78vw, 9px);
+  color: var(--text);
+  line-height: 2.2;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  transition: border-color 0.1s;
+}
+
+.objItem:hover {
+  border-color: var(--green);
+}
+
+.objCheck {
+  color: var(--green);
+  flex-shrink: 0;
+  font-size: clamp(8px, 1vw, 12px);
+  margin-top: 1px;
+}
+
+/* ── start button ── */
+.startBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: clamp(14px, 1.8vh, 20px);
+  background: var(--green);
+  border: 3px solid #2a7a2a;
+  color: #000;
+  font-family: var(--font-pixel);
+  font-size: clamp(8px, 1vw, 12px);
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.1s;
+}
+
+.startBtn:hover {
+  background: #5ccc60;
+  transform: translateY(-3px);
+}

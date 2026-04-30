@@ -1,0 +1,521 @@
+.root {
+  --bg: #1a1a2e;
+  --panel: #16213e;
+  --shelf-bg: #2d1b0e;
+  --shelf-border: #8b5e3c;
+  --belt-bg: #2a2a2a;
+  --text: #e8d5a3;
+  --green: #4caf50;
+  --yellow: #ffeb3b;
+  --red: #f44336;
+  --card-gold: #f0c040;
+  --card-dark: #1a0e00;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-press-start), monospace;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.root * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  image-rendering: pixelated;
+}
+
+.gameTitle {
+  font-size: clamp(10px, 1.8vw, 22px);
+  color: var(--yellow);
+  text-align: center;
+  margin-bottom: 6px;
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 0 #000;
+}
+
+.gameSubtitle {
+  font-size: clamp(6px, 0.9vw, 11px);
+  color: #7a8fa6;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: min(96vw, 1100px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(5px, 0.8vh, 10px);
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel);
+  border: 3px solid #4a4a6a;
+  padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 24px);
+  font-size: clamp(7px, 1vw, 13px);
+}
+
+.hv {
+  color: var(--yellow);
+  font-size: clamp(10px, 1.4vw, 18px);
+  margin-top: 4px;
+}
+
+.mission {
+  background: #0d0d1a;
+  border: 3px solid #4a4a6a;
+  border-left: 6px solid var(--yellow);
+  padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 20px);
+  font-size: clamp(6px, 0.85vw, 11px);
+  line-height: 2;
+  color: #b0c4de;
+}
+
+.mission span {
+  color: var(--yellow);
+}
+
+.coordHint {
+  background: #0a0a1a;
+  border: 2px solid #333;
+  padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1.5vw, 16px);
+  font-size: clamp(5px, 0.75vw, 10px);
+  color: #7a8fa6;
+  text-align: center;
+}
+
+.main {
+  display: flex;
+  gap: clamp(8px, 1.5vw, 20px);
+  align-items: flex-start;
+}
+
+.beltCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.beltLabel {
+  font-size: clamp(6px, 0.8vw, 10px);
+  color: #7a8fa6;
+  text-align: center;
+}
+
+.beltBox {
+  background: var(--belt-bg);
+  border: 3px solid #555;
+  height: clamp(80px, 12vh, 130px);
+  position: relative;
+  overflow: hidden;
+}
+
+.root :global(.belt-lines) {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 22px,
+    #3a3a3a 22px,
+    #3a3a3a 24px
+  );
+  animation: bm 0.9s linear infinite;
+}
+
+@keyframes bm {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 24px 0;
+  }
+}
+
+.root :global(.roller) {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 60%;
+  background: #666;
+  border: 2px solid #888;
+}
+
+.root :global(.roller.l) {
+  left: 2px;
+}
+
+.root :global(.roller.r) {
+  right: 2px;
+}
+
+.beltQueue {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20px;
+  right: 20px;
+  display: flex;
+  gap: clamp(6px, 1vw, 14px);
+  align-items: center;
+  padding: 0 4px;
+}
+
+.root :global(.bbox) {
+  width: clamp(52px, 7vw, 80px);
+  height: clamp(52px, 7vw, 80px);
+  border: 3px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+  font-size: clamp(5px, 0.6vw, 8px);
+}
+
+.root :global(.bbox:hover) {
+  transform: scale(1.1);
+}
+
+.root :global(.bbox:active) {
+  cursor: grabbing;
+  transform: scale(0.93);
+}
+
+.root :global(.bbox.dragging) {
+  opacity: 0.35;
+}
+
+.root :global(.bicon) {
+  font-size: clamp(16px, 2.5vw, 28px);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.root :global(.bcoord) {
+  font-size: clamp(5px, 0.6vw, 8px);
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(0, 0, 0, 0.65);
+  padding: 1px 4px;
+}
+
+.shelfCol {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shelfLabel {
+  font-size: clamp(6px, 0.8vw, 10px);
+  color: #7a8fa6;
+  text-align: center;
+}
+
+.shelfWrap {
+  display: flex;
+  gap: 5px;
+}
+
+.rowLabels {
+  display: flex;
+  flex-direction: column;
+  padding-top: clamp(18px, 2.5vw, 28px);
+  gap: clamp(3px, 0.5vw, 6px);
+}
+
+.root :global(.rlbl) {
+  height: clamp(56px, 8vw, 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(7px, 0.9vw, 12px);
+  color: var(--yellow);
+  width: clamp(14px, 1.5vw, 20px);
+}
+
+.shelfGridWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.colLabels {
+  display: flex;
+  gap: clamp(3px, 0.5vw, 6px);
+  margin-bottom: 4px;
+}
+
+.root :global(.clbl) {
+  width: clamp(56px, 8vw, 90px);
+  text-align: center;
+  font-size: clamp(7px, 0.9vw, 12px);
+  color: var(--yellow);
+  height: clamp(18px, 2.5vw, 26px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sgrid {
+  display: grid;
+  grid-template-columns: repeat(4, clamp(56px, 8vw, 90px));
+  grid-template-rows: repeat(3, clamp(56px, 8vw, 90px));
+  gap: clamp(3px, 0.5vw, 6px);
+}
+
+.root :global(.scell) {
+  border: 2px solid var(--shelf-border);
+  background: var(--shelf-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.root :global(.scell::after) {
+  content: attr(data-coord);
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  font-size: clamp(4px, 0.5vw, 7px);
+  color: rgba(255, 255, 255, 0.22);
+  font-family: var(--font-press-start), monospace;
+}
+
+.root :global(.scell.over) {
+  background: #1a3a1a;
+  border-color: var(--green);
+}
+
+.root :global(.scell.wflash) {
+  animation: wf 0.45s ease forwards;
+}
+
+@keyframes wf {
+  0% {
+    background: #5a0a0a;
+    border-color: #f44336;
+  }
+  100% {
+    background: var(--shelf-bg);
+    border-color: var(--shelf-border);
+  }
+}
+
+.root :global(.scell.cflash) {
+  animation: cf 0.45s ease forwards;
+}
+
+@keyframes cf {
+  0% {
+    background: #0a5a0a;
+    border-color: #4caf50;
+  }
+  100% {
+    background: var(--shelf-bg);
+    border-color: var(--shelf-border);
+  }
+}
+
+.root :global(.scell.hint-glow) {
+  border-color: var(--card-gold);
+  background: #1a1500;
+}
+
+.root :global(.scell.hint-glow-box) {
+  border-color: #ff9800;
+  background: #1a0f00;
+}
+
+.root :global(.placed) {
+  width: 78%;
+  height: 78%;
+  border: 2px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(5px, 0.6vw, 8px);
+  animation: pa 0.2s ease;
+}
+
+@keyframes pa {
+  0% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cardsSection {
+  background: var(--panel);
+  border: 3px solid #4a4a6a;
+  padding: clamp(7px, 1vh, 14px) clamp(10px, 2vw, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cardsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(6px, 0.8vw, 10px);
+  color: #7a8fa6;
+}
+
+.cardsHeader span {
+  color: var(--yellow);
+}
+
+.cardsRow {
+  display: flex;
+  gap: clamp(8px, 1.2vw, 18px);
+  align-items: flex-start;
+}
+
+.root :global(.hint-card) {
+  width: clamp(72px, 8vw, 110px);
+  height: clamp(90px, 10vw, 135px);
+  border: 3px solid var(--card-gold);
+  background: var(--card-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  gap: 5px;
+  transition: transform 0.15s, filter 0.15s;
+  flex-shrink: 0;
+}
+
+.root :global(.hint-card:hover:not(.used)) {
+  transform: translateY(-7px) scale(1.06);
+}
+
+.root :global(.hint-card.used) {
+  filter: brightness(0.28);
+  cursor: default;
+  border-color: #555;
+}
+
+.root :global(.hint-card .card-top) {
+  font-size: clamp(18px, 2.5vw, 32px);
+  line-height: 1;
+}
+
+.root :global(.hint-card .card-name) {
+  font-size: clamp(4px, 0.55vw, 7px);
+  color: var(--card-gold);
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 4px;
+}
+
+.root :global(.hint-card .card-cost) {
+  position: absolute;
+  bottom: 5px;
+  font-size: clamp(4px, 0.55vw, 7px);
+  color: #f44336;
+}
+
+.root :global(.hint-card::before) {
+  content: "?";
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-size: clamp(6px, 0.9vw, 10px);
+  color: rgba(240, 192, 64, 0.35);
+}
+
+.root :global(.hint-card::after) {
+  content: "?";
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: clamp(6px, 0.9vw, 10px);
+  color: rgba(240, 192, 64, 0.35);
+}
+
+.hintResult {
+  flex: 1;
+  min-height: clamp(90px, 10vw, 135px);
+  background: #0d0d1a;
+  border: 2px solid #333;
+  padding: 10px;
+  font-size: clamp(5px, 0.7vw, 9px);
+  line-height: 2;
+  color: #b0c4de;
+  display: flex;
+  align-items: center;
+}
+
+.hintResult:global(.active) {
+  border-color: var(--card-gold);
+  color: var(--text);
+}
+
+.feedback {
+  background: var(--panel);
+  border: 3px solid #4a4a6a;
+  padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 20px);
+  font-size: clamp(6px, 0.85vw, 11px);
+  min-height: clamp(28px, 4vh, 44px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+}
+
+.nextButton {
+  display: none;
+  background: var(--green);
+  border: 3px solid #2a7a2a;
+  color: #000;
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(7px, 1vw, 13px);
+  padding: clamp(8px, 1.2vh, 14px);
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+.nextButton:hover {
+  background: #5ccc60;
+}
+
+.ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.85;
+  transform: translate(-50%, -50%);
+  display: none;
+  width: clamp(52px, 7vw, 80px);
+  height: clamp(52px, 7vw, 80px);
+  border: 3px solid;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(5px, 0.6vw, 8px);
+}
