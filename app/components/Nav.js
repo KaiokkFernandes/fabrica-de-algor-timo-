@@ -6,6 +6,7 @@ const links = [
   { href: "/introducao", label: "INTRO", icon: "📋" },
   { href: "/menu", label: "MAPA", icon: "🗺️" },
   { href: "/fases", label: "JOGAR", icon: "⚙️" },
+  { href: "/manual", label: "MANUAL", icon: "📖" },
 ];
 
 export default function Nav() {

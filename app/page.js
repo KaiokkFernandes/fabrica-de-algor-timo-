@@ -26,6 +26,14 @@ const modules = [
     action: "► JOGAR AGORA",
     href: "/fases",
   },
+  {
+    num: "MODULO 03",
+    icon: "📖",
+    title: "MANUAL DO ENGENHEIRO",
+    desc: "Consulte fases, conceitos e aprenda como jogar.",
+    action: "► ABRIR MANUAL",
+    href: "/manual",
+  },
 ];
 
 export default function HomePage() {
