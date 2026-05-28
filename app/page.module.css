@@ -1,6 +1,5 @@
 .screen {
-  max-width: 920px;
-  margin: 0 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -27,7 +26,7 @@
   content: "★";
   position: absolute;
   top: 14px;
-  font-size: clamp(8px, 1vw, 12px);
+  font-size: clamp(8px, 1vw, 18px);
   color: var(--yellow);
   opacity: 0.6;
 }
@@ -35,7 +34,7 @@
 .titleBox::after  { right: 16px; }
 
 .badge {
-  font-size: clamp(5px, 0.65vw, 8px);
+  font-size: clamp(7px, 0.65vw, 13px);
   color: var(--text-dim);
   letter-spacing: 4px;
   border: 2px solid var(--border);
@@ -43,7 +42,7 @@
 }
 
 .gameTitle {
-  font-size: clamp(18px, 3.5vw, 44px);
+  font-size: clamp(18px, 3.5vw, 60px);
   color: var(--yellow);
   text-shadow: 4px 4px 0 #000;
   letter-spacing: 4px;
@@ -51,15 +50,15 @@
 }
 
 .gameSub {
-  font-size: clamp(6px, 0.8vw, 10px);
+  font-size: clamp(8px, 0.8vw, 15px);
   color: var(--text-dim);
   letter-spacing: 3px;
   line-height: 2;
-  max-width: 500px;
+  max-width: 800px;
 }
 
 .pressStart {
-  font-size: clamp(8px, 1vw, 12px);
+  font-size: clamp(9px, 1vw, 17px);
   color: var(--green);
   letter-spacing: 2px;
   animation: blink 1.2s step-end infinite;
@@ -69,7 +68,7 @@
 /* ── module cards grid ── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 14px;
 }
 
@@ -96,12 +95,12 @@
 }
 
 .cardIcon {
-  font-size: clamp(22px, 3vw, 36px);
+  font-size: clamp(28px, 3vw, 52px);
   image-rendering: auto;
 }
 
 .cardNum {
-  font-size: clamp(5px, 0.65vw, 7px);
+  font-size: clamp(7px, 0.65vw, 12px);
   color: var(--text-dim);
   letter-spacing: 3px;
   border: 2px solid var(--border);
@@ -109,20 +108,20 @@
 }
 
 .cardTitle {
-  font-size: clamp(9px, 1.1vw, 13px);
+  font-size: clamp(10px, 1.1vw, 19px);
   color: var(--yellow);
   letter-spacing: 2px;
 }
 
 .cardDesc {
-  font-size: clamp(6px, 0.75vw, 9px);
+  font-size: clamp(8px, 0.75vw, 14px);
   color: var(--text-dim);
   line-height: 2.4;
   flex: 1;
 }
 
 .cardAction {
-  font-size: clamp(6px, 0.75vw, 9px);
+  font-size: clamp(8px, 0.75vw, 14px);
   color: var(--border);
   letter-spacing: 2px;
   align-self: flex-end;

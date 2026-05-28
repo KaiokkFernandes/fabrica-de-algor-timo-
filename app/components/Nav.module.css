@@ -13,7 +13,7 @@
   background: transparent;
   color: var(--text-dim);
   font-family: var(--font-pixel);
-  font-size: clamp(5px, 0.7vw, 8px);
+  font-size: clamp(7px, 0.7vw, 13px);
   letter-spacing: 1px;
   transition: border-color 0.1s, color 0.1s, background 0.1s;
   white-space: nowrap;

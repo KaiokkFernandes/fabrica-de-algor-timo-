@@ -108,7 +108,7 @@ body.game-mode .app-main {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: clamp(7px, 0.9vw, 11px);
+  font-size: clamp(9px, 0.9vw, 16px);
   color: var(--yellow);
   letter-spacing: 2px;
   text-shadow: 2px 2px 0 #000;
@@ -117,7 +117,7 @@ body.game-mode .app-main {
 
 .app-main {
   flex: 1;
-  padding: 36px 5vw;
+  padding: 36px 2.5vw;
 }
 
 .app-footer {
@@ -129,7 +129,7 @@ body.game-mode .app-main {
   padding: 0 20px;
   background: var(--panel);
   border-top: 3px solid var(--border);
-  font-size: clamp(5px, 0.6vw, 7px);
+  font-size: clamp(7px, 0.6vw, 12px);
   color: var(--text-dim);
   letter-spacing: 2px;
 }

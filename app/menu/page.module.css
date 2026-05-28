@@ -1,6 +1,5 @@
 .screen {
-  max-width: 800px;
-  margin: 0 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -18,13 +17,13 @@
 }
 
 .eyebrow {
-  font-size: clamp(5px, 0.65vw, 8px);
+  font-size: clamp(7px, 0.65vw, 13px);
   color: var(--yellow);
   letter-spacing: 4px;
 }
 
 .title {
-  font-size: clamp(12px, 1.8vw, 22px);
+  font-size: clamp(13px, 1.8vw, 32px);
   color: var(--text);
   text-shadow: 3px 3px 0 #000;
   letter-spacing: 2px;
@@ -59,7 +58,7 @@
 }
 
 .arrow {
-  font-size: clamp(10px, 1.2vw, 14px);
+  font-size: clamp(12px, 1.2vw, 22px);
   color: var(--text-dim);
   flex-shrink: 0;
   width: 20px;
@@ -80,32 +79,32 @@
 }
 
 .code {
-  font-size: clamp(5px, 0.6vw, 7px);
+  font-size: clamp(7px, 0.6vw, 12px);
   color: var(--text-dim);
   letter-spacing: 3px;
 }
 
 .name {
-  font-size: clamp(9px, 1.1vw, 13px);
+  font-size: clamp(10px, 1.1vw, 20px);
   color: var(--text);
   letter-spacing: 2px;
 }
 
 .desc {
-  font-size: clamp(5px, 0.65vw, 8px);
+  font-size: clamp(7px, 0.65vw, 13px);
   color: var(--text-dim);
   line-height: 2.2;
 }
 
 .stars {
-  font-size: clamp(10px, 1.3vw, 16px);
+  font-size: clamp(12px, 1.3vw, 24px);
   letter-spacing: 3px;
   flex-shrink: 0;
 }
 
 /* ── footer hint ── */
 .hint {
-  font-size: clamp(5px, 0.65vw, 8px);
+  font-size: clamp(7px, 0.65vw, 13px);
   color: var(--text-dim);
   text-align: center;
   letter-spacing: 2px;
