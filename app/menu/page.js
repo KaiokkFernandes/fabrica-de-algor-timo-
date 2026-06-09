@@ -22,12 +22,12 @@ const stages = [
   },
   {
     code: "FASE 1.2",
-    name: "EM BREVE",
-    desc: "Proximo nivel em desenvolvimento.",
-    href: "#",
+    name: "DESPACHANTE DA FABRICA",
+    desc: "Arraste as caixas certas para o caminhao e maximize o lucro!",
+    href: "/fases/1.2",
     stars: 0,
-    locked: true,
-    icon: "🔒",
+    locked: false,
+    icon: "🚛",
   },
   {
     code: "FASE 2.0",
