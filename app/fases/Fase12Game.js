@@ -597,7 +597,7 @@ export default function Fase12Game() {
     <div id="f12-root" className={styles.root}>
       <div className={styles.gameTitle}>FABRICA DE ALGORITMOS</div>
       <div className={styles.gameSubtitle}>
-        FASE 1.2 — DESPACHANTE DA FÁBRICA &nbsp;|&nbsp; EF04CO02
+        Fase 1.2 — Despachante da Fábrica
       </div>
 
       <div className={styles.wrap}>
@@ -623,7 +623,7 @@ export default function Fase12Game() {
 
           <div className={styles.depotPanel}>
             <div className={styles.depotTitle}>
-              📦 DEPÓSITO — passe o mouse para ver a ficha completa
+              📦 Depósito — passe o mouse sobre cada caixa para ver os detalhes
             </div>
             <div id="f12-depot-grid" className={styles.depotGrid}></div>
           </div>

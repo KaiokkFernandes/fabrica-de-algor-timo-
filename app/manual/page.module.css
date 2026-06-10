@@ -20,6 +20,7 @@
 }
 
 .title {
+  font-family: var(--font-pixel);
   font-size: clamp(14px, 2vw, 30px);
   color: var(--yellow);
   text-shadow: 3px 3px 0 #000;
@@ -28,9 +29,10 @@
 }
 
 .subtitle {
-  font-size: clamp(8px, 0.7vw, 13px);
+  /* Baloo 2 para subtítulo */
+  font-size: clamp(15px, 1vw, 17px);
   color: var(--text-dim);
-  letter-spacing: 2px;
+  letter-spacing: 0;
 }
 
 /* ── Tab Bar ── */
@@ -115,7 +117,7 @@
   border: 2px solid var(--border);
   background: var(--panel);
   color: var(--text);
-  font-family: var(--font-pixel);
+  /* Baloo 2 para cards de fase — contém texto corrido */
   cursor: pointer;
   text-align: left;
   transition: border-color 0.1s, background 0.1s;
@@ -254,10 +256,10 @@
 }
 
 .detailText {
-  font-size: clamp(8px, 0.7vw, 14px);
+  font-size: clamp(15px, 1vw, 17px);
   color: var(--text);
-  line-height: 2;
-  letter-spacing: 0.5px;
+  line-height: 1.7;
+  letter-spacing: 0;
 }
 
 .tagList {
@@ -331,7 +333,7 @@
   border: 2px solid var(--border);
   background: var(--panel);
   color: var(--text);
-  font-family: var(--font-pixel);
+  /* Baloo 2 para cards de conceito */
   cursor: pointer;
   text-align: left;
   transition: border-color 0.1s, background 0.1s;
@@ -442,7 +444,8 @@
 }
 
 .passoTexto {
-  font-size: clamp(8px, 0.7vw, 14px);
+  font-size: clamp(15px, 1vw, 17px);
   color: var(--text);
-  line-height: 2;
+  line-height: 1.7;
+  letter-spacing: 0;
 }

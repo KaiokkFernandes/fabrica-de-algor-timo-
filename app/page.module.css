@@ -42,6 +42,8 @@
 }
 
 .gameTitle {
+  /* Pixel font só no logo principal do jogo */
+  font-family: var(--font-pixel);
   font-size: clamp(18px, 3.5vw, 60px);
   color: var(--yellow);
   text-shadow: 4px 4px 0 #000;
@@ -50,15 +52,18 @@
 }
 
 .gameSub {
-  font-size: clamp(8px, 0.8vw, 15px);
+  /* Baloo 2 para subtítulo — texto corrido */
+  font-size: clamp(15px, 1vw, 19px);
   color: var(--text-dim);
-  letter-spacing: 3px;
-  line-height: 2;
-  max-width: 800px;
+  letter-spacing: 0;
+  line-height: 1.6;
+  max-width: 600px;
 }
 
 .pressStart {
-  font-size: clamp(9px, 1vw, 17px);
+  /* Pixel para o prompt animado — curto e decorativo */
+  font-family: var(--font-pixel);
+  font-size: clamp(9px, 1vw, 15px);
   color: var(--green);
   letter-spacing: 2px;
   animation: blink 1.2s step-end infinite;
@@ -100,33 +105,36 @@
 }
 
 .cardNum {
-  font-size: clamp(7px, 0.65vw, 12px);
-  color: var(--text-dim);
-  letter-spacing: 3px;
-  border: 2px solid var(--border);
-  padding: 3px 8px;
+  /* Oculto — não mostramos "MÓDULO XX" para a criança */
+  display: none;
 }
 
 .cardTitle {
-  font-size: clamp(10px, 1.1vw, 19px);
+  /* Pixel para título curto do card */
+  font-family: var(--font-pixel);
+  font-size: clamp(10px, 1.1vw, 17px);
   color: var(--yellow);
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 .cardDesc {
-  font-size: clamp(8px, 0.75vw, 14px);
+  /* Baloo 2 para descrição — texto corrido */
+  font-size: clamp(15px, 1vw, 17px);
   color: var(--text-dim);
-  line-height: 2.4;
+  line-height: 1.6;
   flex: 1;
+  letter-spacing: 0;
 }
 
 .cardAction {
-  font-size: clamp(8px, 0.75vw, 14px);
+  /* Baloo 2 para ação do card — frase amigável */
+  font-size: clamp(14px, 0.9vw, 16px);
   color: var(--border);
-  letter-spacing: 2px;
+  letter-spacing: 0;
   align-self: flex-end;
   transition: color 0.12s, transform 0.12s;
   display: inline-block;
+  font-weight: 600;
 }
 
 .card:hover .cardAction {

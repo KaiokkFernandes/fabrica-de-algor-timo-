@@ -26,16 +26,23 @@ const FASES = [
   },
   {
     id: "1.2",
-    nome: "EM BREVE",
-    dificuldade: "INTERMEDIARIO",
+    nome: "Despachante da Fábrica",
+    dificuldade: "INTERMEDIÁRIO",
     dificuldadeNum: 2,
     estrelas: "★★☆",
-    icone: "🔒",
-    conceitos: ["Matrizes", "Sequências"],
-    desc: "Uma nova fase está chegando! Continue treinando para desbloquear.",
-    objetivo: "",
-    dicas: [],
-    bloqueada: true,
+    icone: "🚛",
+    conceitos: ["Atributos", "Filtros", "Registros"],
+    desc: "Chegaram 20 caixas no depósito e um caminhão esperando ser carregado! Cada caminhão aceita só certos tipos de produto. Você precisa ler a ficha de cada caixa e escolher as certas pra maximizar o lucro.",
+    objetivo: "Carregar o caminhão com as caixas certas e ganhar o máximo de dinheiro possível.",
+    dicas: [
+      "Leia os critérios do caminhão antes de começar",
+      "Passe o mouse sobre as caixas para ver a ficha completa",
+      "Caixas com borda verde são as que o caminhão aceita",
+      "Se colocar caixa errada, clique nela no caminhão pra devolver",
+      "Nos rounds avançados, escolha as caixas mais valiosas!",
+    ],
+    href: "/fases/1.2",
+    bloqueada: false,
   },
   {
     id: "2.1",
@@ -140,10 +147,9 @@ export default function ManualPage() {
   return (
     <div className={styles.screen}>
       <div className={styles.header}>
-        <p className={styles.eyebrow}>MODULO 03</p>
-        <h1 className={styles.title}>MANUAL DO ENGENHEIRO</h1>
+        <h1 className={styles.title}>Ajuda e Dicas</h1>
         <p className={styles.subtitle}>
-          Tudo que voce precisa saber para dominar a fabrica
+          Tudo que você precisa saber pra arrebentar na fábrica! 💪
         </p>
       </div>
 

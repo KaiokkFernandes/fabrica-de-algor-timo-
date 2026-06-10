@@ -18,7 +18,7 @@
   height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-press-start), monospace;
+  /* font-family NÃO aqui: body usa Baloo 2, pixel só onde necessário */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -36,6 +36,7 @@
 
 /* ── CABEÇALHO ─────────────────────────────────────────────────────────── */
 .gameTitle {
+  font-family: var(--font-press-start), monospace;
   font-size: clamp(10px, 1.8vw, 22px);
   color: var(--yellow);
   text-align: center;
@@ -45,11 +46,12 @@
 }
 
 .gameSubtitle {
-  font-size: clamp(6px, 0.9vw, 11px);
+  /* Baloo 2 herdado — mais legível para a criança */
+  font-size: clamp(13px, 0.95vw, 15px);
   color: #7a8fa6;
   text-align: center;
   margin-bottom: 6px;
-  letter-spacing: 1px;
+  letter-spacing: 0;
 }
 
 /* ── WRAPPER CENTRAL ───────────────────────────────────────────────────── */
@@ -75,12 +77,15 @@
 }
 
 .hudLabel {
-  font-size: clamp(5px, 0.65vw, 8px);
+  /* Baloo 2 para rótulo do HUD — tamanho maior, mais legível */
+  font-size: clamp(11px, 0.75vw, 13px);
   color: #7a8fa6;
-  letter-spacing: 1px;
+  letter-spacing: 0;
 }
 
 .hudVal {
+  /* Pixel font para o valor numérico — elemento decorativo do HUD */
+  font-family: var(--font-press-start), monospace;
   color: var(--yellow);
   font-size: clamp(9px, 1.3vw, 16px);
   margin-top: 3px;
@@ -119,7 +124,8 @@
 }
 
 .depotTitle {
-  font-size: clamp(5px, 0.65vw, 8px);
+  /* Baloo 2, tamanho legível */
+  font-size: clamp(12px, 0.8vw, 14px);
   color: #7a8fa6;
   background: var(--panel);
   border: 3px solid var(--border);
@@ -176,13 +182,14 @@
   background: var(--panel);
   border: 3px solid var(--border);
   padding: clamp(4px, 0.6vh, 10px) clamp(10px, 2vw, 20px);
-  font-size: clamp(5px, 0.7vw, 9px);
+  /* Baloo 2 para mensagens de feedback — leitura rápida */
+  font-size: clamp(13px, 0.9vw, 15px);
   min-height: clamp(22px, 3.2vh, 38px);
   display: flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 /* ── MODAL DE FIM DE ROUND ─────────────────────────────────────────────── */
@@ -321,11 +328,15 @@
 }
 
 .root :global(.f12-truck-label) {
-  font-size: clamp(6px, 0.75vw, 10px);
+  /* Baloo 2 para nome do caminhão */
+  font-size: clamp(13px, 0.85vw, 15px);
+  font-weight: 600;
   color: var(--yellow);
 }
 
 .root :global(.f12-truck-timer) {
+  /* Pixel font para o timer — número curto */
+  font-family: var(--font-press-start), monospace;
   font-size: clamp(6px, 0.75vw, 10px);
   color: #7a8fa6;
 }
@@ -351,18 +362,20 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 4px;
-  font-size: clamp(5px, 0.6vw, 8px);
+  /* Baloo 2 para critérios — texto curto mas importante */
+  font-size: clamp(12px, 0.75vw, 14px);
 }
 
 .root :global(.f12-criteria-lbl) {
   color: #7a8fa6;
-  min-width: 46px;
+  min-width: 52px;
+  font-weight: 600;
 }
 
 .root :global(.f12-tag) {
   padding: 2px 6px;
   border: 1px solid;
-  font-size: clamp(4px, 0.5vw, 7px);
+  font-size: clamp(11px, 0.65vw, 13px);
   line-height: 1.6;
 }
 
@@ -385,7 +398,7 @@
 
 /* ── Slots do caminhão ─────────────────────────────────────────────────── */
 .root :global(.f12-slots-label) {
-  font-size: clamp(5px, 0.6vw, 8px);
+  font-size: clamp(12px, 0.75vw, 13px);
   color: #7a8fa6;
 }
 
@@ -508,12 +521,16 @@
 }
 
 .root :global(.f12-box-name) {
-  font-size: clamp(4px, 0.48vw, 6px);
+  /* Baloo 2 para nomes de produto — crianças precisam ler isso */
+  font-size: clamp(11px, 0.65vw, 13px);
+  font-weight: 600;
   color: var(--text);
   text-align: center;
 }
 
 .root :global(.f12-box-val) {
+  /* Pixel para valor em reais — número curto */
+  font-family: var(--font-press-start), monospace;
   font-size: clamp(5px, 0.6vw, 8px);
   color: var(--yellow);
 }
@@ -531,10 +548,11 @@
   transform: translateX(-50%);
   background: #0b0b1a;
   border: 2px solid var(--gold);
-  padding: 8px 10px;
-  font-size: clamp(5px, 0.65vw, 9px);
-  line-height: 1.9;
-  min-width: 145px;
+  padding: 8px 12px;
+  /* Baloo 2 para tooltip — texto de leitura */
+  font-size: clamp(12px, 0.8vw, 14px);
+  line-height: 1.7;
+  min-width: 160px;
   z-index: 200;
   pointer-events: none;
   opacity: 0;
@@ -573,8 +591,9 @@
   background: #0d0d1a;
   border: 2px solid var(--border);
   border-left: 4px solid var(--yellow);
-  padding: clamp(6px, 1vh, 10px) 12px;
-  font-size: clamp(5px, 0.7vw, 9px);
+  padding: clamp(8px, 1vh, 12px) 14px;
+  /* Baloo 2 para mensagens do modal — feedback importante */
+  font-size: clamp(14px, 0.9vw, 16px);
   color: var(--text);
-  line-height: 1.9;
+  line-height: 1.6;
 }

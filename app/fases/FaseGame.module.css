@@ -14,7 +14,7 @@
   height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-press-start), monospace;
+  /* font-family NÃO definida aqui: body usa Baloo 2, pixel aplicado só onde necessário */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -31,6 +31,8 @@
 }
 
 .gameTitle {
+  /* Pixel font só para o título — é o logo do jogo */
+  font-family: var(--font-press-start), monospace;
   font-size: clamp(10px, 1.8vw, 22px);
   color: var(--yellow);
   text-align: center;
@@ -40,11 +42,12 @@
 }
 
 .gameSubtitle {
-  font-size: clamp(6px, 0.9vw, 11px);
+  /* Baloo 2 herdado do body — legível para a criança */
+  font-size: clamp(13px, 0.95vw, 15px);
   color: #7a8fa6;
   text-align: center;
   margin-bottom: 12px;
-  letter-spacing: 1px;
+  letter-spacing: 0;
 }
 
 .wrap {
@@ -66,6 +69,8 @@
 }
 
 .hv {
+  /* Pixel font para números do HUD — elemento decorativo curto */
+  font-family: var(--font-press-start), monospace;
   color: var(--yellow);
   font-size: clamp(10px, 1.4vw, 18px);
   margin-top: 4px;
@@ -76,8 +81,9 @@
   border: 3px solid #4a4a6a;
   border-left: 6px solid var(--yellow);
   padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 20px);
-  font-size: clamp(6px, 0.85vw, 11px);
-  line-height: 2;
+  /* Baloo 2 para texto longo de missão — mais fácil de ler */
+  font-size: clamp(13px, 0.9vw, 15px);
+  line-height: 1.6;
   color: #b0c4de;
 }
 
@@ -89,7 +95,7 @@
   background: #0a0a1a;
   border: 2px solid #333;
   padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1.5vw, 16px);
-  font-size: clamp(5px, 0.75vw, 10px);
+  font-size: clamp(12px, 0.8vw, 14px);
   color: #7a8fa6;
   text-align: center;
 }
@@ -209,6 +215,7 @@
 }
 
 .root :global(.bcoord) {
+  font-family: var(--font-press-start), monospace;
   font-size: clamp(5px, 0.6vw, 8px);
   color: rgba(255, 255, 255, 0.95);
   background: rgba(0, 0, 0, 0.65);
@@ -244,6 +251,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Pixel para rótulos de coordenada — curtos, decorativos */
+  font-family: var(--font-press-start), monospace;
   font-size: clamp(7px, 0.9vw, 12px);
   color: var(--yellow);
   width: clamp(14px, 1.5vw, 20px);
@@ -264,6 +273,7 @@
 .root :global(.clbl) {
   width: clamp(56px, 8vw, 90px);
   text-align: center;
+  font-family: var(--font-press-start), monospace;
   font-size: clamp(7px, 0.9vw, 12px);
   color: var(--yellow);
   height: clamp(18px, 2.5vw, 26px);
@@ -378,7 +388,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: clamp(6px, 0.8vw, 10px);
+  font-size: clamp(12px, 0.8vw, 14px);
   color: #7a8fa6;
 }
 
@@ -462,8 +472,8 @@
   background: #0d0d1a;
   border: 2px solid #333;
   padding: 10px;
-  font-size: clamp(5px, 0.7vw, 9px);
-  line-height: 2;
+  font-size: clamp(12px, 0.8vw, 14px);
+  line-height: 1.6;
   color: #b0c4de;
   display: flex;
   align-items: center;
@@ -478,7 +488,8 @@
   background: var(--panel);
   border: 3px solid #4a4a6a;
   padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 20px);
-  font-size: clamp(6px, 0.85vw, 11px);
+  /* Baloo 2 para mensagens de feedback — leitura rápida */
+  font-size: clamp(13px, 0.9vw, 15px);
   min-height: clamp(28px, 4vh, 44px);
   display: flex;
   align-items: center;
@@ -491,6 +502,7 @@
   background: var(--green);
   border: 3px solid #2a7a2a;
   color: #000;
+  /* Pixel font no botão curto de ação — decorativo */
   font-family: var(--font-press-start), monospace;
   font-size: clamp(7px, 1vw, 13px);
   padding: clamp(8px, 1.2vh, 14px);

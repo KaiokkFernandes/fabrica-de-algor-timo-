@@ -3,35 +3,35 @@ import styles from "./page.module.css";
 
 const modules = [
   {
-    num: "MODULO 00",
+    num: "",
     icon: "📋",
-    title: "INTRODUCAO",
-    desc: "Contexto, objetivos e como tudo se conecta. Comece aqui.",
-    action: "► LER BRIEFING",
+    title: "INTRODUÇÃO",
+    desc: "Descubra o que você vai aprender na fábrica!",
+    action: "Quero conhecer →",
     href: "/introducao",
   },
   {
-    num: "MODULO 01",
+    num: "",
     icon: "🗺️",
-    title: "MAPA DO JOGO",
-    desc: "Navegue pelas missoes e acompanhe seu progresso.",
-    action: "► VER MAPA",
+    title: "MAPA DE FASES",
+    desc: "Escolha uma aventura e jogue!",
+    action: "Escolher fase →",
     href: "/menu",
   },
   {
-    num: "MODULO 02",
+    num: "",
     icon: "⚙️",
-    title: "FASES",
-    desc: "Etapas em sequencia com desafios crescentes.",
-    action: "► JOGAR AGORA",
+    title: "JOGAR",
+    desc: "Vai direto para o jogo!",
+    action: "Jogar agora →",
     href: "/fases",
   },
   {
-    num: "MODULO 03",
+    num: "",
     icon: "📖",
-    title: "MANUAL DO ENGENHEIRO",
-    desc: "Consulte fases, conceitos e aprenda como jogar.",
-    action: "► ABRIR MANUAL",
+    title: "AJUDA",
+    desc: "Precisa de ajuda? É aqui!",
+    action: "Ver dicas →",
     href: "/manual",
   },
 ];
@@ -40,21 +40,18 @@ export default function HomePage() {
   return (
     <div className={styles.screen}>
       <div className={styles.titleBox}>
-        <span className={styles.badge}>SISTEMA DE TREINAMENTO V1.0</span>
         <h1 className={styles.gameTitle}>
-          FABRICA<br />DE<br />ALGORITMOS
+          FÁBRICA<br />DE<br />ALGORITMOS
         </h1>
         <p className={styles.gameSub}>
-          APRENDA ALGORITMOS RESOLVENDO DESAFIOS REAIS NA FABRICA.
-          <br />
-          COORDENADAS • LOGICA • ESTRATEGIA
+          Resolva desafios, descubra algoritmos e vire mestre da fábrica!
         </p>
-        <p className={styles.pressStart}>▼ SELECIONE UMA OPCAO ▼</p>
+        <p className={styles.pressStart}>▼ O QUE VAMOS FAZER? ▼</p>
       </div>
 
       <div className={styles.grid}>
         {modules.map((m) => (
-          <Link key={m.num} href={m.href} className={styles.card}>
+          <Link key={m.title} href={m.href} className={styles.card}>
             <div className={styles.cardTop}>
               <span className={styles.cardIcon}>{m.icon}</span>
               <span className={styles.cardNum}>{m.num}</span>

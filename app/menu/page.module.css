@@ -23,6 +23,8 @@
 }
 
 .title {
+  /* Pixel para o título da tela de seleção */
+  font-family: var(--font-pixel);
   font-size: clamp(13px, 1.8vw, 32px);
   color: var(--text);
   text-shadow: 3px 3px 0 #000;
@@ -85,15 +87,19 @@
 }
 
 .name {
-  font-size: clamp(10px, 1.1vw, 20px);
+  /* Pixel para nome da fase — curto e decorativo */
+  font-family: var(--font-pixel);
+  font-size: clamp(10px, 1.1vw, 18px);
   color: var(--text);
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 .desc {
-  font-size: clamp(7px, 0.65vw, 13px);
+  /* Baloo 2 para descrição da fase */
+  font-size: clamp(14px, 0.9vw, 16px);
   color: var(--text-dim);
-  line-height: 2.2;
+  line-height: 1.5;
+  letter-spacing: 0;
 }
 
 .stars {
@@ -104,11 +110,12 @@
 
 /* ── footer hint ── */
 .hint {
-  font-size: clamp(7px, 0.65vw, 13px);
+  /* Baloo 2 para dica de rodapé */
+  font-size: clamp(14px, 0.9vw, 16px);
   color: var(--text-dim);
   text-align: center;
-  letter-spacing: 2px;
-  padding: 10px;
+  letter-spacing: 0;
+  padding: 12px;
   border: 2px solid var(--border);
   background: var(--panel);
 }

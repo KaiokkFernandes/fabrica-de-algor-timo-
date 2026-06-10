@@ -9,7 +9,10 @@
   --red: #f44336;
   --border: #4a4a6a;
   --gold: #f0c040;
+  /* --font-pixel: fonte pixel para títulos, HUD e rótulos curtos decorativos */
   --font-pixel: var(--font-press-start), monospace;
+  /* --font-body: fonte sans-serif arredondada para todo o texto corrido */
+  --font-body: var(--font-baloo2), "Segoe UI", Tahoma, sans-serif;
 }
 
 *,
@@ -27,10 +30,13 @@ body {
 }
 
 body {
-  font-family: var(--font-pixel);
+  /* Baloo 2 como fonte de corpo — pixel font reservada a títulos/HUD */
+  font-family: var(--font-body);
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 /* scanlines overlay */

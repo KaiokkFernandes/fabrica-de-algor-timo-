@@ -282,7 +282,7 @@ export default function FaseGame() {
       renderBelt();
       document.getElementById("hits").textContent = "0/" + total;
       document.getElementById("cards-left").textContent = "3 cartas restantes";
-      setFeedback("🏭", "Arraste as caixas para as coordenadas corretas!", "");
+      setFeedback("🏭", "Arraste cada caixa para o lugar certo na prateleira!", "");
     }
 
     const onDragOver = (e) => {
@@ -322,23 +322,23 @@ export default function FaseGame() {
         FABRICA DE ALGORITMOS
       </div>
       <div id="game-subtitle" className={styles.gameSubtitle}>
-        FASE 1.1 — ESTEIRA DE CAIXAS &nbsp;|&nbsp; EF04CO01
+        Fase 1.1 — Esteira de Caixas
       </div>
 
       <div id="wrap" className={styles.wrap}>
         <div id="hud" className={styles.hud}>
           <div>
-            <div style={{ fontSize: "clamp(6px,0.75vw,10px)" }}>PONTOS</div>
+            <div style={{ fontSize: "clamp(11px,0.75vw,13px)" }}>Pontos</div>
             <div className={styles.hv} id="score">
               000
             </div>
           </div>
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: "clamp(6px,0.75vw,10px)" }}>FASE</div>
+            <div style={{ fontSize: "clamp(11px,0.75vw,13px)" }}>Fase</div>
             <div className={styles.hv}>1.1</div>
           </div>
           <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: "clamp(6px,0.75vw,10px)" }}>ACERTOS</div>
+            <div style={{ fontSize: "clamp(11px,0.75vw,13px)" }}>Acertos</div>
             <div className={styles.hv} id="hits">
               0/6
             </div>
@@ -346,13 +346,13 @@ export default function FaseGame() {
         </div>
 
         <div id="mission" className={styles.mission}>
-          ► MISSÃO: Cada caixa tem coordenada <span>(linha, coluna)</span>. Arraste para o lugar certo!
+          Cada caixa tem um lugar certo na prateleira. <span>Você consegue descobrir?</span>
           <br />
-          ► Erros custam <span>-30 pts</span>. Use suas <span>cartas de dica</span> com sabedoria!
+          Cuidado pra não errar! Use as <span>cartas de dica 💡</span> se precisar de ajuda.
         </div>
 
         <div id="coord-hint" className={styles.coordHint}>
-          PRATELEIRA → linhas: A B C &nbsp;|&nbsp; colunas: 1 2 3 4
+          Linhas: A · B · C &nbsp;|&nbsp; Colunas: 1 · 2 · 3 · 4
         </div>
 
         <div id="main" className={styles.main}>
@@ -409,10 +409,10 @@ export default function FaseGame() {
 
         <div id="feedback" className={styles.feedback}>
           <span id="fi">🏭</span>
-          <span id="ft">Arraste as caixas para as coordenadas corretas!</span>
+          <span id="ft">Arraste cada caixa para o lugar certo na prateleira!</span>
         </div>
         <button id="next-btn" className={styles.nextButton}>
-          ▶ PROXIMA LEVA DE CAIXAS
+          ▶ PRÓXIMA RODADA
         </button>
       </div>
 

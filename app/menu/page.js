@@ -56,8 +56,7 @@ export default function MenuPage() {
   return (
     <div className={styles.screen}>
       <div className={styles.header}>
-        <p className={styles.eyebrow}>MAPA DO JOGO</p>
-        <h1 className={styles.title}>SELECIONE A MISSAO</h1>
+        <h1 className={styles.title}>Escolha sua aventura!</h1>
       </div>
 
       <div className={styles.list}>
@@ -79,7 +78,7 @@ export default function MenuPage() {
       </div>
 
       <div className={styles.hint}>
-        COMPLETE AS FASES PARA GANHAR <span>★★★</span> E DESBLOQUEAR NOVOS NIVEIS
+        Complete as fases para ganhar <span>⭐⭐⭐</span> e desbloquear novas aventuras!
       </div>
     </div>
   );
