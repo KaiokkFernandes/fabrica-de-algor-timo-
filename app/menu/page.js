@@ -45,7 +45,7 @@ function Stars({ count }) {
   return (
     <span className={styles.stars}>
       {[1, 2, 3].map((i) => (
-        <span key={i} style={{ color: i <= count ? "#ffeb3b" : "#4a4a6a" }}>
+        <span key={i} style={{ color: i <= count ? "#c07800" : "#c8a87a" }}>
           ★
         </span>
       ))}

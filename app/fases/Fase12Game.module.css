@@ -5,14 +5,15 @@
 
 /* ── RAIZ ──────────────────────────────────────────────────────────────── */
 .root {
-  --bg:     #1a1a2e;
-  --panel:  #16213e;
-  --text:   #e8d5a3;
-  --green:  #4caf50;
-  --yellow: #ffeb3b;
-  --red:    #f44336;
-  --border: #4a4a6a;
-  --gold:   #f0c040;
+  /* ── Paleta quente de jogo ─────────────────────────────────────── */
+  --bg:     #160e06;   /* marrom-noturno */
+  --panel:  #251508;   /* painel marrom-escuro */
+  --text:   #f0e6cc;   /* creme-âmbar */
+  --green:  #5a9e30;   /* verde-fazenda */
+  --yellow: #f0c040;   /* dourado */
+  --red:    #d44020;   /* vermelho-tijolo */
+  --border: #6b4a2a;   /* marrom-palha (vs roxo-cinza frio) */
+  --gold:   #e8a830;   /* ouro-dourado */
 
   width: 100vw;
   height: 100vh;
@@ -48,7 +49,7 @@
 .gameSubtitle {
   /* Baloo 2 herdado — mais legível para a criança */
   font-size: clamp(13px, 0.95vw, 15px);
-  color: #7a8fa6;
+  color: #a08060;
   text-align: center;
   margin-bottom: 6px;
   letter-spacing: 0;
@@ -79,7 +80,7 @@
 .hudLabel {
   /* Baloo 2 para rótulo do HUD — tamanho maior, mais legível */
   font-size: clamp(11px, 0.75vw, 13px);
-  color: #7a8fa6;
+  color: #a08060;
   letter-spacing: 0;
 }
 
@@ -126,7 +127,7 @@
 .depotTitle {
   /* Baloo 2, tamanho legível */
   font-size: clamp(12px, 0.8vw, 14px);
-  color: #7a8fa6;
+  color: #a08060;
   background: var(--panel);
   border: 3px solid var(--border);
   padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1.5vw, 16px);
@@ -415,7 +416,7 @@
   /* Pixel font para o timer — número curto */
   font-family: var(--font-press-start), monospace;
   font-size: clamp(6px, 0.75vw, 10px);
-  color: #7a8fa6;
+  color: #a08060;
 }
 
 .root :global(.f12-timer-urgent) {
@@ -444,7 +445,7 @@
 }
 
 .root :global(.f12-criteria-lbl) {
-  color: #7a8fa6;
+  color: #a08060;
   min-width: 52px;
   font-weight: 600;
 }
@@ -469,14 +470,14 @@
 }
 
 .root :global(.f12-tag-empty) {
-  color: #7a8fa6;
+  color: #a08060;
   font-size: clamp(4px, 0.5vw, 7px);
 }
 
 /* ── Slots do caminhão ─────────────────────────────────────────────────── */
 .root :global(.f12-slots-label) {
   font-size: clamp(12px, 0.75vw, 13px);
-  color: #7a8fa6;
+  color: #a08060;
 }
 
 .root :global(.f12-truck-slots) {
@@ -488,8 +489,8 @@
 .root :global(.f12-slot) {
   width:  clamp(40px, 5.2vw, 64px);
   height: clamp(40px, 5.2vw, 64px);
-  border: 2px dashed #4a4a6a;
-  background: #0d0d1a;
+  border: 2px dashed var(--border);
+  background: #120a02;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -525,7 +526,7 @@
 
 .root :global(.f12-slot-empty) {
   font-size: clamp(4px, 0.45vw, 6px);
-  color: #4a4a6a;
+  color: var(--border);
 }
 
 .root :global(.f12-slot-emoji) {
@@ -623,7 +624,7 @@
   bottom: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
-  background: #0b0b1a;
+  background: #0e0700;
   border: 2px solid var(--gold);
   padding: 8px 12px;
   /* Baloo 2 para tooltip — texto de leitura */
@@ -665,7 +666,7 @@
 .root :global(.f12-stars-0) { color: #333; }
 
 .root :global(.f12-modal-msg) {
-  background: #0d0d1a;
+  background: #120a02;
   border: 2px solid var(--border);
   border-left: 4px solid var(--yellow);
   padding: clamp(8px, 1vh, 12px) 14px;

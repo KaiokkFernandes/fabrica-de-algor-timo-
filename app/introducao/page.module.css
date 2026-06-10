@@ -53,8 +53,9 @@
 .speakerName {
   font-family: var(--font-pixel);
   font-size: clamp(7px, 0.75vw, 12px);
-  color: var(--green);
-  letter-spacing: 2px;
+  /* Marrom-escuro: contraste garantido no fundo claro */
+  color: var(--text);
+  letter-spacing: 1px;
 }
 
 .dialogText {

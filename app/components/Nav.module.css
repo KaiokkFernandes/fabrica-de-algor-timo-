@@ -11,7 +11,8 @@
   padding: 6px 12px;
   border: 2px solid var(--border);
   background: transparent;
-  color: var(--text-dim);
+  /* Usar --text para garantir contraste no fundo claro */
+  color: var(--text);
   font-family: var(--font-pixel);
   font-size: clamp(7px, 0.7vw, 13px);
   letter-spacing: 1px;
@@ -22,7 +23,7 @@
 .link:hover {
   border-color: var(--yellow);
   color: var(--yellow);
-  background: rgba(255, 235, 59, 0.06);
+  background: rgba(192, 120, 0, 0.08);
 }
 
 .icon {

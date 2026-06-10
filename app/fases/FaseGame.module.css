@@ -1,15 +1,16 @@
 .root {
-  --bg: #1a1a2e;
-  --panel: #16213e;
-  --shelf-bg: #2d1b0e;
-  --shelf-border: #8b5e3c;
-  --belt-bg: #2a2a2a;
-  --text: #e8d5a3;
-  --green: #4caf50;
-  --yellow: #ffeb3b;
-  --red: #f44336;
-  --card-gold: #f0c040;
-  --card-dark: #1a0e00;
+  /* ── Paleta quente de jogo (marrom-noturno, não azul-corporate) ── */
+  --bg:           #160e06;   /* fundo marrom-noturno */
+  --panel:        #251508;   /* painel marrom-escuro */
+  --shelf-bg:     #2d1b0e;   /* madeira de prateleira */
+  --shelf-border: #8b5e3c;   /* borda da prateleira */
+  --belt-bg:      #1a1000;   /* esteira escura */
+  --text:         #f0e6cc;   /* creme-âmbar */
+  --green:        #5a9e30;   /* verde-fazenda */
+  --yellow:       #f0c040;   /* dourado */
+  --red:          #d44020;   /* vermelho-tijolo */
+  --card-gold:    #e8a830;   /* ouro de carta */
+  --card-dark:    #1a0e00;   /* fundo de carta */
   width: 100vw;
   height: 100vh;
   background: var(--bg);
@@ -44,7 +45,7 @@
 .gameSubtitle {
   /* Baloo 2 herdado do body — legível para a criança */
   font-size: clamp(13px, 0.95vw, 15px);
-  color: #7a8fa6;
+  color: #a08060;
   text-align: center;
   margin-bottom: 12px;
   letter-spacing: 0;
@@ -63,7 +64,7 @@
   justify-content: space-between;
   align-items: center;
   background: var(--panel);
-  border: 3px solid #4a4a6a;
+  border: 3px solid #5a3a1a;
   padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 24px);
   font-size: clamp(7px, 1vw, 13px);
 }
@@ -77,14 +78,14 @@
 }
 
 .mission {
-  background: #0d0d1a;
-  border: 3px solid #4a4a6a;
+  background: #120a02;
+  border: 3px solid #5a3a1a;
   border-left: 6px solid var(--yellow);
   padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 20px);
   /* Baloo 2 para texto longo de missão — mais fácil de ler */
   font-size: clamp(13px, 0.9vw, 15px);
   line-height: 1.6;
-  color: #b0c4de;
+  color: #c8b090;
 }
 
 .mission span {
@@ -92,11 +93,11 @@
 }
 
 .coordHint {
-  background: #0a0a1a;
+  background: #0e0700;
   border: 2px solid #333;
   padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1.5vw, 16px);
   font-size: clamp(12px, 0.8vw, 14px);
-  color: #7a8fa6;
+  color: #a08060;
   text-align: center;
 }
 
@@ -116,7 +117,7 @@
 
 .beltLabel {
   font-size: clamp(6px, 0.8vw, 10px);
-  color: #7a8fa6;
+  color: #a08060;
   text-align: center;
 }
 
@@ -230,7 +231,7 @@
 
 .shelfLabel {
   font-size: clamp(6px, 0.8vw, 10px);
-  color: #7a8fa6;
+  color: #a08060;
   text-align: center;
 }
 
@@ -377,7 +378,7 @@
 
 .cardsSection {
   background: var(--panel);
-  border: 3px solid #4a4a6a;
+  border: 3px solid #5a3a1a;
   padding: clamp(7px, 1vh, 14px) clamp(10px, 2vw, 20px);
   display: flex;
   flex-direction: column;
@@ -389,7 +390,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: clamp(12px, 0.8vw, 14px);
-  color: #7a8fa6;
+  color: #a08060;
 }
 
 .cardsHeader span {
@@ -469,12 +470,12 @@
 .hintResult {
   flex: 1;
   min-height: clamp(90px, 10vw, 135px);
-  background: #0d0d1a;
-  border: 2px solid #333;
+  background: #120a02;
+  border: 2px solid #3a2210;
   padding: 10px;
   font-size: clamp(12px, 0.8vw, 14px);
   line-height: 1.6;
-  color: #b0c4de;
+  color: #c8b090;
   display: flex;
   align-items: center;
 }
@@ -486,7 +487,7 @@
 
 .feedback {
   background: var(--panel);
-  border: 3px solid #4a4a6a;
+  border: 3px solid #5a3a1a;
   padding: clamp(5px, 0.8vh, 10px) clamp(8px, 1.5vw, 16px);
   font-size: clamp(13px, 0.9vw, 15px);
   min-height: clamp(28px, 4vh, 48px);
