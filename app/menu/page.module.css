@@ -12,8 +12,11 @@
   border: 3px solid var(--border);
   border-left: 6px solid var(--yellow);
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .eyebrow {

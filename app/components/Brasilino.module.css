@@ -1,0 +1,125 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Brasilino.module.css
+   Layout: [avatar] → [balão de fala]
+   Cor do acento muda conforme data-mood no .wrapper
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── tokens de cor por mood ──────────────────────────────────────── */
+.wrapper                        { --bc: #f0c040; --balloon-bg: #fffde7; }
+.wrapper[data-mood="happy"]     { --bc: #f0c040; }
+.wrapper[data-mood="excited"]   { --bc: #ff9800; }
+.wrapper[data-mood="sad"]       { --bc: #7eb8f7; --balloon-bg: #eef5ff; }
+.wrapper[data-mood="neutral"]   { --bc: #7a8fa6; --balloon-bg: #f4f4f4; }
+
+/* ── wrapper ─────────────────────────────────────────────────────── */
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ── avatar box ──────────────────────────────────────────────────── */
+.avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  background: linear-gradient(160deg, #1b3a10 0%, #2d5a1b 100%);
+  border: 3px solid var(--bc);
+  border-radius: 4px;   /* pixel-art: cantos levemente arredondados */
+  padding: 6px 8px;
+  transition: border-color 0.2s;
+}
+
+.sprite {
+  display: block;
+  line-height: 1;
+  image-rendering: auto;
+}
+
+/* nome abaixo do emoji */
+.name {
+  font-family: var(--font-pixel);
+  color: var(--bc);
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+/* ── variantes de tamanho ────────────────────────────────────────── */
+.large  .avatar { width: 108px; padding: 12px 10px; }
+.large  .sprite { font-size: 58px; }
+.large  .name   { font-size: 7px;  margin-top: 4px; }
+
+.medium .avatar { width: 80px;  padding: 8px; }
+.medium .sprite { font-size: 40px; }
+.medium .name   { font-size: 6px;  margin-top: 3px; }
+
+.small  .avatar { width: 58px;  padding: 6px; }
+.small  .sprite { font-size: 26px; }
+.small  .name   { font-size: 5px;  margin-top: 2px; }
+
+.mini   .avatar { width: 40px;  padding: 4px; }
+.mini   .sprite { font-size: 20px; }
+.mini   .name   { display: none; }
+
+/* ── mood excited: avatar sobe e desce ───────────────────────────── */
+.wrapper[data-mood="excited"] .avatar {
+  animation: brasBouce 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes brasBouce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-6px); }
+}
+
+/* ── balão de fala ───────────────────────────────────────────────── */
+.balloon {
+  position: relative;
+  background: var(--balloon-bg);
+  border: 2px solid var(--bc);
+  border-radius: 14px;
+  padding: 10px 16px;
+  max-width: 340px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+/* seta apontando para o avatar (lado esquerdo do balão) */
+.balloon::before {
+  content: "";
+  position: absolute;
+  left: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 7px solid transparent;
+  border-right-color: var(--bc);
+  transition: border-right-color 0.2s;
+}
+
+.balloon::after {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-right-color: var(--balloon-bg);
+  transition: border-right-color 0.2s;
+}
+
+/* ── texto do balão ──────────────────────────────────────────────── */
+.balloonText {
+  font-family: var(--font-body);
+  color: #1a1a2e;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* tamanhos por variante */
+.large  .balloonText { font-size: 18px; }
+.medium .balloonText { font-size: 16px; }
+.small  .balloonText { font-size: 15px; }
+.mini   .balloonText { font-size: 13px; }

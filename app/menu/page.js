@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import Brasilino from "../components/Brasilino";
 
 const stages = [
   {
@@ -57,6 +58,11 @@ export default function MenuPage() {
     <div className={styles.screen}>
       <div className={styles.header}>
         <h1 className={styles.title}>Escolha sua aventura!</h1>
+        <Brasilino
+          size="small"
+          mood="happy"
+          fala="Qual aventura você escolhe hoje? Eu te ajudo! 😄"
+        />
       </div>
 
       <div className={styles.list}>

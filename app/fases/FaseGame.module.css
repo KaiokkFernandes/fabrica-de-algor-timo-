@@ -487,14 +487,78 @@
 .feedback {
   background: var(--panel);
   border: 3px solid #4a4a6a;
-  padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 20px);
-  /* Baloo 2 para mensagens de feedback — leitura rápida */
+  padding: clamp(5px, 0.8vh, 10px) clamp(8px, 1.5vw, 16px);
   font-size: clamp(13px, 0.9vw, 15px);
-  min-height: clamp(28px, 4vh, 44px);
+  min-height: clamp(28px, 4vh, 48px);
   display: flex;
   align-items: center;
   gap: 10px;
   color: var(--text);
+}
+
+/* ── Brasilino inline (gameplay) ── */
+.brasilino {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  background: linear-gradient(160deg, #1b3a10, #2d5a1b);
+  border: 2px solid #f0c040;
+  border-radius: 4px;
+  padding: 3px 5px;
+}
+
+.brasilino__avatar {
+  font-size: clamp(18px, 2.2vw, 26px);
+  line-height: 1;
+}
+
+.brasilino__name {
+  font-family: var(--font-press-start), monospace;
+  font-size: 4px;
+  color: #f0c040;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+/* balão de fala inline */
+.brasilino__balloon {
+  flex: 1;
+  background: #fffde7;
+  border: 2px solid #f0c040;
+  border-radius: 10px;
+  padding: 6px 12px;
+  position: relative;
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* seta apontando para o avatar */
+.brasilino__balloon::before {
+  content: "";
+  position: absolute;
+  left: -11px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-right-color: #f0c040;
+}
+
+.brasilino__balloon::after {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right-color: #fffde7;
+}
+
+.brasilino__icon {
+  flex-shrink: 0;
 }
 
 .nextButton {

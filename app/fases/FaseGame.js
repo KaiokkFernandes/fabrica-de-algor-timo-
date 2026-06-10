@@ -407,9 +407,17 @@ export default function FaseGame() {
           </div>
         </div>
 
+        {/* ── Brasilino: barra de feedback ── */}
         <div id="feedback" className={styles.feedback}>
-          <span id="fi">🏭</span>
-          <span id="ft">Arraste cada caixa para o lugar certo na prateleira!</span>
+          {/* TODO sprite: substituir por <img src="/brasilino-happy.png"> */}
+          <div className={styles.brasilino}>
+            <div className={styles.brasilino__avatar}>🤖</div>
+            <span className={styles.brasilino__name}>BRASILINO</span>
+          </div>
+          <div className={styles.brasilino__balloon}>
+            <span id="fi" className={styles.brasilino__icon}>🏭</span>&nbsp;
+            <span id="ft">Arraste cada caixa para o lugar certo na prateleira!</span>
+          </div>
         </div>
         <button id="next-btn" className={styles.nextButton}>
           ▶ PRÓXIMA RODADA

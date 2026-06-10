@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import Brasilino from "./components/Brasilino";
 
 const modules = [
   {
@@ -46,6 +47,13 @@ export default function HomePage() {
         <p className={styles.gameSub}>
           Resolva desafios, descubra algoritmos e vire mestre da fábrica!
         </p>
+
+        <Brasilino
+          size="medium"
+          mood="excited"
+          fala="Oi! Eu sou o Brasilino! Vamos consertar a fábrica juntos? 🔧"
+        />
+
         <p className={styles.pressStart}>▼ O QUE VAMOS FAZER? ▼</p>
       </div>
 

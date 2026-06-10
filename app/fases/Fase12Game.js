@@ -637,16 +637,28 @@ export default function Fase12Game() {
           </button>
         </div>
 
-        {/* Feedback bar */}
+        {/* ── Brasilino: barra de feedback ── */}
         <div className={styles.feedback}>
-          <span id="f12-fi">🚛</span>&nbsp;
-          <span id="f12-ft">Carregue o caminhão com as caixas certas!</span>
+          {/* TODO sprite */}
+          <div className={styles.brasilino}>
+            <div className={styles.brasilino__avatar}>🤖</div>
+            <span className={styles.brasilino__name}>BRASILINO</span>
+          </div>
+          <div className={styles.brasilino__balloon}>
+            <span id="f12-fi" className={styles.brasilino__icon}>🚛</span>&nbsp;
+            <span id="f12-ft">Carregue o caminhão com as caixas certas!</span>
+          </div>
         </div>
       </div>
 
       {/* End-round modal */}
       <div id="f12-modal" className={styles.modal}>
         <div className={styles.modalBox}>
+          {/* Brasilino no modal — mood trocado via JS em showModal() */}
+          <div className={styles.brasilino} id="f12-modal-brasilino">
+            <div className={styles.brasilino__avatar}>🤖</div>
+            <span className={styles.brasilino__name}>BRASILINO</span>
+          </div>
           <div className={styles.modalTitle}>🚛 CAMINHÃO DESPACHADO!</div>
           <div id="f12-modal-stars" className="f12-modal-stars">★★★</div>
           <div id="f12-modal-lucro" className={styles.modalLucro}></div>

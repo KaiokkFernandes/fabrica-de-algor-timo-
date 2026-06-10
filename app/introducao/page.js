@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import Brasilino from "../components/Brasilino";
 
 const objectives = [
   "Descobrir como coordenadas funcionam — linha e coluna",
@@ -17,7 +18,7 @@ export default function IntroducaoPage() {
 
       <div className={styles.dialogBox}>
         <div className={styles.dialogHead}>
-          <div className={styles.speakerAvatar}>🤖</div>
+          <Brasilino size="medium" mood="excited" />
           <span className={styles.speakerName}>Brasilino Computino</span>
         </div>
         <p className={styles.dialogText}>
