@@ -507,11 +507,12 @@ export default function Fase13Game() {
     // "proxima"/"subir"/"mudar" são no-op automático na borda (igual ao jogo).
     const DEMO_STEPS = {
       1: [
-        { tipo: "lavar" }, { tipo: "proxima" },
-        { tipo: "lavar" }, { tipo: "proxima" },
-        { tipo: "lavar" },
+        { tipo: "lavar",   label: "🧹 Lavar janela"   },
+        { tipo: "proxima", label: "➡️ Próxima janela"  },
+        { tipo: "lavar",   label: "🧹 Lavar janela"   },
+        { tipo: "proxima", label: "➡️ Próxima janela"  },
+        { tipo: "lavar",   label: "🧹 Lavar janela"   },
       ],
-      // rounds 2-5 podem ser adicionados aqui futuramente
     };
 
     // ── FUNÇÕES DO POPUP DE DEMO ─────────────────────────────────────────────
@@ -563,51 +564,74 @@ export default function Fase13Game() {
       robo.style.height = half + "px";
     }
 
-    async function runDemo(roundNum, gen) {
+    function renderDemoAlgo(roundNum) {
+      const steps = DEMO_STEPS[roundNum];
+      const list  = $("f13-demo-algo");
+      if (!list || !steps) return;
+      list.innerHTML = steps
+        .map((s, i) => `<div class="f13-algo-step" id="f13-algo-${i}">${i + 1}. ${s.label}</div>`)
+        .join("");
+    }
+
+    function highlightStep(idx, finished) {
+      document.querySelectorAll(".f13-algo-step").forEach((el, i) => {
+        el.classList.remove("f13-algo-active", "f13-algo-done");
+        if (finished && i <= idx) el.classList.add("f13-algo-done");
+        else if (!finished && i < idx)  el.classList.add("f13-algo-done");
+        else if (!finished && i === idx) el.classList.add("f13-algo-active");
+      });
+    }
+
+    async function runDemo(roundNum) {
       const myGen = ++demoGen;
       const steps = DEMO_STEPS[roundNum];
       const round = ROUNDS.find(r => r.numero === roundNum);
       if (!steps || !round) return;
 
-      const wait = ms => new Promise(res => setTimeout(res, ms));
-      const robo = $("f13-demo-robo");
+      const wait    = ms => new Promise(res => setTimeout(res, ms));
+      const robo    = $("f13-demo-robo");
+      const setStatus = txt => { const el = $("f13-demo-status"); if (el) el.textContent = txt; };
 
-      const setStatus = (txt) => {
-        const el = $("f13-demo-status");
-        if (el) el.textContent = txt;
-      };
-
-      for (const step of steps) {
+      for (let i = 0; i < steps.length; i++) {
         if (demoGen !== myGen) return;
+        const step = steps[i];
+        highlightStep(i, false);
 
         if (step.tipo === "lavar") {
           if (robo) robo.textContent = "🫧";
-          await wait(480);
+          setStatus(`${step.label}...`);
+          await wait(500);                                    // mesma duração do jogo
           if (demoGen !== myGen) return;
           demoEstado[demoAndar][demoJanela] = true;
           const cell = getDemoCell(demoAndar, demoJanela);
           if (cell) { cell.className = "f13-demo-janela f13-demo-limpa"; cell.innerHTML = "✨"; }
           if (robo) robo.textContent = "🤖";
-          setStatus(`Lavou a janela ${demoJanela + 1} do andar ${demoAndar + 1}!`);
-          await wait(500);
+          highlightStep(i, true);
+          setStatus(`✅ Janela ${demoJanela + 1} do andar ${demoAndar + 1} limpa!`);
+          await wait(600);                                    // mesma pausa do jogo
 
         } else if (step.tipo === "proxima") {
-          if (demoDirecao === "direita") {
-            if (demoJanela < round.predio.janelasPorAndar - 1) { demoJanela++; updateDemoRobo(true); await wait(420); }
-          } else {
-            if (demoJanela > 0) { demoJanela--; updateDemoRobo(true); await wait(420); }
-          }
+          setStatus(`${step.label}...`);
+          const moved = demoDirecao === "direita"
+            ? demoJanela < round.predio.janelasPorAndar - 1 && (demoJanela++, true)
+            : demoJanela > 0 && (demoJanela--, true);
+          if (moved) { updateDemoRobo(true); await wait(420); }
+          highlightStep(i, true);
 
         } else if (step.tipo === "subir") {
+          setStatus(`${step.label}...`);
           if (demoAndar < round.predio.andares - 1) { demoAndar++; updateDemoRobo(true); await wait(420); }
+          highlightStep(i, true);
 
         } else if (step.tipo === "mudar") {
+          setStatus(`${step.label}...`);
           demoDirecao = demoDirecao === "direita" ? "esquerda" : "direita";
           if (robo) {
             robo.style.transition = "transform 0.25s ease";
             robo.style.transform  = demoDirecao === "esquerda" ? "scaleX(-1)" : "scaleX(1)";
           }
-          await wait(320);
+          await wait(300);
+          highlightStep(i, true);
         }
       }
 
@@ -628,9 +652,9 @@ export default function Fase13Game() {
       if (replayBtn) replayBtn.style.display = "none";
 
       popup.style.display = "flex";
-      // Aguarda 1 frame para o DOM ser pintado antes de calcular posições
       requestAnimationFrame(() => {
         buildDemoPredio(roundNum);
+        renderDemoAlgo(roundNum);
         setTimeout(() => runDemo(roundNum), 900);
       });
     }
@@ -823,6 +847,7 @@ export default function Fase13Game() {
           if (statusEl) statusEl.textContent = "▶️ Veja como o Robozinho resolve...";
           $("f13-demo-replay").style.display = "none";
           buildDemoPredio(round.numero);
+          renderDemoAlgo(round.numero);
           setTimeout(() => runDemo(round.numero), 400);
         };
 
@@ -943,8 +968,12 @@ export default function Fase13Game() {
 
           <div className={styles.demoContent}>
             <div id="f13-demo-outer" className={styles.demoOuter}>
-              <div id="f13-demo-grid"  className={styles.demoGrid} />
-              <div id="f13-demo-robo"  className={styles.demoRobo}>🤖</div>
+              <div id="f13-demo-grid" className={styles.demoGrid} />
+              <div id="f13-demo-robo" className={styles.demoRobo}>🤖</div>
+            </div>
+            <div className={styles.demoAlgoPanel}>
+              <div className={styles.demoAlgoTitle}>ALGORITMO</div>
+              <div id="f13-demo-algo" className={styles.demoAlgo}></div>
             </div>
           </div>
 

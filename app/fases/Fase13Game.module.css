@@ -397,11 +397,11 @@
 .demoBox {
   background: var(--panel);
   border: 4px solid var(--gold);
-  width: min(94vw, 480px);
+  width: min(94vw, 620px);
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px 24px 20px;
+  gap: 14px;
+  padding: 20px 24px;
 }
 
 .demoHeader {
@@ -435,15 +435,41 @@
 
 .demoContent {
   display: flex;
-  justify-content: center;
+  gap: 14px;
+  align-items: stretch;
 }
 
 .demoOuter {
   position: relative;
   background: #0d0d1a;
   border: 3px solid var(--border);
-  width: 100%;
+  flex: 1;
   height: clamp(100px, 20vh, 180px);
+}
+
+.demoAlgoPanel {
+  width: 170px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.demoAlgoTitle {
+  font-size: clamp(5px, 0.65vw, 8px);
+  color: #7a8fa6;
+  letter-spacing: 1px;
+}
+
+.demoAlgo {
+  flex: 1;
+  background: #0d0d1a;
+  border: 2px solid var(--border);
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
 }
 
 .demoGrid {
@@ -496,6 +522,27 @@
   cursor: pointer;
 }
 .demoReplayBtn:hover { background: #2a2a4a; }
+
+/* Passos do algoritmo no popup */
+.root :global(.f13-algo-step) {
+  font-size: clamp(6px, 0.75vw, 9px);
+  color: #4a4a6a;
+  padding: 4px 6px;
+  border-left: 3px solid transparent;
+  line-height: 1.5;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.root :global(.f13-algo-active) {
+  color: var(--yellow);
+  border-left-color: var(--yellow);
+  background: rgba(255, 235, 59, 0.08);
+}
+
+.root :global(.f13-algo-done) {
+  color: var(--green);
+  border-left-color: var(--green);
+}
 
 /* Janelas dentro do popup de demo */
 .root :global(.f13-demo-janela) {
