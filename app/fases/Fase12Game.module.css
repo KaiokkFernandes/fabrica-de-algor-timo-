@@ -432,46 +432,55 @@
 .root :global(.f12-criteria) {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+  background: #0d0600;
+  border: 2px solid var(--border);
+  padding: 10px 12px;
 }
 
 .root :global(.f12-criteria-row) {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
-  /* Baloo 2 para critérios — texto curto mas importante */
-  font-size: clamp(12px, 0.75vw, 14px);
+  flex-direction: column;
+  gap: 6px;
 }
 
 .root :global(.f12-criteria-lbl) {
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(7px, 0.65vw, 9px);
   color: #a08060;
-  min-width: 52px;
-  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.root :global(.f12-tags-wrap) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .root :global(.f12-tag) {
-  padding: 2px 6px;
-  border: 1px solid;
-  font-size: clamp(11px, 0.65vw, 13px);
-  line-height: 1.6;
+  padding: 5px 14px;
+  border: 2px solid;
+  font-size: clamp(13px, 1vw, 17px);
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 .root :global(.f12-tag-ok) {
-  border-color: var(--green);
-  color: var(--green);
-  background: rgba(76, 175, 80, 0.12);
+  border-color: #4caf50;
+  color: #7de87d;
+  background: rgba(76, 175, 80, 0.18);
 }
 
 .root :global(.f12-tag-no) {
   border-color: var(--red);
-  color: var(--red);
-  background: rgba(244, 67, 54, 0.12);
+  color: #f08070;
+  background: rgba(192, 57, 43, 0.18);
 }
 
 .root :global(.f12-tag-empty) {
   color: #a08060;
-  font-size: clamp(4px, 0.5vw, 7px);
+  font-size: clamp(13px, 0.85vw, 15px);
+  font-style: italic;
 }
 
 /* ── Slots do caminhão ─────────────────────────────────────────────────── */
