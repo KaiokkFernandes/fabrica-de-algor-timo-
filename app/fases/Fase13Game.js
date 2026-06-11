@@ -90,6 +90,7 @@ export default function Fase13Game() {
     let direcao = "direita"; // "direita" | "esquerda"
     let janelasEstado = []; // [andar][janela] => true = limpa
     let running = false;
+    let execId = 0;          // incrementado a cada execução; tick() abortará se mudar
     let timerInterval = null;
     let tempoRestante = null;
     let hintCount = 0;
@@ -163,9 +164,11 @@ export default function Fase13Game() {
       };
 
       gen.forBlock["f13_repetir"] = (block, g) => {
+        // Variável única por bloco para suportar loops aninhados sem colisão
+        const v     = "__r" + block.id.replace(/[^a-zA-Z0-9]/g, "");
         const times = block.getFieldValue("TIMES") || "3";
         const body  = g.statementToCode(block, "DO");
-        return `for (var __i = 0; __i < ${times}; __i++) {\n${body}}\n`;
+        return `for (var ${v} = 0; ${v} < ${times}; ${v}++) {\n${body}}\n`;
       };
     }
 
@@ -345,12 +348,10 @@ export default function Fase13Game() {
     function animProxima() {
       const round = ROUNDS[roundIdx];
       if (direcao === "direita") {
-        if (roboJanela >= round.predio.janelasPorAndar - 1)
-          return Promise.reject(new Error("O Robozinho tentou ir além da última janela do andar!"));
+        if (roboJanela >= round.predio.janelasPorAndar - 1) return delay(0); // no-op na borda
         roboJanela++;
       } else {
-        if (roboJanela <= 0)
-          return Promise.reject(new Error("O Robozinho tentou ir além da primeira janela do andar!"));
+        if (roboJanela <= 0) return delay(0); // no-op na borda
         roboJanela--;
       }
       updateRoboPos(true);
@@ -369,11 +370,7 @@ export default function Fase13Game() {
 
     function animSubir() {
       const round = ROUNDS[roundIdx];
-      if (roboAndar >= round.predio.andares - 1) {
-        return Promise.reject(
-          new Error("O Robozinho tentou subir além do último andar!")
-        );
-      }
+      if (roboAndar >= round.predio.andares - 1) return delay(0); // no-op no topo
       roboAndar++;
       updateRoboPos(true);
       return delay(420);
@@ -406,6 +403,7 @@ export default function Fase13Game() {
       }
 
       running = true;
+      const myExecId = ++execId;
       $("f13-run-btn").disabled   = true;
       $("f13-reset-btn").disabled = true;
       setFeedback("▶️", "Executando o programa...", "var(--yellow)");
@@ -441,7 +439,8 @@ export default function Fase13Game() {
       }
 
       const tick = () => {
-        if (++steps > 10000) {
+        if (myExecId !== execId) return; // round mudou, descarta execução antiga
+        if (++steps > 50000) {
           stopWithError("Loop infinito detectado! Verifique os números do Repetir.");
           return;
         }
@@ -555,6 +554,7 @@ export default function Fase13Game() {
 
     // ── INÍCIO DO ROUND ──────────────────────────────────────────────────────
     function startRound(idx, gen) {
+      execId++;           // invalida qualquer tick() de execução anterior
       roundIdx  = idx;
       hintCount = 0;
       running   = false;
