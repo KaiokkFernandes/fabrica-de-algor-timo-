@@ -182,29 +182,26 @@ export default function Fase13Game() {
         .filter((b) => blocos.includes(b))
         .map((b) => ({ kind: "block", type: b }));
 
-      const cats = [];
+      const items = [];
 
+      // Ações — sempre visíveis, sem clique
       if (acoes.length) {
-        cats.push({ kind: "category", name: "⚙️ Ações",    colour: "#5a8a30", contents: acoes });
+        items.push({ kind: "label", text: "⚙️  AÇÕES", "web-class": "f13-tb-label" });
+        acoes.forEach((b) => items.push(b));
       }
       if (blocos.includes("f13_repetir")) {
-        cats.push({
-          kind: "category",
-          name: "🔁 Loops",
-          colour: "#5b67a5",
-          contents: [{ kind: "block", type: "f13_repetir" }],
-        });
+        items.push({ kind: "sep", "gap": "14" });
+        items.push({ kind: "label", text: "🔁  LOOPS", "web-class": "f13-tb-label" });
+        items.push({ kind: "block", type: "f13_repetir" });
       }
       if (blocos.includes("f13_se_suja")) {
-        cats.push({
-          kind: "category",
-          name: "❓ Condição",
-          colour: "#e07820",
-          contents: [{ kind: "block", type: "f13_se_suja" }],
-        });
+        items.push({ kind: "sep", "gap": "14" });
+        items.push({ kind: "label", text: "❓  CONDIÇÃO", "web-class": "f13-tb-label" });
+        items.push({ kind: "block", type: "f13_se_suja" });
       }
 
-      return { kind: "categoryToolbox", contents: cats };
+      // flyoutToolbox = blocos sempre visíveis, sem precisar clicar em categorias
+      return { kind: "flyoutToolbox", contents: items };
     }
 
     // ── PRÉDIO ───────────────────────────────────────────────────────────────
@@ -550,11 +547,17 @@ export default function Fase13Game() {
     Promise.all([
       import("blockly"),
       import("blockly/javascript"),
-    ]).then(([BlyMod, jsGenMod]) => {
+      import("blockly/msg/pt-br").catch(() => null),
+    ]).then(([BlyMod, jsGenMod, ptBrMod]) => {
       if (cleanupDone) return;
 
       const Blockly = BlyMod.default ?? BlyMod;
       const { javascriptGenerator: gen } = jsGenMod;
+
+      // Traduz menus de contexto e tooltips do Blockly para pt-BR
+      if (ptBrMod) {
+        try { Blockly.setLocale(ptBrMod.default ?? ptBrMod); } catch (_) {}
+      }
 
       registerBlocks(Blockly, gen);
 

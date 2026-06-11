@@ -86,7 +86,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: clamp(260px, 42vw, 560px);
+  width: clamp(320px, 52vw, 700px);
   flex-shrink: 0;
   min-height: 0;
 }
@@ -331,6 +331,13 @@
   font-size: clamp(5px, 0.68vw, 9px);
   color: var(--text);
   line-height: 1.8;
+}
+
+/* Label de seção dentro do flyout do Blockly */
+.root :global(.f13-tb-label .blocklyFlyoutLabelText) {
+  fill: #f0c040 !important;
+  font-size: 10px !important;
+  font-weight: bold;
 }
 
 .root :global(.f13-timer-urgent) {
