@@ -1,0 +1,342 @@
+/* Fase13Game.module.css — FASE 1.3 "Lavador Industrial" — EF04CO03 */
+
+.root {
+  --bg:     #1a1a2e;
+  --panel:  #16213e;
+  --text:   #e8d5a3;
+  --green:  #4caf50;
+  --yellow: #ffeb3b;
+  --red:    #f44336;
+  --border: #4a4a6a;
+  --gold:   #f0c040;
+
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-press-start), monospace;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(6px, 1vh, 10px) 12px;
+}
+
+.root * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Cabeçalho ─────────────────────────────────────────────────────────── */
+.gameTitle {
+  font-size: clamp(10px, 1.6vw, 20px);
+  color: var(--yellow);
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 0 #000;
+  margin-bottom: 3px;
+}
+
+.gameSubtitle {
+  font-size: clamp(6px, 0.85vw, 10px);
+  color: #7a8fa6;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+/* ── Wrapper ───────────────────────────────────────────────────────────── */
+.wrap {
+  width: 100%;
+  max-width: min(99vw, 1300px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.5vh, 7px);
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── HUD ───────────────────────────────────────────────────────────────── */
+.hud {
+  display: flex;
+  justify-content: space-between;
+  background: var(--panel);
+  border: 3px solid var(--border);
+  padding: clamp(4px, 0.6vh, 8px) clamp(10px, 2vw, 24px);
+  flex-shrink: 0;
+}
+
+.hudLabel {
+  font-size: clamp(5px, 0.6vw, 8px);
+  color: #7a8fa6;
+}
+
+.hudVal {
+  color: var(--yellow);
+  font-size: clamp(9px, 1.2vw, 15px);
+  margin-top: 3px;
+}
+
+/* ── Área principal ────────────────────────────────────────────────────── */
+.main {
+  display: flex;
+  gap: clamp(6px, 1vw, 12px);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Painel Blockly (esquerda) ─────────────────────────────────────────── */
+.blocklyPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: clamp(260px, 42vw, 560px);
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+.panelLabel {
+  font-size: clamp(5px, 0.65vw, 8px);
+  color: #7a8fa6;
+  background: var(--panel);
+  border: 3px solid var(--border);
+  padding: clamp(3px, 0.5vh, 6px) 10px;
+  flex-shrink: 0;
+}
+
+.blocklyDiv {
+  flex: 1;
+  min-height: 0;
+  border: 3px solid var(--border);
+  /* Blockly precisa de altura explícita no contêiner */
+  height: 100%;
+}
+
+/* ── Painel direito (prédio + feedback) ────────────────────────────────── */
+.rightPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.5vh, 7px);
+  min-width: 0;
+  min-height: 0;
+}
+
+.predioWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+}
+
+.predioOuter {
+  flex: 1;
+  position: relative;
+  background: #0d0d1a;
+  border: 3px solid var(--border);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.predioGrid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  gap: clamp(3px, 0.5vw, 6px);
+  padding: clamp(4px, 0.6vw, 8px);
+  align-content: stretch;
+}
+
+/* ── Robô ──────────────────────────────────────────────────────────────── */
+.robo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(20px, 3vw, 36px);
+  pointer-events: none;
+  z-index: 10;
+  /* transição definida por JS ao mover */
+  filter: drop-shadow(0 0 6px rgba(255,235,59,0.7));
+}
+
+/* ── Feedback ──────────────────────────────────────────────────────────── */
+.feedback {
+  background: var(--panel);
+  border: 3px solid var(--border);
+  padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1.5vw, 16px);
+  font-size: clamp(5px, 0.7vw, 9px);
+  min-height: clamp(22px, 3vh, 36px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+
+/* ── Botões ────────────────────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  gap: clamp(5px, 0.8vw, 12px);
+  flex-shrink: 0;
+}
+
+.hintBtn {
+  background: #2a2a1a;
+  border: 3px solid #6a6a2a;
+  color: var(--yellow);
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(5px, 0.75vw, 9px);
+  padding: clamp(6px, 1vh, 11px) clamp(8px, 1.4vw, 18px);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.hintBtn:hover { background: #3a3a1a; }
+
+.resetBtn {
+  background: #2a2a4a;
+  border: 3px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(5px, 0.75vw, 9px);
+  padding: clamp(6px, 1vh, 11px) clamp(8px, 1.4vw, 18px);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.resetBtn:hover { background: #3a3a5a; }
+.resetBtn:disabled { opacity: 0.4; cursor: default; }
+
+.runBtn {
+  flex: 1;
+  background: var(--green);
+  border: 3px solid #2a7a2a;
+  color: #000;
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(6px, 0.85vw, 11px);
+  padding: clamp(6px, 1vh, 11px);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.runBtn:hover    { background: #5ccc60; }
+.runBtn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Modal ─────────────────────────────────────────────────────────────── */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalBox {
+  background: var(--panel);
+  border: 4px solid var(--gold);
+  padding: clamp(14px, 2.5vh, 30px) clamp(18px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.2vh, 14px);
+  max-width: min(94vw, 500px);
+  width: 100%;
+}
+
+.modalTitle {
+  font-size: clamp(10px, 1.5vw, 18px);
+  color: var(--yellow);
+  text-shadow: 2px 2px 0 #000;
+  letter-spacing: 1px;
+}
+
+.modalMsgs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.modalBtns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.retryBtn {
+  background: #2a2a4a;
+  border: 3px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(6px, 0.8vw, 10px);
+  padding: clamp(7px, 1vh, 13px) clamp(10px, 1.8vw, 22px);
+  cursor: pointer;
+}
+.retryBtn:hover { background: #3a3a5a; }
+
+.advanceBtn {
+  background: var(--green);
+  border: 3px solid #2a7a2a;
+  color: #000;
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(6px, 0.8vw, 10px);
+  padding: clamp(7px, 1vh, 13px) clamp(10px, 1.8vw, 22px);
+  cursor: pointer;
+}
+.advanceBtn:hover { background: #5ccc60; }
+
+/* ── Classes globais aplicadas por JS ──────────────────────────────────── */
+
+.root :global(.f13-janela) {
+  background: #3a2a1a;
+  border: 2px solid #6b4a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(16px, 2.2vw, 28px);
+  transition: background 0.3s, border-color 0.3s;
+  border-radius: 2px;
+}
+
+.root :global(.f13-janela-limpa) {
+  background: #0a2a3a;
+  border-color: #2a8ab0;
+}
+
+.root :global(.f13-janela-flash) {
+  animation: f13flash 0.5s ease forwards;
+}
+
+@keyframes f13flash {
+  0%   { background: #ffffaa; }
+  100% { background: #0a2a3a; }
+}
+
+.root :global(.f13-modal-stars) {
+  font-size: clamp(24px, 4vw, 46px);
+  letter-spacing: 6px;
+}
+
+.root :global(.f13-stars-3) { color: var(--yellow); }
+.root :global(.f13-stars-2) { color: var(--yellow); }
+.root :global(.f13-stars-1) { color: #888; }
+.root :global(.f13-stars-0) { color: #333; }
+
+.root :global(.f13-modal-msg) {
+  background: #0d0d1a;
+  border: 2px solid var(--border);
+  border-left: 4px solid var(--yellow);
+  padding: clamp(5px, 0.8vh, 9px) 12px;
+  font-size: clamp(5px, 0.68vw, 9px);
+  color: var(--text);
+  line-height: 1.8;
+}
+
+.root :global(.f13-timer-urgent) {
+  color: var(--red) !important;
+  animation: f13blink 0.5s step-end infinite;
+}
+
+@keyframes f13blink {
+  50% { opacity: 0; }
+}

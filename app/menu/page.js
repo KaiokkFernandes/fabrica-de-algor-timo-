@@ -31,6 +31,15 @@ const stages = [
     icon: "🚛",
   },
   {
+    code: "FASE 1.3",
+    name: "LAVADOR INDUSTRIAL",
+    desc: "Programe o Robozinho pra lavar todas as janelas do predio!",
+    href: "/fases/1.3",
+    stars: 0,
+    locked: false,
+    icon: "🤖",
+  },
+  {
     code: "FASE 2.0",
     name: "EM BREVE",
     desc: "Novos desafios se aproximam.",
