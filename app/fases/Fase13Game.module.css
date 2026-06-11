@@ -301,6 +301,19 @@
   justify-content: center;
 }
 
+.solutionBtn {
+  background: #1a1a3a;
+  border: 3px solid var(--gold);
+  color: var(--gold);
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(6px, 0.8vw, 10px);
+  padding: clamp(8px, 1.2vh, 14px) clamp(12px, 2vw, 24px);
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s;
+}
+.solutionBtn:hover { background: #2a2a4a; }
+
 .retryBtn {
   background: #2a2a4a;
   border: 3px solid var(--border);

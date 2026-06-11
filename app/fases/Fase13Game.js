@@ -501,6 +501,29 @@ export default function Fase13Game() {
       showModal(stars, blocosUsados, round.blocosMinimos);
     }
 
+    // ── SOLUÇÕES IDEAIS (Blockly serialization JSON) ─────────────────────────
+    // Por enquanto só Round 1 — adicionar os demais gradualmente
+    const SOLUCOES = {
+      1: {
+        blocks: {
+          languageVersion: 0,
+          blocks: [{
+            type: "f13_lavar_janela", x: 20, y: 20,
+            next: { block: {
+              type: "f13_proxima_janela",
+              next: { block: {
+                type: "f13_lavar_janela",
+                next: { block: {
+                  type: "f13_proxima_janela",
+                  next: { block: { type: "f13_lavar_janela" } },
+                }},
+              }},
+            }},
+          }],
+        },
+      },
+    };
+
     // ── MODAL ────────────────────────────────────────────────────────────────
     function showModal(stars, blocosUsados, blocosMin) {
       const isLast = roundIdx === ROUNDS.length - 1;
@@ -517,9 +540,11 @@ export default function Fase13Game() {
       $("f13-modal-msgs").innerHTML = msgs
         .map((m) => `<div class="f13-modal-msg">${m}</div>`)
         .join("");
-      $("f13-modal-next").style.display   = isLast ? "none"         : "inline-block";
-      $("f13-modal-finish").style.display = isLast ? "inline-block" : "none";
-      $("f13-modal").style.display        = "flex";
+      $("f13-modal-next").style.display     = isLast ? "none"         : "inline-block";
+      $("f13-modal-finish").style.display   = isLast ? "inline-block" : "none";
+      const hasSol = SOLUCOES[ROUNDS[roundIdx].numero];
+      $("f13-modal-solution").style.display = hasSol && stars < 3 ? "inline-block" : "none";
+      $("f13-modal").style.display          = "flex";
     }
 
     // ── TIMER ────────────────────────────────────────────────────────────────
@@ -650,9 +675,10 @@ export default function Fase13Game() {
         const runBtn    = $("f13-run-btn");
         const resetBtn  = $("f13-reset-btn");
         const hintBtn   = $("f13-hint-btn");
-        const retryBtn  = $("f13-modal-retry");
-        const nextBtn   = $("f13-modal-next");
-        const finishBtn = $("f13-modal-finish");
+        const retryBtn    = $("f13-modal-retry");
+        const nextBtn     = $("f13-modal-next");
+        const finishBtn   = $("f13-modal-finish");
+        const solutionBtn = $("f13-modal-solution");
 
         const onRun = () => executeProgram(gen, Interpreter);
         const onReset = () => {
@@ -676,23 +702,40 @@ export default function Fase13Game() {
           workspace?.clear();
           if (roundIdx === 0) showRound1Hint();
         };
-        const onNext   = () => startRound(roundIdx + 1, gen);
-        const onFinish = () => { window.location.href = "/menu"; };
+        const onNext     = () => startRound(roundIdx + 1, gen);
+        const onFinish   = () => { window.location.href = "/menu"; };
+        const onSolution = () => {
+          const sol = SOLUCOES[ROUNDS[roundIdx].numero];
+          if (!sol || !workspace) return;
+          $("f13-modal").style.display = "none";
+          buildPredio();
+          workspace.clear();
+          try {
+            Blockly.serialization.workspaces.load(sol, workspace);
+          } catch (e) {
+            setFeedback("❌", "Erro ao carregar solução: " + e.message, "var(--red)");
+            return;
+          }
+          setFeedback("🤖", "Olha a solução ideal! O programa vai executar sozinho...", "var(--yellow)");
+          setTimeout(() => { if (!running) executeProgram(gen, Interpreter); }, 1400);
+        };
 
-        runBtn?.addEventListener("click",    onRun);
-        resetBtn?.addEventListener("click",  onReset);
-        hintBtn?.addEventListener("click",   onHint);
-        retryBtn?.addEventListener("click",  onRetry);
-        nextBtn?.addEventListener("click",   onNext);
-        finishBtn?.addEventListener("click", onFinish);
+        runBtn?.addEventListener("click",      onRun);
+        resetBtn?.addEventListener("click",    onReset);
+        hintBtn?.addEventListener("click",     onHint);
+        retryBtn?.addEventListener("click",    onRetry);
+        nextBtn?.addEventListener("click",     onNext);
+        finishBtn?.addEventListener("click",   onFinish);
+        solutionBtn?.addEventListener("click", onSolution);
 
         window.__f13_cleanup = () => {
-          runBtn?.removeEventListener("click",    onRun);
-          resetBtn?.removeEventListener("click",  onReset);
-          hintBtn?.removeEventListener("click",   onHint);
-          retryBtn?.removeEventListener("click",  onRetry);
-          nextBtn?.removeEventListener("click",   onNext);
-          finishBtn?.removeEventListener("click", onFinish);
+          runBtn?.removeEventListener("click",      onRun);
+          resetBtn?.removeEventListener("click",    onReset);
+          hintBtn?.removeEventListener("click",     onHint);
+          retryBtn?.removeEventListener("click",    onRetry);
+          nextBtn?.removeEventListener("click",     onNext);
+          finishBtn?.removeEventListener("click",   onFinish);
+          solutionBtn?.removeEventListener("click", onSolution);
         };
       }).catch((e) => {
         setFeedback("❌", "Erro ao carregar o motor de execução: " + e.message, "var(--red)");
@@ -781,6 +824,9 @@ export default function Fase13Game() {
           <div id="f13-modal-stars" className="f13-modal-stars">★★★</div>
           <div id="f13-modal-msgs"  className={styles.modalMsgs}></div>
           <div className={styles.modalBtns}>
+            <button id="f13-modal-solution" className={styles.solutionBtn} style={{ display: "none" }}>
+              👁 VER SOLUÇÃO IDEAL
+            </button>
             <button id="f13-modal-retry"  className={styles.retryBtn}>↩ TENTAR DE NOVO</button>
             <button id="f13-modal-next"   className={styles.advanceBtn}>► PRÓXIMO ROUND</button>
             <button id="f13-modal-finish" className={styles.advanceBtn}>🏁 VOLTAR AO MAPA</button>
