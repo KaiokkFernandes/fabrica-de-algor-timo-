@@ -259,13 +259,15 @@ export default function Fase13Game() {
       const cRect = cell.getBoundingClientRect();
       const oRect = outer.getBoundingClientRect();
 
+      // Robô ocupa só a metade inferior da célula → janela visível em cima
+      const halfH = cRect.height * 0.52;
       robo.style.transition = animate
         ? "left 0.38s ease, top 0.38s ease"
         : "none";
       robo.style.left   = cRect.left - oRect.left + "px";
-      robo.style.top    = cRect.top  - oRect.top  + "px";
-      robo.style.width  = cRect.width  + "px";
-      robo.style.height = cRect.height + "px";
+      robo.style.top    = cRect.bottom - oRect.top - halfH + "px";
+      robo.style.width  = cRect.width + "px";
+      robo.style.height = halfH + "px";
     }
 
     function updateHUD() {
@@ -332,11 +334,11 @@ export default function Fase13Game() {
           cell.className = "f13-janela f13-janela-limpa";
           cell.innerHTML = "✨";
           cell.classList.add("f13-janela-flash");
-          setTimeout(() => cell.classList.remove("f13-janela-flash"), 500);
+          setTimeout(() => cell.classList.remove("f13-janela-flash"), 700);
         }
         if (robo) robo.textContent = "🤖";
         updateHUD();
-        return delay(380);
+        return delay(600);
       });
     }
 
