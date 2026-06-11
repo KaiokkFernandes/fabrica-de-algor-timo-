@@ -24,7 +24,7 @@ export default function Fase13Game() {
           "f13_proxima_janela",
           "f13_repetir",
         ],
-        blocosMinimos: 3,
+        blocosMinimos: 4,
         tempoLimite: null,
         tutorialMsg:
           "Muitas janelas! Use o bloco Repetir pra não precisar repetir os blocos.",
@@ -514,23 +514,24 @@ export default function Fase13Game() {
         { tipo: "lavar",   label: "🧹 Lavar janela"   },
       ],
       // formato objeto = loop: display mostra estrutura, execute expande as iterações
+      // inLoop:false = step fora do loop (cabeçalho aparece como concluído)
       2: {
         display: [
-          { label: "🔁 Repetir 5 vezes"   },
+          { label: "🔁 Repetir 4 vezes"   },
           { label: "  🧹 Lavar janela"    },
           { label: "  ➡️ Próxima janela"  },
+          { label: "🧹 Lavar janela"      },
         ],
         execute: [
-          { tipo: "lavar",   displayIdx: 1 },
-          { tipo: "proxima", displayIdx: 2 },
-          { tipo: "lavar",   displayIdx: 1 },
-          { tipo: "proxima", displayIdx: 2 },
-          { tipo: "lavar",   displayIdx: 1 },
-          { tipo: "proxima", displayIdx: 2 },
-          { tipo: "lavar",   displayIdx: 1 },
-          { tipo: "proxima", displayIdx: 2 },
-          { tipo: "lavar",   displayIdx: 1 },
-          { tipo: "proxima", displayIdx: 2 },
+          { tipo: "lavar",   displayIdx: 1, inLoop: true  },
+          { tipo: "proxima", displayIdx: 2, inLoop: true  },
+          { tipo: "lavar",   displayIdx: 1, inLoop: true  },
+          { tipo: "proxima", displayIdx: 2, inLoop: true  },
+          { tipo: "lavar",   displayIdx: 1, inLoop: true  },
+          { tipo: "proxima", displayIdx: 2, inLoop: true  },
+          { tipo: "lavar",   displayIdx: 1, inLoop: true  },
+          { tipo: "proxima", displayIdx: 2, inLoop: true  },
+          { tipo: "lavar",   displayIdx: 3, inLoop: false },
         ],
       },
     };
@@ -618,12 +619,18 @@ export default function Fase13Game() {
       const setStatus = txt => { const el = $("f13-demo-status"); if (el) el.textContent = txt; };
 
       // Destaca step ativo no painel do algoritmo
-      function hlActive(dIdx) {
+      function hlActive(dIdx, inLoop) {
         document.querySelectorAll(".f13-algo-step").forEach((el, i) => {
           el.classList.remove("f13-algo-active", "f13-algo-done");
           if (isLoop) {
-            // cabeçalho do loop (0) + step atual ficam amarelos
-            if (i === 0 || i === dIdx) el.classList.add("f13-algo-active");
+            if (inLoop) {
+              // dentro do loop: cabeçalho (0) + step atual amarelos
+              if (i === 0 || i === dIdx) el.classList.add("f13-algo-active");
+            } else {
+              // fora do loop: tudo antes é verde, step atual amarelo
+              if (i < dIdx)   el.classList.add("f13-algo-done");
+              if (i === dIdx) el.classList.add("f13-algo-active");
+            }
           } else {
             if (i < dIdx)   el.classList.add("f13-algo-done");
             if (i === dIdx) el.classList.add("f13-algo-active");
@@ -647,8 +654,9 @@ export default function Fase13Game() {
         if (demoGen !== myGen) return;
         const step  = steps[i];
         const dIdx  = isLoop ? step.displayIdx : i;
+        const stepInLoop = isLoop ? (step.inLoop !== false) : false;
         const label = (display[dIdx]?.label ?? "").trim();
-        hlActive(dIdx);
+        hlActive(dIdx, stepInLoop);
 
         if (step.tipo === "lavar") {
           if (robo) robo.textContent = "🫧";
