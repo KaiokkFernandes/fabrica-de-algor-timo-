@@ -129,33 +129,21 @@ export default function Fase13Game() {
         };
       }
 
-      // Bloco especial: Repetir N vezes (wrapper visual sobre controls_repeat_ext)
+      // Bloco Repetir — dropdown clicável, sem digitação
       if (!Blockly.Blocks["f13_repetir"]) {
+        const opcoes = Array.from({ length: 10 }, (_, i) => [String(i + 1), String(i + 1)])
+          .concat([["15", "15"], ["20", "20"], ["25", "25"], ["30", "30"], ["50", "50"]]);
         Blockly.Blocks["f13_repetir"] = {
           init() {
-            this.appendValueInput("TIMES")
-              .setCheck("Number")
-              .appendField("🔁 Repetir");
-            this.appendDummyInput().appendField("vezes:");
+            this.appendDummyInput()
+              .appendField("🔁 Repetir")
+              .appendField(new Blockly.FieldDropdown(opcoes), "TIMES")
+              .appendField("vezes:");
             this.appendStatementInput("DO");
             this.setPreviousStatement(true, null);
             this.setNextStatement(true, null);
             this.setColour(120);
-            this.setTooltip("Repete os blocos dentro N vezes");
-          },
-        };
-      }
-
-      // Bloco número helper (shadow para f13_repetir)
-      if (!Blockly.Blocks["f13_numero"]) {
-        Blockly.Blocks["f13_numero"] = {
-          init() {
-            this.appendDummyInput().appendField(
-              new Blockly.FieldNumber(3, 1, 20),
-              "NUM"
-            );
-            this.setOutput(true, "Number");
-            this.setColour(230);
+            this.setTooltip("Repete os blocos dentro N vezes — clique no número para escolher");
           },
         };
       }
@@ -166,16 +154,13 @@ export default function Fase13Game() {
       gen.forBlock["f13_subir_andar"]    = () => "subirAndar();\n";
       gen.forBlock["f13_voltar_inicio"]  = () => "voltarInicio();\n";
 
-      gen.forBlock["f13_numero"] = (block) =>
-        [String(block.getFieldValue("NUM") || 3), gen.ORDER_ATOMIC];
-
       gen.forBlock["f13_se_suja"] = (block, g) => {
         const body = g.statementToCode(block, "DO");
         return `if (janelaEstaSuja()) {\n${body}}\n`;
       };
 
       gen.forBlock["f13_repetir"] = (block, g) => {
-        const times = g.valueToCode(block, "TIMES", g.ORDER_NONE) || "3";
+        const times = block.getFieldValue("TIMES") || "3";
         const body  = g.statementToCode(block, "DO");
         return `for (var __i = 0; __i < ${times}; __i++) {\n${body}}\n`;
       };
@@ -203,13 +188,7 @@ export default function Fase13Game() {
           kind: "category",
           name: "🔁 Loops",
           colour: "#5b67a5",
-          contents: [
-            {
-              kind: "block",
-              type: "f13_repetir",
-              inputs: { TIMES: { shadow: { type: "f13_numero" } } },
-            },
-          ],
+          contents: [{ kind: "block", type: "f13_repetir" }],
         });
       }
       if (blocos.includes("f13_se_suja")) {
