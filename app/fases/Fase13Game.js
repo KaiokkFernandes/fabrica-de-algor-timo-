@@ -283,6 +283,42 @@ export default function Fase13Game() {
       ft.style.color  = color || "var(--text)";
     }
 
+    function hideRound1Hint() {
+      const h = $("f13-hint-r1");
+      if (h) h.style.display = "none";
+    }
+
+    function showRound1Hint() {
+      const h = $("f13-hint-r1");
+      if (!h || roundIdx !== 0) return;
+      h.style.display = "none";
+
+      // Aguarda Blockly renderizar o flyout para calcular posição real
+      setTimeout(() => {
+        if (roundIdx !== 0 || !workspace) return;
+        try {
+          const flyout   = workspace.getFlyout?.() ?? workspace.getFlyout?.(true);
+          const flyoutWs = flyout?.getWorkspace?.();
+          const blocks   = flyoutWs?.getAllBlocks?.(false) ?? [];
+          if (blocks.length > 0) {
+            const svgRoot  = blocks[0].getSvgRoot?.();
+            const svgRect  = svgRoot?.getBoundingClientRect?.();
+            const wrapRect = $("f13-blockly-div")?.getBoundingClientRect?.();
+            if (svgRect && wrapRect && svgRect.width > 0) {
+              h.style.left = Math.round(svgRect.right - wrapRect.left + 14) + "px";
+              h.style.top  = Math.round(svgRect.top   - wrapRect.top  + svgRect.height / 2 - 14) + "px";
+              h.style.display = "flex";
+              return;
+            }
+          }
+        } catch (_) {}
+        // Fallback caso a API do flyout não esteja disponível
+        h.style.left    = "175px";
+        h.style.top     = "65px";
+        h.style.display = "flex";
+      }, 650);
+    }
+
     // ── ANIMAÇÕES ────────────────────────────────────────────────────────────
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -538,6 +574,8 @@ export default function Fase13Game() {
       if ($("f13-reset-btn")) $("f13-reset-btn").disabled = false;
 
       setFeedback("🤖", round.tutorialMsg || "Monte o programa e clique Executar!", "var(--yellow)");
+
+      if (idx === 0) showRound1Hint(); else hideRound1Hint();
     }
 
     // ── CARREGAR BLOCKLY + JS-INTERPRETER ───────────────────────────────────
@@ -587,9 +625,17 @@ export default function Fase13Game() {
       workspace = Blockly.inject(blocklyDiv, {
         toolbox:    buildToolbox(ROUNDS[0].blocosDisponiveis),
         trashcan:   true,
-        scrollbars: true,
-        zoom:       { controls: true, wheel: false, startScale: 1.0, maxScale: 1.6, minScale: 0.6 },
+        scrollbars: false,
+        move:       { scrollbars: false, drag: false, wheel: false },
+        zoom:       { controls: false, wheel: false, startScale: 1.3, maxScale: 1.3, minScale: 1.3 },
         ...(theme ? { theme } : {}),
+      });
+
+      // Esconde dica do round 1 quando o user arrastar qualquer bloco
+      workspace.addChangeListener(() => {
+        if (roundIdx === 0 && workspace.getAllBlocks(false).length > 0) {
+          hideRound1Hint();
+        }
       });
 
       import("js-interpreter").then((InterpMod) => {
@@ -622,7 +668,12 @@ export default function Fase13Game() {
           ];
           setFeedback("💡", tips[Math.min(hintCount - 1, tips.length - 1)], "var(--yellow)");
         };
-        const onRetry  = () => { $("f13-modal").style.display = "none"; buildPredio(); workspace?.clear(); };
+        const onRetry  = () => {
+          $("f13-modal").style.display = "none";
+          buildPredio();
+          workspace?.clear();
+          if (roundIdx === 0) showRound1Hint();
+        };
         const onNext   = () => startRound(roundIdx + 1, gen);
         const onFinish = () => { window.location.href = "/menu"; };
 
@@ -687,7 +738,13 @@ export default function Fase13Game() {
           {/* ESQUERDA: workspace Blockly */}
           <div className={styles.blocklyPanel}>
             <div className={styles.panelLabel}>📦 SEU PROGRAMA</div>
-            <div id="f13-blockly-div" className={styles.blocklyDiv} />
+            <div className={styles.blocklyPosWrap}>
+              <div id="f13-blockly-div" className={styles.blocklyDiv} />
+              {/* Dica flutuante do Round 1 — some quando o usuário arrastar um bloco */}
+              <div id="f13-hint-r1" className={styles.dragHint} style={{ display: "none" }}>
+                ← Arraste!
+              </div>
+            </div>
           </div>
 
           {/* DIREITA: prédio + feedback */}

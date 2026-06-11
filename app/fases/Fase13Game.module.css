@@ -100,12 +100,49 @@
   flex-shrink: 0;
 }
 
-.blocklyDiv {
+.blocklyPosWrap {
   flex: 1;
   min-height: 0;
-  border: 3px solid var(--border);
-  /* Blockly precisa de altura explícita no contêiner */
+  position: relative; /* âncora para o dragHint absoluto */
+}
+
+.blocklyDiv {
+  width: 100%;
   height: 100%;
+  border: 3px solid var(--border);
+}
+
+/* ── Dica flutuante Round 1 ─────────────────────────────────────────────── */
+.dragHint {
+  position: absolute;
+  align-items: center;
+  gap: 6px;
+  background: var(--yellow);
+  color: #000;
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(7px, 0.9vw, 11px);
+  padding: 6px 12px;
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 50;
+  white-space: nowrap;
+  animation: f13hintPulse 1.1s ease-in-out infinite;
+}
+
+/* Setinha apontando para o flyout (lado esquerdo da dica) */
+.dragHint::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 8px solid transparent;
+  border-right-color: var(--yellow);
+}
+
+@keyframes f13hintPulse {
+  0%,  100% { box-shadow: 0 0 6px  3px rgba(255, 235, 59, 0.45); transform: scale(1);    }
+  50%       { box-shadow: 0 0 16px 6px rgba(255, 235, 59, 0.85); transform: scale(1.06); }
 }
 
 /* ── Painel direito (prédio + feedback) ────────────────────────────────── */

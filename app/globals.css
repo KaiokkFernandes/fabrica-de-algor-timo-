@@ -160,6 +160,16 @@ body.game-mode .app-main {
   color: var(--yellow);
 }
 
+/* ── Blockly context menu — remove scroll ── */
+.blocklyMenuContent {
+  overflow: hidden !important;
+  max-height: none !important;
+}
+.blocklyMenu {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
 /* ── shared keyframes ── */
 @keyframes blink {
   50% {
