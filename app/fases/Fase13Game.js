@@ -600,7 +600,7 @@ export default function Fase13Game() {
         if (step.tipo === "lavar") {
           if (robo) robo.textContent = "🫧";
           setStatus(`${step.label}...`);
-          await wait(500);                                    // mesma duração do jogo
+          await wait(850);                                    // mesma duração do jogo
           if (demoGen !== myGen) return;
           demoEstado[demoAndar][demoJanela] = true;
           const cell = getDemoCell(demoAndar, demoJanela);
@@ -608,19 +608,19 @@ export default function Fase13Game() {
           if (robo) robo.textContent = "🤖";
           highlightStep(i, true);
           setStatus(`✅ Janela ${demoJanela + 1} do andar ${demoAndar + 1} limpa!`);
-          await wait(600);                                    // mesma pausa do jogo
+          await wait(950);                                    // mesma pausa do jogo
 
         } else if (step.tipo === "proxima") {
           setStatus(`${step.label}...`);
           const moved = demoDirecao === "direita"
             ? demoJanela < round.predio.janelasPorAndar - 1 && (demoJanela++, true)
             : demoJanela > 0 && (demoJanela--, true);
-          if (moved) { updateDemoRobo(true); await wait(420); }
+          if (moved) { updateDemoRobo(true); await wait(700); }
           highlightStep(i, true);
 
         } else if (step.tipo === "subir") {
           setStatus(`${step.label}...`);
-          if (demoAndar < round.predio.andares - 1) { demoAndar++; updateDemoRobo(true); await wait(420); }
+          if (demoAndar < round.predio.andares - 1) { demoAndar++; updateDemoRobo(true); await wait(700); }
           highlightStep(i, true);
 
         } else if (step.tipo === "mudar") {
@@ -630,7 +630,7 @@ export default function Fase13Game() {
             robo.style.transition = "transform 0.25s ease";
             robo.style.transform  = demoDirecao === "esquerda" ? "scaleX(-1)" : "scaleX(1)";
           }
-          await wait(300);
+          await wait(550);
           highlightStep(i, true);
         }
       }
