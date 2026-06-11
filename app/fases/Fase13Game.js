@@ -327,7 +327,7 @@ export default function Fase13Game() {
     function animLavar() {
       const robo = $("f13-robo");
       if (robo) robo.textContent = "🫧";
-      return delay(120).then(() => {
+      return delay(500).then(() => {
         janelasEstado[roboAndar][roboJanela] = true;
         const cell = getCell(roboAndar, roboJanela);
         if (cell) {
