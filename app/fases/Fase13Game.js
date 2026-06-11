@@ -513,6 +513,26 @@ export default function Fase13Game() {
         { tipo: "proxima", label: "➡️ Próxima janela"  },
         { tipo: "lavar",   label: "🧹 Lavar janela"   },
       ],
+      // formato objeto = loop: display mostra estrutura, execute expande as iterações
+      2: {
+        display: [
+          { label: "🔁 Repetir 5 vezes"   },
+          { label: "  🧹 Lavar janela"    },
+          { label: "  ➡️ Próxima janela"  },
+        ],
+        execute: [
+          { tipo: "lavar",   displayIdx: 1 },
+          { tipo: "proxima", displayIdx: 2 },
+          { tipo: "lavar",   displayIdx: 1 },
+          { tipo: "proxima", displayIdx: 2 },
+          { tipo: "lavar",   displayIdx: 1 },
+          { tipo: "proxima", displayIdx: 2 },
+          { tipo: "lavar",   displayIdx: 1 },
+          { tipo: "proxima", displayIdx: 2 },
+          { tipo: "lavar",   displayIdx: 1 },
+          { tipo: "proxima", displayIdx: 2 },
+        ],
+      },
     };
 
     // ── FUNÇÕES DO POPUP DE DEMO ─────────────────────────────────────────────
@@ -565,10 +585,11 @@ export default function Fase13Game() {
     }
 
     function renderDemoAlgo(roundNum) {
-      const steps = DEMO_STEPS[roundNum];
+      const data  = DEMO_STEPS[roundNum];
       const list  = $("f13-demo-algo");
-      if (!list || !steps) return;
-      list.innerHTML = steps
+      if (!list || !data) return;
+      const rows = Array.isArray(data) ? data : data.display;
+      list.innerHTML = rows
         .map((s, i) => `<div class="f13-algo-step" id="f13-algo-${i}">${i + 1}. ${s.label}</div>`)
         .join("");
     }
@@ -584,58 +605,91 @@ export default function Fase13Game() {
 
     async function runDemo(roundNum) {
       const myGen = ++demoGen;
-      const steps = DEMO_STEPS[roundNum];
+      const data  = DEMO_STEPS[roundNum];
       const round = ROUNDS.find(r => r.numero === roundNum);
-      if (!steps || !round) return;
+      if (!data || !round) return;
 
-      const wait    = ms => new Promise(res => setTimeout(res, ms));
-      const robo    = $("f13-demo-robo");
+      const isLoop  = !Array.isArray(data);
+      const steps   = isLoop ? data.execute : data;
+      const display = isLoop ? data.display  : data;
+
+      const wait      = ms => new Promise(res => setTimeout(res, ms));
+      const robo      = $("f13-demo-robo");
       const setStatus = txt => { const el = $("f13-demo-status"); if (el) el.textContent = txt; };
+
+      // Destaca step ativo no painel do algoritmo
+      function hlActive(dIdx) {
+        document.querySelectorAll(".f13-algo-step").forEach((el, i) => {
+          el.classList.remove("f13-algo-active", "f13-algo-done");
+          if (isLoop) {
+            // cabeçalho do loop (0) + step atual ficam amarelos
+            if (i === 0 || i === dIdx) el.classList.add("f13-algo-active");
+          } else {
+            if (i < dIdx)   el.classList.add("f13-algo-done");
+            if (i === dIdx) el.classList.add("f13-algo-active");
+          }
+        });
+      }
+
+      function hlDone(dIdx) {
+        if (!isLoop) highlightStep(dIdx, true);
+        // modo loop: não marca verde mid-loop; só marca tudo verde no final
+      }
+
+      function hlAllDone() {
+        document.querySelectorAll(".f13-algo-step").forEach(el => {
+          el.classList.remove("f13-algo-active");
+          el.classList.add("f13-algo-done");
+        });
+      }
 
       for (let i = 0; i < steps.length; i++) {
         if (demoGen !== myGen) return;
-        const step = steps[i];
-        highlightStep(i, false);
+        const step  = steps[i];
+        const dIdx  = isLoop ? step.displayIdx : i;
+        const label = (display[dIdx]?.label ?? "").trim();
+        hlActive(dIdx);
 
         if (step.tipo === "lavar") {
           if (robo) robo.textContent = "🫧";
-          setStatus(`${step.label}...`);
-          await wait(850);                                    // mesma duração do jogo
+          setStatus(`${label}...`);
+          await wait(850);
           if (demoGen !== myGen) return;
           demoEstado[demoAndar][demoJanela] = true;
           const cell = getDemoCell(demoAndar, demoJanela);
           if (cell) { cell.className = "f13-demo-janela f13-demo-limpa"; cell.innerHTML = "✨"; }
           if (robo) robo.textContent = "🤖";
-          highlightStep(i, true);
+          hlDone(dIdx);
           setStatus(`✅ Janela ${demoJanela + 1} do andar ${demoAndar + 1} limpa!`);
-          await wait(950);                                    // mesma pausa do jogo
+          await wait(950);
 
         } else if (step.tipo === "proxima") {
-          setStatus(`${step.label}...`);
+          setStatus(`${label}...`);
           const moved = demoDirecao === "direita"
             ? demoJanela < round.predio.janelasPorAndar - 1 && (demoJanela++, true)
             : demoJanela > 0 && (demoJanela--, true);
           if (moved) { updateDemoRobo(true); await wait(700); }
-          highlightStep(i, true);
+          hlDone(dIdx);
 
         } else if (step.tipo === "subir") {
-          setStatus(`${step.label}...`);
+          setStatus(`${label}...`);
           if (demoAndar < round.predio.andares - 1) { demoAndar++; updateDemoRobo(true); await wait(700); }
-          highlightStep(i, true);
+          hlDone(dIdx);
 
         } else if (step.tipo === "mudar") {
-          setStatus(`${step.label}...`);
+          setStatus(`${label}...`);
           demoDirecao = demoDirecao === "direita" ? "esquerda" : "direita";
           if (robo) {
             robo.style.transition = "transform 0.25s ease";
             robo.style.transform  = demoDirecao === "esquerda" ? "scaleX(-1)" : "scaleX(1)";
           }
           await wait(550);
-          highlightStep(i, true);
+          hlDone(dIdx);
         }
       }
 
       if (demoGen !== myGen) return;
+      hlAllDone();
       setStatus("🤖 É assim que se resolve! Consegue fazer igual?");
       const btn = $("f13-demo-replay");
       if (btn) btn.style.display = "inline-block";
