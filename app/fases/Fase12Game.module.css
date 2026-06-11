@@ -613,39 +613,19 @@
   color: var(--yellow);
 }
 
-/* ── Tooltip da caixa (ficha de atributos) ────────────────────────────── */
-/*
- * TODO (tablet): adicionar lógica JS de touchstart com delay de 400ms
- * para acionar .f12-tooltip-visible em touch longo.
- * Por ora funciona via :hover (desktop + primeiro toque em tablet).
- */
-.root :global(.f12-tooltip) {
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
+/* ── Tooltip fixo — escapa de overflow e stacking contexts ───────────── */
+.fixedTooltip {
+  position: fixed;
   background: #0e0700;
   border: 2px solid var(--gold);
   padding: 8px 12px;
-  /* Baloo 2 para tooltip — texto de leitura */
   font-size: clamp(12px, 0.8vw, 14px);
   line-height: 1.7;
   min-width: 160px;
-  z-index: 200;
+  z-index: 9999;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
+  display: none;
   white-space: nowrap;
-}
-
-/* Mostra no hover do box (desktop) */
-.root :global(.f12-box:hover .f12-tooltip) {
-  opacity: 1;
-}
-
-/* Mostra em touch longo via classe JS (tablet) */
-.root :global(.f12-tooltip-visible) {
-  opacity: 1 !important;
 }
 
 .root :global(.f12-tt-title) {

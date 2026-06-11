@@ -149,6 +149,30 @@ export default function Fase12Game() {
       }[attr] || attr;
     }
 
+    function showBoxTooltip(box, el) {
+      const tt = $("f12-tt");
+      if (!tt) return;
+      tt.innerHTML = `
+        <div class="f12-tt-title">${box.emoji} ${box.nomeProduto}</div>
+        <div>Categoria: <b>${box.categoria}</b></div>
+        <div>Frágil: <b>${box.fragil ? "Sim ⚠️" : "Não"}</b></div>
+        <div>Peso: <b>${box.peso}kg</b></div>
+        <div>Valor: <b>R$${box.valor}</b></div>
+      `;
+      tt.style.display = "block";
+      const rect  = el.getBoundingClientRect();
+      const ttW   = tt.offsetWidth;
+      let left = rect.left + rect.width / 2 - ttW / 2;
+      left = Math.max(8, Math.min(window.innerWidth - ttW - 8, left));
+      tt.style.left = left + "px";
+      tt.style.top  = (rect.bottom + 8) + "px";
+    }
+
+    function hideBoxTooltip() {
+      const tt = $("f12-tt");
+      if (tt) tt.style.display = "none";
+    }
+
     function setFeedback(icon, text, color) {
       $("f12-fi").textContent = icon;
       const ft = $("f12-ft");
@@ -289,17 +313,14 @@ export default function Fase12Game() {
           <div class="f12-box-emoji">${box.emoji}</div>
           <div class="f12-box-name">${box.nomeProduto}</div>
           <div class="f12-box-val">R$${box.valor}</div>
-          <div class="f12-tooltip">
-            <div class="f12-tt-title">${box.emoji} ${box.nomeProduto}</div>
-            <div>Categoria: <b>${box.categoria}</b></div>
-            <div>Frágil: <b>${box.fragil ? "Sim ⚠️" : "Não"}</b></div>
-            <div>Peso: <b>${box.peso}kg</b></div>
-            <div>Valor: <b>R$${box.valor}</b></div>
-          </div>
         `;
+
+        el.addEventListener("mouseenter", () => showBoxTooltip(box, el));
+        el.addEventListener("mouseleave", hideBoxTooltip);
 
         // Desktop drag
         el.addEventListener("dragstart", () => {
+          hideBoxTooltip();
           dragging = { box, fromTruck: null, fromSlot: null };
           el.classList.add("f12-dragging");
           showGhost(box);
@@ -312,6 +333,7 @@ export default function Fase12Game() {
 
         // Touch: show ghost on touchstart, drag on touchmove, drop on touchend
         el.addEventListener("touchstart", e => {
+          hideBoxTooltip();
           dragging = { box, fromTruck: null, fromSlot: null };
           const t = e.touches[0];
           showGhost(box);
@@ -671,6 +693,9 @@ export default function Fase12Game() {
           </div>
         </div>
       </div>
+
+      {/* Tooltip fixo — posicionado via JS com getBoundingClientRect */}
+      <div id="f12-tt" className={styles.fixedTooltip}></div>
 
       {/* Drag ghost */}
       <div id="f12-ghost" className={styles.ghost}>
