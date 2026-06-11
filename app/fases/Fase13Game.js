@@ -391,6 +391,8 @@ export default function Fase13Game() {
     function executeProgram(gen, Interpreter) {
       if (running) return;
 
+      gen.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+
       let code;
       try {
         code = gen.workspaceToCode(workspace);
@@ -433,6 +435,13 @@ export default function Fase13Game() {
               interp.nativeToPseudo(janelaEstaSuja())
             )
           );
+          interp.setProperty(
+            globalObject,
+            "highlightBlock",
+            interp.createNativeFunction((id) => {
+              workspace?.highlightBlock(String(id));
+            })
+          );
         });
       } catch (e) {
         stopWithError("Erro no programa: " + e.message);
@@ -457,6 +466,7 @@ export default function Fase13Game() {
 
     function stopWithError(msg) {
       running = false;
+      workspace?.highlightBlock(null);
       if ($("f13-run-btn"))   $("f13-run-btn").disabled   = false;
       if ($("f13-reset-btn")) $("f13-reset-btn").disabled = false;
       const robo = $("f13-robo");
@@ -469,6 +479,7 @@ export default function Fase13Game() {
 
     function onProgramEnd() {
       running = false;
+      workspace?.highlightBlock(null);
       if ($("f13-run-btn"))   $("f13-run-btn").disabled   = false;
       if ($("f13-reset-btn")) $("f13-reset-btn").disabled = false;
 
