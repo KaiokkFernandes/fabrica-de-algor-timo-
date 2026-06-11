@@ -37,12 +37,12 @@ export default function Fase13Game() {
           "f13_proxima_janela",
           "f13_repetir",
           "f13_subir_andar",
-          "f13_voltar_inicio",
+          "f13_mudar_direcao",
         ],
         blocosMinimos: 6,
         tempoLimite: null,
         tutorialMsg:
-          "Agora tem 3 andares! Dica: coloca um Repetir DENTRO de outro Repetir.",
+          "3 andares! Use Mudar direção após cada andar — o Robozinho vai em zigue-zague!",
       },
       {
         numero: 4,
@@ -87,6 +87,7 @@ export default function Fase13Game() {
     let workspace = null;
     let roboAndar = 0;
     let roboJanela = 0;
+    let direcao = "direita"; // "direita" | "esquerda"
     let janelasEstado = []; // [andar][janela] => true = limpa
     let running = false;
     let timerInterval = null;
@@ -112,9 +113,10 @@ export default function Fase13Game() {
       }
 
       def("f13_lavar_janela",   "🧹 Lavar janela",          120, "Lava a janela onde o Robozinho está");
-      def("f13_proxima_janela", "➡️ Próxima janela",         120, "Move o Robozinho para a próxima janela");
+      def("f13_proxima_janela", "➡️ Próxima janela",         120, "Move o Robozinho na direção atual");
       def("f13_subir_andar",    "⬆️ Subir andar",            120, "Move o Robozinho para o andar de cima");
       def("f13_voltar_inicio",  "↩️ Voltar ao início",       120, "Volta o Robozinho para a 1ª janela do andar");
+      def("f13_mudar_direcao",  "↔️ Mudar direção",          65,  "Inverte a direção do Robozinho (direita ↔ esquerda)");
 
       // Condicional: Se janela está suja
       if (!Blockly.Blocks["f13_se_suja"]) {
@@ -153,6 +155,7 @@ export default function Fase13Game() {
       gen.forBlock["f13_proxima_janela"] = () => "proximaJanela();\n";
       gen.forBlock["f13_subir_andar"]    = () => "subirAndar();\n";
       gen.forBlock["f13_voltar_inicio"]  = () => "voltarInicio();\n";
+      gen.forBlock["f13_mudar_direcao"]  = () => "mudarDirecao();\n";
 
       gen.forBlock["f13_se_suja"] = (block, g) => {
         const body = g.statementToCode(block, "DO");
@@ -173,6 +176,7 @@ export default function Fase13Game() {
         "f13_proxima_janela",
         "f13_subir_andar",
         "f13_voltar_inicio",
+        "f13_mudar_direcao",
       ];
       const acoes = acaoTypes
         .filter((b) => blocos.includes(b))
@@ -233,9 +237,12 @@ export default function Fase13Game() {
         }
       }
 
-      // Robô começa no andar 0, janela 0
+      // Robô começa no andar 0, janela 0, indo para a direita
       roboAndar  = 0;
       roboJanela = 0;
+      direcao    = "direita";
+      const roboEl = $("f13-robo");
+      if (roboEl) { roboEl.style.transition = "none"; roboEl.style.transform = "scaleX(1)"; }
       updateRoboPos(false);
       updateHUD();
     }
@@ -302,14 +309,27 @@ export default function Fase13Game() {
 
     function animProxima() {
       const round = ROUNDS[roundIdx];
-      if (roboJanela >= round.predio.janelasPorAndar - 1) {
-        return Promise.reject(
-          new Error("O Robozinho tentou ir além da última janela do andar!")
-        );
+      if (direcao === "direita") {
+        if (roboJanela >= round.predio.janelasPorAndar - 1)
+          return Promise.reject(new Error("O Robozinho tentou ir além da última janela do andar!"));
+        roboJanela++;
+      } else {
+        if (roboJanela <= 0)
+          return Promise.reject(new Error("O Robozinho tentou ir além da primeira janela do andar!"));
+        roboJanela--;
       }
-      roboJanela++;
       updateRoboPos(true);
       return delay(420);
+    }
+
+    function animMudarDirecao() {
+      direcao = direcao === "direita" ? "esquerda" : "direita";
+      const robo = $("f13-robo");
+      if (robo) {
+        robo.style.transition = "transform 0.25s ease";
+        robo.style.transform  = direcao === "esquerda" ? "scaleX(-1)" : "scaleX(1)";
+      }
+      return delay(300);
     }
 
     function animSubir() {
@@ -371,6 +391,7 @@ export default function Fase13Game() {
           interp.setProperty(globalObject, "proximaJanela", wrap(animProxima));
           interp.setProperty(globalObject, "subirAndar",    wrap(animSubir));
           interp.setProperty(globalObject, "voltarInicio",  wrap(animVoltarInicio));
+          interp.setProperty(globalObject, "mudarDirecao",  wrap(animMudarDirecao));
           interp.setProperty(
             globalObject,
             "janelaEstaSuja",

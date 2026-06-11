@@ -155,7 +155,8 @@
   font-size: clamp(20px, 3vw, 36px);
   pointer-events: none;
   z-index: 10;
-  /* transição definida por JS ao mover */
+  /* left/top definidos por JS; transform para virar o robô */
+  transition: transform 0.25s ease;
   filter: drop-shadow(0 0 6px rgba(255,235,59,0.7));
 }
 
