@@ -243,7 +243,7 @@ export default function Fase13Game() {
       roboJanela = 0;
       direcao    = "direita";
       const roboEl = $("f13-robo");
-      if (roboEl) { roboEl.style.transition = "none"; roboEl.style.transform = "scaleX(1)"; }
+      if (roboEl) { roboEl.style.transition = "none"; roboEl.style.transform = "scaleX(1)"; roboEl.style.opacity = "1"; }
       updateRoboPos(false);
       updateHUD();
     }
@@ -346,13 +346,41 @@ export default function Fase13Game() {
       });
     }
 
-    function animProxima() {
+    async function animCairDoPredio(lado) {
+      const robo  = $("f13-robo");
+      const outer = $("f13-predio-outer");
+      if (!robo || !outer) return;
+
+      robo.textContent = "😱";
+      const oWidth = outer.getBoundingClientRect().width;
+      const roboW  = parseFloat(robo.style.width) || 60;
+      const curTop = parseFloat(robo.style.top)   || 0;
+
+      // Desliza para fora pela lateral
+      robo.style.transition = "left 0.32s ease-in";
+      robo.style.left = lado === "direita" ? oWidth + "px" : (-roboW) + "px";
+      await delay(320);
+
+      // Cai para baixo e some (opacity restaurada no buildPredio)
+      robo.style.transition = "top 0.42s ease-in, opacity 0.42s ease-in";
+      robo.style.top     = (curTop + 180) + "px";
+      robo.style.opacity = "0";
+      await delay(420);
+    }
+
+    async function animProxima() {
       const round = ROUNDS[roundIdx];
       if (direcao === "direita") {
-        if (roboJanela >= round.predio.janelasPorAndar - 1) return delay(0); // no-op na borda
+        if (roboJanela >= round.predio.janelasPorAndar - 1) {
+          await animCairDoPredio("direita");
+          throw new Error("O Robozinho caiu do prédio! Não vá além da última janela.");
+        }
         roboJanela++;
       } else {
-        if (roboJanela <= 0) return delay(0); // no-op na borda
+        if (roboJanela <= 0) {
+          await animCairDoPredio("esquerda");
+          throw new Error("O Robozinho caiu do prédio! Não vá além da primeira janela.");
+        }
         roboJanela--;
       }
       updateRoboPos(true);
@@ -450,6 +478,7 @@ export default function Fase13Game() {
 
       const tick = () => {
         if (myExecId !== execId) return; // round mudou, descarta execução antiga
+        if (!running) return;            // stopWithError já foi chamado (ex: caiu do prédio)
         if (++steps > 50000) {
           stopWithError("Loop infinito detectado! Verifique os números do Repetir.");
           return;
