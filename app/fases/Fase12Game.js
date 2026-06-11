@@ -229,14 +229,13 @@ export default function Fase12Game() {
               ${truck.aceita.map(a => `<span class="f12-tag f12-tag-ok">${attrLabel(a)}</span>`).join("")}
             </div>
           </div>
+          ${truck.recusa.length ? `
           <div class="f12-criteria-row">
             <span class="f12-criteria-lbl">❌ RECUSA:</span>
             <div class="f12-tags-wrap">
-              ${truck.recusa.length
-                ? truck.recusa.map(r => `<span class="f12-tag f12-tag-no">${attrLabel(r)}</span>`).join("")
-                : `<span class="f12-tag-empty">sem restrições</span>`}
+              ${truck.recusa.map(r => `<span class="f12-tag f12-tag-no">${attrLabel(r)}</span>`).join("")}
             </div>
-          </div>
+          </div>` : ""}
         `;
         panel.appendChild(criteria);
 
