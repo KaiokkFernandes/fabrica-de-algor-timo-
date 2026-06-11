@@ -90,7 +90,8 @@ export default function Fase13Game() {
     let direcao = "direita"; // "direita" | "esquerda"
     let janelasEstado = []; // [andar][janela] => true = limpa
     let running = false;
-    let execId = 0;          // incrementado a cada execução; tick() abortará se mudar
+    let execId  = 0;          // incrementado a cada execução; tick() abortará se mudar
+    let demoGen = 0;          // invalida animações de demo anteriores
     let timerInterval = null;
     let tempoRestante = null;
     let hintCount = 0;
@@ -501,28 +502,138 @@ export default function Fase13Game() {
       showModal(stars, blocosUsados, round.blocosMinimos);
     }
 
-    // ── SOLUÇÕES IDEAIS (Blockly serialization JSON) ─────────────────────────
-    // Por enquanto só Round 1 — adicionar os demais gradualmente
-    const SOLUCOES = {
-      1: {
-        blocks: {
-          languageVersion: 0,
-          blocks: [{
-            type: "f13_lavar_janela", x: 20, y: 20,
-            next: { block: {
-              type: "f13_proxima_janela",
-              next: { block: {
-                type: "f13_lavar_janela",
-                next: { block: {
-                  type: "f13_proxima_janela",
-                  next: { block: { type: "f13_lavar_janela" } },
-                }},
-              }},
-            }},
-          }],
-        },
-      },
+    // ── DEMO DE SOLUÇÃO POR ROUND ────────────────────────────────────────────
+    // Sequência de passos pré-definida para cada round.
+    // "proxima"/"subir"/"mudar" são no-op automático na borda (igual ao jogo).
+    const DEMO_STEPS = {
+      1: [
+        { tipo: "lavar" }, { tipo: "proxima" },
+        { tipo: "lavar" }, { tipo: "proxima" },
+        { tipo: "lavar" },
+      ],
+      // rounds 2-5 podem ser adicionados aqui futuramente
     };
+
+    // ── FUNÇÕES DO POPUP DE DEMO ─────────────────────────────────────────────
+    let demoAndar = 0;
+    let demoJanela = 0;
+    let demoDirecao = "direita";
+    let demoEstado = [];
+
+    function buildDemoPredio(roundNum) {
+      const round = ROUNDS.find(r => r.numero === roundNum);
+      if (!round) return;
+      const { andares, janelasPorAndar, janelasJaLimpas } = round.predio;
+      demoAndar = 0; demoJanela = 0; demoDirecao = "direita";
+      demoEstado = Array.from({ length: andares }, () => Array(janelasPorAndar).fill(false));
+      (janelasJaLimpas || []).forEach(([a, j]) => { demoEstado[a][j] = true; });
+
+      const grid = $("f13-demo-grid");
+      if (!grid) return;
+      grid.innerHTML = "";
+      grid.style.gridTemplateColumns = `repeat(${janelasPorAndar}, 1fr)`;
+      for (let a = andares - 1; a >= 0; a--) {
+        for (let j = 0; j < janelasPorAndar; j++) {
+          const cell = document.createElement("div");
+          cell.className = "f13-demo-janela" + (demoEstado[a][j] ? " f13-demo-limpa" : "");
+          cell.dataset.andar = a; cell.dataset.janela = j;
+          cell.innerHTML = demoEstado[a][j] ? "✨" : "🪟";
+          grid.appendChild(cell);
+        }
+      }
+      updateDemoRobo(false);
+    }
+
+    function getDemoCell(a, j) {
+      return $("f13-demo-grid")?.querySelector(`[data-andar="${a}"][data-janela="${j}"]`);
+    }
+
+    function updateDemoRobo(animate) {
+      const robo  = $("f13-demo-robo");
+      const cell  = getDemoCell(demoAndar, demoJanela);
+      const outer = $("f13-demo-outer");
+      if (!robo || !cell || !outer) return;
+      const cr = cell.getBoundingClientRect();
+      const or = outer.getBoundingClientRect();
+      const half = cr.height * 0.52;
+      robo.style.transition = animate ? "left 0.38s ease, top 0.38s ease" : "none";
+      robo.style.left   = cr.left - or.left + "px";
+      robo.style.top    = cr.bottom - or.top - half + "px";
+      robo.style.width  = cr.width + "px";
+      robo.style.height = half + "px";
+    }
+
+    async function runDemo(roundNum, gen) {
+      const myGen = ++demoGen;
+      const steps = DEMO_STEPS[roundNum];
+      const round = ROUNDS.find(r => r.numero === roundNum);
+      if (!steps || !round) return;
+
+      const wait = ms => new Promise(res => setTimeout(res, ms));
+      const robo = $("f13-demo-robo");
+
+      const setStatus = (txt) => {
+        const el = $("f13-demo-status");
+        if (el) el.textContent = txt;
+      };
+
+      for (const step of steps) {
+        if (demoGen !== myGen) return;
+
+        if (step.tipo === "lavar") {
+          if (robo) robo.textContent = "🫧";
+          await wait(480);
+          if (demoGen !== myGen) return;
+          demoEstado[demoAndar][demoJanela] = true;
+          const cell = getDemoCell(demoAndar, demoJanela);
+          if (cell) { cell.className = "f13-demo-janela f13-demo-limpa"; cell.innerHTML = "✨"; }
+          if (robo) robo.textContent = "🤖";
+          setStatus(`Lavou a janela ${demoJanela + 1} do andar ${demoAndar + 1}!`);
+          await wait(500);
+
+        } else if (step.tipo === "proxima") {
+          if (demoDirecao === "direita") {
+            if (demoJanela < round.predio.janelasPorAndar - 1) { demoJanela++; updateDemoRobo(true); await wait(420); }
+          } else {
+            if (demoJanela > 0) { demoJanela--; updateDemoRobo(true); await wait(420); }
+          }
+
+        } else if (step.tipo === "subir") {
+          if (demoAndar < round.predio.andares - 1) { demoAndar++; updateDemoRobo(true); await wait(420); }
+
+        } else if (step.tipo === "mudar") {
+          demoDirecao = demoDirecao === "direita" ? "esquerda" : "direita";
+          if (robo) {
+            robo.style.transition = "transform 0.25s ease";
+            robo.style.transform  = demoDirecao === "esquerda" ? "scaleX(-1)" : "scaleX(1)";
+          }
+          await wait(320);
+        }
+      }
+
+      if (demoGen !== myGen) return;
+      setStatus("🤖 É assim que se resolve! Consegue fazer igual?");
+      const btn = $("f13-demo-replay");
+      if (btn) btn.style.display = "inline-block";
+    }
+
+    function openDemoPopup(roundNum) {
+      const popup = $("f13-demo-popup");
+      if (!popup) return;
+      const titleEl = $("f13-demo-title");
+      if (titleEl) titleEl.textContent = `👁 SOLUÇÃO IDEAL — ROUND ${roundNum}`;
+      const statusEl = $("f13-demo-status");
+      if (statusEl) statusEl.textContent = "▶️ Veja como o Robozinho resolve...";
+      const replayBtn = $("f13-demo-replay");
+      if (replayBtn) replayBtn.style.display = "none";
+
+      popup.style.display = "flex";
+      // Aguarda 1 frame para o DOM ser pintado antes de calcular posições
+      requestAnimationFrame(() => {
+        buildDemoPredio(roundNum);
+        setTimeout(() => runDemo(roundNum), 900);
+      });
+    }
 
     // ── MODAL ────────────────────────────────────────────────────────────────
     function showModal(stars, blocosUsados, blocosMin) {
@@ -542,7 +653,7 @@ export default function Fase13Game() {
         .join("");
       $("f13-modal-next").style.display     = isLast ? "none"         : "inline-block";
       $("f13-modal-finish").style.display   = isLast ? "inline-block" : "none";
-      const hasSol = SOLUCOES[ROUNDS[roundIdx].numero];
+      const hasSol = DEMO_STEPS[ROUNDS[roundIdx].numero];
       $("f13-modal-solution").style.display = hasSol && stars < 3 ? "inline-block" : "none";
       $("f13-modal").style.display          = "flex";
     }
@@ -704,20 +815,15 @@ export default function Fase13Game() {
         };
         const onNext     = () => startRound(roundIdx + 1, gen);
         const onFinish   = () => { window.location.href = "/menu"; };
-        const onSolution = () => {
-          const sol = SOLUCOES[ROUNDS[roundIdx].numero];
-          if (!sol || !workspace) return;
-          $("f13-modal").style.display = "none";
-          buildPredio();
-          workspace.clear();
-          try {
-            Blockly.serialization.workspaces.load(sol, workspace);
-          } catch (e) {
-            setFeedback("❌", "Erro ao carregar solução: " + e.message, "var(--red)");
-            return;
-          }
-          setFeedback("🤖", "Olha a solução ideal! O programa vai executar sozinho...", "var(--yellow)");
-          setTimeout(() => { if (!running) executeProgram(gen, Interpreter); }, 1400);
+        const onSolution    = () => openDemoPopup(ROUNDS[roundIdx].numero);
+        const onDemoClose   = () => { demoGen++; $("f13-demo-popup").style.display = "none"; };
+        const onDemoReplay  = () => {
+          const round = ROUNDS[roundIdx];
+          const statusEl = $("f13-demo-status");
+          if (statusEl) statusEl.textContent = "▶️ Veja como o Robozinho resolve...";
+          $("f13-demo-replay").style.display = "none";
+          buildDemoPredio(round.numero);
+          setTimeout(() => runDemo(round.numero), 400);
         };
 
         runBtn?.addEventListener("click",      onRun);
@@ -726,7 +832,14 @@ export default function Fase13Game() {
         retryBtn?.addEventListener("click",    onRetry);
         nextBtn?.addEventListener("click",     onNext);
         finishBtn?.addEventListener("click",   onFinish);
-        solutionBtn?.addEventListener("click", onSolution);
+        const demoCloseBtn1 = $("f13-demo-close");
+        const demoCloseBtn2 = $("f13-demo-close2");
+        const demoReplayBtn = $("f13-demo-replay");
+
+        solutionBtn?.addEventListener("click",   onSolution);
+        demoCloseBtn1?.addEventListener("click", onDemoClose);
+        demoCloseBtn2?.addEventListener("click", onDemoClose);
+        demoReplayBtn?.addEventListener("click", onDemoReplay);
 
         window.__f13_cleanup = () => {
           runBtn?.removeEventListener("click",      onRun);
@@ -736,6 +849,9 @@ export default function Fase13Game() {
           nextBtn?.removeEventListener("click",     onNext);
           finishBtn?.removeEventListener("click",   onFinish);
           solutionBtn?.removeEventListener("click", onSolution);
+          demoCloseBtn1?.removeEventListener("click", onDemoClose);
+          demoCloseBtn2?.removeEventListener("click", onDemoClose);
+          demoReplayBtn?.removeEventListener("click", onDemoReplay);
         };
       }).catch((e) => {
         setFeedback("❌", "Erro ao carregar o motor de execução: " + e.message, "var(--red)");
@@ -814,6 +930,33 @@ export default function Fase13Game() {
           <button id="f13-hint-btn"  className={styles.hintBtn}>💡 DICA</button>
           <button id="f13-reset-btn" className={styles.resetBtn}>🔄 RESETAR</button>
           <button id="f13-run-btn"   className={styles.runBtn}>▶ EXECUTAR</button>
+        </div>
+      </div>
+
+      {/* Popup de solução ideal — overlay independente */}
+      <div id="f13-demo-popup" className={styles.demoPopup} style={{ display: "none" }}>
+        <div className={styles.demoBox}>
+          <div className={styles.demoHeader}>
+            <span id="f13-demo-title" className={styles.demoTitle}>👁 SOLUÇÃO IDEAL</span>
+            <button id="f13-demo-close" className={styles.demoCloseBtn}>✕</button>
+          </div>
+
+          <div className={styles.demoContent}>
+            <div id="f13-demo-outer" className={styles.demoOuter}>
+              <div id="f13-demo-grid"  className={styles.demoGrid} />
+              <div id="f13-demo-robo"  className={styles.demoRobo}>🤖</div>
+            </div>
+          </div>
+
+          <div id="f13-demo-status" className={styles.demoStatus}>
+            ▶️ Veja como o Robozinho resolve...
+          </div>
+
+          <div className={styles.demoBtns}>
+            <button id="f13-demo-replay" className={styles.demoReplayBtn}
+              style={{ display: "none" }}>🔄 REPETIR</button>
+            <button id="f13-demo-close2" className={styles.retryBtn}>✕ FECHAR</button>
+          </div>
         </div>
       </div>
 

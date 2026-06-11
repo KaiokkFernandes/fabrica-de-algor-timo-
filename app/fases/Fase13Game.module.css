@@ -383,6 +383,137 @@
   line-height: 1.8;
 }
 
+/* ── Popup de solução ideal ────────────────────────────────────────────── */
+.demoPopup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.demoBox {
+  background: var(--panel);
+  border: 4px solid var(--gold);
+  width: min(94vw, 480px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px 20px;
+}
+
+.demoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.demoTitle {
+  font-size: clamp(9px, 1.3vw, 15px);
+  color: var(--gold);
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.demoCloseBtn {
+  background: transparent;
+  border: 2px solid #4a4a6a;
+  color: var(--text);
+  font-family: var(--font-press-start), monospace;
+  font-size: 12px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.demoCloseBtn:hover { background: #2a2a4a; }
+
+.demoContent {
+  display: flex;
+  justify-content: center;
+}
+
+.demoOuter {
+  position: relative;
+  background: #0d0d1a;
+  border: 3px solid var(--border);
+  width: 100%;
+  height: clamp(100px, 20vh, 180px);
+}
+
+.demoGrid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  gap: 5px;
+  padding: 8px;
+  align-content: stretch;
+}
+
+.demoRobo {
+  position: absolute;
+  top: 0; left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(18px, 3vw, 30px);
+  pointer-events: none;
+  z-index: 10;
+  transition: transform 0.25s ease;
+  filter: drop-shadow(0 0 5px rgba(255,235,59,0.6));
+}
+
+.demoStatus {
+  font-size: clamp(6px, 0.85vw, 10px);
+  color: var(--text);
+  background: #0d0d1a;
+  border: 2px solid var(--border);
+  padding: 8px 12px;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  line-height: 1.6;
+}
+
+.demoBtns {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.demoReplayBtn {
+  background: #1a1a3a;
+  border: 3px solid var(--gold);
+  color: var(--gold);
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(6px, 0.8vw, 9px);
+  padding: clamp(6px, 1vh, 10px) clamp(10px, 1.8vw, 18px);
+  cursor: pointer;
+}
+.demoReplayBtn:hover { background: #2a2a4a; }
+
+/* Janelas dentro do popup de demo */
+.root :global(.f13-demo-janela) {
+  background: #3a2a1a;
+  border: 2px solid #6b4a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px, 3vw, 26px);
+  border-radius: 2px;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.root :global(.f13-demo-limpa) {
+  background: #0a2a3a;
+  border-color: #2a8ab0;
+}
+
 /* Label de seção dentro do flyout do Blockly */
 .root :global(.f13-tb-label .blocklyFlyoutLabelText) {
   fill: #f0c040 !important;
