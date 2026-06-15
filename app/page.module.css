@@ -1,143 +1,199 @@
 .screen {
-  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  background: var(--bg);
+  position: relative;
 }
 
-/* ── title box ── */
-.titleBox {
-  padding: 40px 32px;
-  background: var(--panel);
-  border: 3px solid var(--border);
-  border-top: 6px solid var(--yellow);
+/* ── Hero central ── */
+.hero {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
+  gap: clamp(16px, 2.4vh, 28px);
+  padding: clamp(32px, 5vh, 72px) clamp(24px, 6vw, 100px);
   text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* corner star decorations */
-.titleBox::before,
-.titleBox::after {
-  content: "★";
-  position: absolute;
-  top: 14px;
-  font-size: clamp(8px, 1vw, 18px);
-  color: var(--yellow);
-  opacity: 0.6;
-}
-.titleBox::before { left: 16px; }
-.titleBox::after  { right: 16px; }
-
-.badge {
-  font-size: clamp(7px, 0.65vw, 13px);
-  color: var(--text-dim);
-  letter-spacing: 4px;
-  border: 2px solid var(--border);
-  padding: 4px 12px;
 }
 
 .gameTitle {
-  /* Pixel font só no logo principal do jogo */
-  font-family: var(--font-pixel);
-  font-size: clamp(18px, 3.5vw, 60px);
+  font-family: var(--font-body);
+  font-size: clamp(56px, 11vw, 130px);
+  font-weight: 900;
   color: var(--yellow);
-  text-shadow: 4px 4px 0 #000;
-  letter-spacing: 4px;
-  line-height: 1.6;
+  line-height: 1;
+  letter-spacing: -1px;
 }
 
 .gameSub {
-  /* Baloo 2 para subtítulo — texto corrido */
-  font-size: clamp(15px, 1vw, 19px);
+  font-size: clamp(18px, 1.6vw, 26px);
+  font-weight: 500;
   color: var(--text-dim);
-  letter-spacing: 0;
-  line-height: 1.6;
-  max-width: 600px;
+  max-width: 540px;
+  line-height: 1.5;
 }
 
-.pressStart {
-  /* Pixel para o prompt animado — curto e decorativo */
+/* ── Botão JOGAR ── */
+.playBtn {
+  display: inline-block;
   font-family: var(--font-pixel);
-  font-size: clamp(9px, 1vw, 15px);
-  color: var(--green);
-  letter-spacing: 2px;
-  animation: blink 1.2s step-end infinite;
-  margin-top: 6px;
+  font-size: clamp(14px, 2vw, 22px);
+  background: var(--green);
+  color: #fff;
+  padding: clamp(16px, 2.2vh, 28px) clamp(40px, 6vw, 80px);
+  border: 4px solid #2d6e10;
+  letter-spacing: 3px;
+  transition: background 0.15s, transform 0.12s;
+  margin-top: 8px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 6px 0 #1a4a08, 0 8px 16px rgba(0,0,0,0.2);
 }
 
-/* ── module cards grid ── */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 14px;
+.playBtn:hover {
+  background: #5ccc60;
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 #1a4a08, 0 12px 20px rgba(0,0,0,0.2);
 }
 
-.card {
-  background: var(--panel);
-  border: 3px solid var(--border);
-  padding: 22px 20px;
+.playBtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #1a4a08;
+}
+
+/* ── Links secundários — canto inferior direito ── */
+.sideLinks {
+  position: absolute;
+  bottom: clamp(16px, 3vh, 32px);
+  right: clamp(16px, 3vw, 40px);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  transition: border-color 0.12s, transform 0.12s;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.sideLink {
+  font-size: clamp(16px, 1.3vw, 22px);
+  font-weight: 700;
+  color: var(--text-dim);
+  padding: 10px 20px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+
+.sideLink:hover {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: var(--bg2);
+}
+
+/* ── Spinner (from Uiverse.io by Nawsome) ── */
+.spinner {
+  --square: 26px;
+  --offset: 30px;
+  --duration: 4.8s;
+  --delay: 0.4s;
+  --timing-function: ease-in-out;
+  --in-duration: 0.8s;
+  --in-delay: 0.2s;
+  --in-timing-function: ease-out;
+  width: calc(3 * var(--offset) + var(--square));
+  height: calc(2 * var(--offset) + var(--square));
+  margin: 0 auto;
   position: relative;
 }
 
-.card:hover {
-  border-color: var(--yellow);
-  transform: translateY(-4px);
-}
-
-.cardTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.cardIcon {
-  font-size: clamp(28px, 3vw, 52px);
-  image-rendering: auto;
-}
-
-.cardNum {
-  /* Oculto — não mostramos "MÓDULO XX" para a criança */
-  display: none;
-}
-
-.cardTitle {
-  /* Pixel para título curto do card */
-  font-family: var(--font-pixel);
-  font-size: clamp(10px, 1.1vw, 17px);
-  color: var(--yellow);
-  letter-spacing: 1px;
-}
-
-.cardDesc {
-  /* Baloo 2 para descrição — texto corrido */
-  font-size: clamp(15px, 1vw, 17px);
-  color: var(--text-dim);
-  line-height: 1.6;
-  flex: 1;
-  letter-spacing: 0;
-}
-
-.cardAction {
-  /* Baloo 2 para ação do card — frase amigável */
-  font-size: clamp(14px, 0.9vw, 16px);
-  color: var(--border);
-  letter-spacing: 0;
-  align-self: flex-end;
-  transition: color 0.12s, transform 0.12s;
+.spinner div {
   display: inline-block;
-  font-weight: 600;
+  background: var(--yellow);
+  border: none;
+  border-radius: 3px;
+  width: var(--square);
+  height: var(--square);
+  position: absolute;
 }
 
-.card:hover .cardAction {
-  color: var(--yellow);
-  transform: translateX(4px);
+.sq1 {
+  left: calc(0 * var(--offset));
+  top: calc(0 * var(--offset));
+  animation:
+    sq1move var(--duration) var(--delay) var(--timing-function) infinite,
+    squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
+}
+.sq2 {
+  left: calc(0 * var(--offset));
+  top: calc(1 * var(--offset));
+  animation:
+    sq2move var(--duration) var(--delay) var(--timing-function) infinite,
+    squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
+}
+.sq3 {
+  left: calc(1 * var(--offset));
+  top: calc(1 * var(--offset));
+  animation:
+    sq3move var(--duration) var(--delay) var(--timing-function) infinite,
+    squarefadein var(--in-duration) calc(2 * var(--in-delay)) var(--in-timing-function) both;
+}
+.sq4 {
+  left: calc(2 * var(--offset));
+  top: calc(1 * var(--offset));
+  animation:
+    sq4move var(--duration) var(--delay) var(--timing-function) infinite,
+    squarefadein var(--in-duration) calc(3 * var(--in-delay)) var(--in-timing-function) both;
+}
+.sq5 {
+  left: calc(3 * var(--offset));
+  top: calc(1 * var(--offset));
+  animation:
+    sq5move var(--duration) var(--delay) var(--timing-function) infinite,
+    squarefadein var(--in-duration) calc(4 * var(--in-delay)) var(--in-timing-function) both;
+}
+
+@keyframes sq1move {
+  0%     { left: calc(0 * var(--offset)); top: calc(0 * var(--offset)); }
+  8.333% { left: calc(0 * var(--offset)); top: calc(1 * var(--offset)); }
+  100%   { left: calc(0 * var(--offset)); top: calc(1 * var(--offset)); }
+}
+@keyframes sq2move {
+  0%     { left: calc(0 * var(--offset)); top: calc(1 * var(--offset)); }
+  8.333% { left: calc(0 * var(--offset)); top: calc(2 * var(--offset)); }
+  16.67% { left: calc(1 * var(--offset)); top: calc(2 * var(--offset)); }
+  25.00% { left: calc(1 * var(--offset)); top: calc(1 * var(--offset)); }
+  83.33% { left: calc(1 * var(--offset)); top: calc(1 * var(--offset)); }
+  91.67% { left: calc(1 * var(--offset)); top: calc(0 * var(--offset)); }
+  100%   { left: calc(0 * var(--offset)); top: calc(0 * var(--offset)); }
+}
+@keyframes sq3move {
+  0%, 100% { left: calc(1 * var(--offset)); top: calc(1 * var(--offset)); }
+  16.67%   { left: calc(1 * var(--offset)); top: calc(1 * var(--offset)); }
+  25.00%   { left: calc(1 * var(--offset)); top: calc(0 * var(--offset)); }
+  33.33%   { left: calc(2 * var(--offset)); top: calc(0 * var(--offset)); }
+  41.67%   { left: calc(2 * var(--offset)); top: calc(1 * var(--offset)); }
+  66.67%   { left: calc(2 * var(--offset)); top: calc(1 * var(--offset)); }
+  75.00%   { left: calc(2 * var(--offset)); top: calc(2 * var(--offset)); }
+  83.33%   { left: calc(1 * var(--offset)); top: calc(2 * var(--offset)); }
+  91.67%   { left: calc(1 * var(--offset)); top: calc(1 * var(--offset)); }
+}
+@keyframes sq4move {
+  0%     { left: calc(2 * var(--offset)); top: calc(1 * var(--offset)); }
+  33.33% { left: calc(2 * var(--offset)); top: calc(1 * var(--offset)); }
+  41.67% { left: calc(2 * var(--offset)); top: calc(2 * var(--offset)); }
+  50.00% { left: calc(3 * var(--offset)); top: calc(2 * var(--offset)); }
+  58.33% { left: calc(3 * var(--offset)); top: calc(1 * var(--offset)); }
+  100%   { left: calc(3 * var(--offset)); top: calc(1 * var(--offset)); }
+}
+@keyframes sq5move {
+  0%     { left: calc(3 * var(--offset)); top: calc(1 * var(--offset)); }
+  50.00% { left: calc(3 * var(--offset)); top: calc(1 * var(--offset)); }
+  58.33% { left: calc(3 * var(--offset)); top: calc(0 * var(--offset)); }
+  66.67% { left: calc(2 * var(--offset)); top: calc(0 * var(--offset)); }
+  75.00% { left: calc(2 * var(--offset)); top: calc(1 * var(--offset)); }
+  100%   { left: calc(2 * var(--offset)); top: calc(1 * var(--offset)); }
+}
+@keyframes squarefadein {
+  0%   { transform: scale(0.75); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
 }

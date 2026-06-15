@@ -12,7 +12,7 @@
   --gold:    #9a6010;   /* ouro-escuro */
   /* ── Tipografia ──────────────────────────────────────────────────── */
   --font-pixel: var(--font-press-start), monospace;
-  --font-body:  var(--font-baloo2), "Segoe UI", Tahoma, sans-serif;
+  --font-body:  var(--font-fredoka), "Segoe UI", Tahoma, sans-serif;
 }
 
 *,
@@ -139,7 +139,9 @@ body.game-mode .app-main {
 
 .app-main {
   flex: 1;
-  padding: 36px 2.5vw;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-footer {

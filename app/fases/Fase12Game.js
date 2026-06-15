@@ -620,9 +620,9 @@ export default function Fase12Game() {
 
   return (
     <div id="f12-root" className={styles.root}>
-      <div className={styles.gameTitle}>FABRICA DE ALGORITMOS</div>
+      <div className={styles.gameTitle}>ROBOBLOCKS</div>
       <div className={styles.gameSubtitle}>
-        Fase 1.2 — Despachante da Fábrica
+        Fase 2 — Despachante da Fábrica
       </div>
 
       <div className={styles.wrap}>

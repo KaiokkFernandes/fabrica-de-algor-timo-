@@ -1,0 +1,122 @@
+.screen {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 4vh, 48px);
+  padding: clamp(24px, 4vw, 60px);
+  font-family: var(--font-body);
+  position: relative;
+}
+
+/* ── Voltar ── */
+.backBtn {
+  position: absolute;
+  top: clamp(16px, 2.5vh, 28px);
+  left: clamp(16px, 2.5vw, 32px);
+  font-size: clamp(15px, 1.2vw, 20px);
+  font-weight: 700;
+  color: var(--text-dim);
+  transition: color 0.12s;
+}
+.backBtn:hover { color: var(--yellow); }
+
+/* ── Cabeçalho ── */
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-family: var(--font-pixel);
+  font-size: clamp(14px, 2.2vw, 28px);
+  color: var(--yellow);
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+}
+
+.sub {
+  font-size: clamp(16px, 1.3vw, 22px);
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+/* ── Grid de 3 cards ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.5vw, 32px);
+  width: 100%;
+  max-width: min(95vw, 1100px);
+}
+
+/* ── Card ── */
+.card {
+  --accent: var(--yellow);
+  background: var(--panel);
+  border: 3px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.6vh, 18px);
+  padding: clamp(24px, 3.5vh, 48px) clamp(20px, 2.5vw, 36px);
+  text-align: center;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+
+.card:hover .cardPlay {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.cardIcon {
+  font-size: clamp(48px, 6vw, 80px);
+  line-height: 1;
+  image-rendering: auto;
+}
+
+.cardNum {
+  font-family: var(--font-pixel);
+  font-size: clamp(8px, 0.9vw, 13px);
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.cardName {
+  font-family: var(--font-body);
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.cardDesc {
+  font-size: clamp(14px, 1.1vw, 18px);
+  font-weight: 500;
+  color: var(--text-dim);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.cardPlay {
+  font-family: var(--font-pixel);
+  font-size: clamp(8px, 0.85vw, 12px);
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  padding: clamp(8px, 1.2vh, 14px) clamp(20px, 3vw, 36px);
+  letter-spacing: 2px;
+  transition: background 0.15s, color 0.15s;
+  margin-top: 4px;
+}

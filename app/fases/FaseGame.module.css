@@ -1,21 +1,20 @@
 .root {
-  /* ── Paleta quente de jogo (marrom-noturno, não azul-corporate) ── */
-  --bg:           #160e06;   /* fundo marrom-noturno */
-  --panel:        #251508;   /* painel marrom-escuro */
-  --shelf-bg:     #2d1b0e;   /* madeira de prateleira */
-  --shelf-border: #8b5e3c;   /* borda da prateleira */
-  --belt-bg:      #1a1000;   /* esteira escura */
-  --text:         #f0e6cc;   /* creme-âmbar */
-  --green:        #5a9e30;   /* verde-fazenda */
-  --yellow:       #f0c040;   /* dourado */
-  --red:          #d44020;   /* vermelho-tijolo */
-  --card-gold:    #e8a830;   /* ouro de carta */
-  --card-dark:    #1a0e00;   /* fundo de carta */
+  --bg:           #fff8e7;   /* creme claro */
+  --panel:        #fffdf5;   /* branco-marfim */
+  --shelf-bg:     #deb887;   /* madeira clara */
+  --shelf-border: #8b6914;   /* madeira escura */
+  --belt-bg:      #e8d5b0;   /* esteira bege */
+  --text:         #3d2b1a;   /* marrom-escuro legível */
+  --green:        #2e7d32;   /* verde vibrante */
+  --yellow:       #f0a500;   /* âmbar vibrante */
+  --red:          #e53935;   /* vermelho vibrante */
+  --card-gold:    #f57f17;   /* ouro vibrante */
+  --card-dark:    #fff9e6;   /* fundo de carta claro */
   width: 100vw;
   height: 100vh;
   background: var(--bg);
   color: var(--text);
-  /* font-family NÃO definida aqui: body usa Baloo 2, pixel aplicado só onde necessário */
+  /* font-family NÃO definida aqui: body usa Fredoka, pixel aplicado só onde necessário */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -32,9 +31,8 @@
 }
 
 .gameTitle {
-  /* Pixel font só para o título — é o logo do jogo */
-  font-family: var(--font-press-start), monospace;
-  font-size: clamp(10px, 1.8vw, 22px);
+  font-family: var(--font-pixel);
+  font-size: clamp(13px, 2vw, 28px);
   color: var(--yellow);
   text-align: center;
   margin-bottom: 6px;
@@ -43,20 +41,18 @@
 }
 
 .gameSubtitle {
-  /* Baloo 2 herdado do body — legível para a criança */
-  font-size: clamp(13px, 0.95vw, 15px);
-  color: #a08060;
+  font-size: clamp(15px, 1.2vw, 20px);
+  color: #7a5c42;
   text-align: center;
   margin-bottom: 12px;
-  letter-spacing: 0;
 }
 
 .wrap {
   width: 100%;
-  max-width: min(96vw, 1100px);
+  max-width: min(98vw, 1440px);
   display: flex;
   flex-direction: column;
-  gap: clamp(5px, 0.8vh, 10px);
+  gap: clamp(5px, 0.8vh, 12px);
 }
 
 .hud {
@@ -64,28 +60,26 @@
   justify-content: space-between;
   align-items: center;
   background: var(--panel);
-  border: 3px solid #5a3a1a;
-  padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 24px);
-  font-size: clamp(7px, 1vw, 13px);
+  border: 3px solid #c8a87a;
+  padding: clamp(8px, 1.2vh, 16px) clamp(14px, 2vw, 28px);
+  font-size: clamp(13px, 1.1vw, 17px);
 }
 
 .hv {
-  /* Pixel font para números do HUD — elemento decorativo curto */
-  font-family: var(--font-press-start), monospace;
+  font-family: var(--font-pixel);
   color: var(--yellow);
-  font-size: clamp(10px, 1.4vw, 18px);
+  font-size: clamp(14px, 1.6vw, 24px);
   margin-top: 4px;
 }
 
 .mission {
-  background: #120a02;
-  border: 3px solid #5a3a1a;
+  background: #fff9e6;
+  border: 3px solid #c8a87a;
   border-left: 6px solid var(--yellow);
-  padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 20px);
-  /* Baloo 2 para texto longo de missão — mais fácil de ler */
-  font-size: clamp(13px, 0.9vw, 15px);
+  padding: clamp(8px, 1.2vh, 16px) clamp(12px, 2vw, 24px);
+  font-size: clamp(16px, 1.2vw, 22px);
   line-height: 1.6;
-  color: #c8b090;
+  color: #5d4037;
 }
 
 .mission span {
@@ -93,11 +87,11 @@
 }
 
 .coordHint {
-  background: #0e0700;
+  background: #fff3cc;
   border: 2px solid #333;
-  padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1.5vw, 16px);
-  font-size: clamp(12px, 0.8vw, 14px);
-  color: #a08060;
+  padding: clamp(6px, 0.8vh, 10px) clamp(10px, 1.5vw, 18px);
+  font-size: clamp(14px, 1vw, 18px);
+  color: #7a5c42;
   text-align: center;
 }
 
@@ -117,14 +111,14 @@
 
 .beltLabel {
   font-size: clamp(6px, 0.8vw, 10px);
-  color: #a08060;
+  color: #7a5c42;
   text-align: center;
 }
 
 .beltBox {
   background: var(--belt-bg);
   border: 3px solid #555;
-  height: clamp(80px, 12vh, 130px);
+  height: clamp(110px, 17vh, 200px);
   position: relative;
   overflow: hidden;
 }
@@ -136,8 +130,8 @@
     90deg,
     transparent,
     transparent 22px,
-    #3a3a3a 22px,
-    #3a3a3a 24px
+    #c4a880 22px,
+    #c4a880 24px
   );
   animation: bm 0.9s linear infinite;
 }
@@ -157,8 +151,8 @@
   transform: translateY(-50%);
   width: 16px;
   height: 60%;
-  background: #666;
-  border: 2px solid #888;
+  background: #a08060;
+  border: 2px solid #c0a078;
 }
 
 .root :global(.roller.l) {
@@ -182,8 +176,8 @@
 }
 
 .root :global(.bbox) {
-  width: clamp(52px, 7vw, 80px);
-  height: clamp(52px, 7vw, 80px);
+  width: clamp(80px, 9vw, 130px);
+  height: clamp(80px, 9vw, 130px);
   border: 3px solid;
   display: flex;
   flex-direction: column;
@@ -193,7 +187,7 @@
   user-select: none;
   flex-shrink: 0;
   transition: transform 0.1s;
-  font-size: clamp(5px, 0.6vw, 8px);
+  font-size: clamp(9px, 0.9vw, 13px);
 }
 
 .root :global(.bbox:hover) {
@@ -210,17 +204,17 @@
 }
 
 .root :global(.bicon) {
-  font-size: clamp(16px, 2.5vw, 28px);
+  font-size: clamp(32px, 4vw, 64px);
   line-height: 1;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 
 .root :global(.bcoord) {
-  font-family: var(--font-press-start), monospace;
-  font-size: clamp(5px, 0.6vw, 8px);
+  font-family: var(--font-pixel);
+  font-size: clamp(8px, 0.9vw, 13px);
   color: rgba(255, 255, 255, 0.95);
   background: rgba(0, 0, 0, 0.65);
-  padding: 1px 4px;
+  padding: 2px 5px;
 }
 
 .shelfCol {
@@ -231,7 +225,7 @@
 
 .shelfLabel {
   font-size: clamp(6px, 0.8vw, 10px);
-  color: #a08060;
+  color: #7a5c42;
   text-align: center;
 }
 
@@ -248,15 +242,14 @@
 }
 
 .root :global(.rlbl) {
-  height: clamp(56px, 8vw, 90px);
+  height: clamp(80px, 9vw, 130px);
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Pixel para rótulos de coordenada — curtos, decorativos */
-  font-family: var(--font-press-start), monospace;
-  font-size: clamp(7px, 0.9vw, 12px);
+  font-family: var(--font-pixel);
+  font-size: clamp(10px, 1.1vw, 16px);
   color: var(--yellow);
-  width: clamp(14px, 1.5vw, 20px);
+  width: clamp(20px, 2vw, 30px);
 }
 
 .shelfGridWrap {
@@ -272,12 +265,12 @@
 }
 
 .root :global(.clbl) {
-  width: clamp(56px, 8vw, 90px);
+  width: clamp(80px, 9vw, 130px);
   text-align: center;
-  font-family: var(--font-press-start), monospace;
-  font-size: clamp(7px, 0.9vw, 12px);
+  font-family: var(--font-pixel);
+  font-size: clamp(10px, 1.1vw, 16px);
   color: var(--yellow);
-  height: clamp(18px, 2.5vw, 26px);
+  height: clamp(24px, 2.5vw, 34px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -285,9 +278,9 @@
 
 .sgrid {
   display: grid;
-  grid-template-columns: repeat(4, clamp(56px, 8vw, 90px));
-  grid-template-rows: repeat(3, clamp(56px, 8vw, 90px));
-  gap: clamp(3px, 0.5vw, 6px);
+  grid-template-columns: repeat(4, clamp(80px, 9vw, 130px));
+  grid-template-rows: repeat(3, clamp(80px, 9vw, 130px));
+  gap: clamp(4px, 0.5vw, 8px);
 }
 
 .root :global(.scell) {
@@ -306,8 +299,8 @@
   bottom: 3px;
   right: 4px;
   font-size: clamp(4px, 0.5vw, 7px);
-  color: rgba(255, 255, 255, 0.22);
-  font-family: var(--font-press-start), monospace;
+  color: rgba(0, 0, 0, 0.18);
+  font-family: var(--font-pixel);
 }
 
 .root :global(.scell.over) {
@@ -378,7 +371,7 @@
 
 .cardsSection {
   background: var(--panel);
-  border: 3px solid #5a3a1a;
+  border: 3px solid #c8a87a;
   padding: clamp(7px, 1vh, 14px) clamp(10px, 2vw, 20px);
   display: flex;
   flex-direction: column;
@@ -390,7 +383,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: clamp(12px, 0.8vw, 14px);
-  color: #a08060;
+  color: #7a5c42;
 }
 
 .cardsHeader span {
@@ -404,8 +397,8 @@
 }
 
 .root :global(.hint-card) {
-  width: clamp(72px, 8vw, 110px);
-  height: clamp(90px, 10vw, 135px);
+  width: clamp(100px, 10vw, 160px);
+  height: clamp(120px, 13vw, 200px);
   border: 3px solid var(--card-gold);
   background: var(--card-dark);
   display: flex;
@@ -430,22 +423,22 @@
 }
 
 .root :global(.hint-card .card-top) {
-  font-size: clamp(18px, 2.5vw, 32px);
+  font-size: clamp(32px, 4vw, 60px);
   line-height: 1;
 }
 
 .root :global(.hint-card .card-name) {
-  font-size: clamp(4px, 0.55vw, 7px);
+  font-size: clamp(9px, 0.85vw, 13px);
   color: var(--card-gold);
   text-align: center;
   line-height: 1.5;
-  padding: 0 4px;
+  padding: 0 6px;
 }
 
 .root :global(.hint-card .card-cost) {
   position: absolute;
-  bottom: 5px;
-  font-size: clamp(4px, 0.55vw, 7px);
+  bottom: 6px;
+  font-size: clamp(9px, 0.85vw, 13px);
   color: #f44336;
 }
 
@@ -455,7 +448,7 @@
   top: 4px;
   left: 6px;
   font-size: clamp(6px, 0.9vw, 10px);
-  color: rgba(240, 192, 64, 0.35);
+  color: rgba(180, 100, 0, 0.30);
 }
 
 .root :global(.hint-card::after) {
@@ -464,18 +457,18 @@
   top: 4px;
   right: 6px;
   font-size: clamp(6px, 0.9vw, 10px);
-  color: rgba(240, 192, 64, 0.35);
+  color: rgba(180, 100, 0, 0.30);
 }
 
 .hintResult {
   flex: 1;
-  min-height: clamp(90px, 10vw, 135px);
-  background: #120a02;
-  border: 2px solid #3a2210;
-  padding: 10px;
-  font-size: clamp(12px, 0.8vw, 14px);
+  min-height: clamp(120px, 13vw, 200px);
+  background: #fff9e6;
+  border: 2px solid #d4b896;
+  padding: 14px;
+  font-size: clamp(15px, 1.1vw, 20px);
   line-height: 1.6;
-  color: #c8b090;
+  color: #5d4037;
   display: flex;
   align-items: center;
 }
@@ -487,13 +480,13 @@
 
 .feedback {
   background: var(--panel);
-  border: 3px solid #5a3a1a;
-  padding: clamp(5px, 0.8vh, 10px) clamp(8px, 1.5vw, 16px);
-  font-size: clamp(13px, 0.9vw, 15px);
-  min-height: clamp(28px, 4vh, 48px);
+  border: 3px solid #c8a87a;
+  padding: clamp(8px, 1.2vh, 16px) clamp(12px, 1.5vw, 20px);
+  font-size: clamp(16px, 1.2vw, 22px);
+  min-height: clamp(44px, 6vh, 70px);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: var(--text);
 }
 
@@ -516,7 +509,7 @@
 }
 
 .brasilino__name {
-  font-family: var(--font-press-start), monospace;
+  font-family: var(--font-pixel);
   font-size: 4px;
   color: #f0c040;
   letter-spacing: 0;
@@ -568,7 +561,7 @@
   border: 3px solid #2a7a2a;
   color: #000;
   /* Pixel font no botão curto de ação — decorativo */
-  font-family: var(--font-press-start), monospace;
+  font-family: var(--font-pixel);
   font-size: clamp(7px, 1vw, 13px);
   padding: clamp(8px, 1.2vh, 14px);
   cursor: pointer;
@@ -593,6 +586,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-press-start), monospace;
+  font-family: var(--font-pixel);
   font-size: clamp(5px, 0.6vw, 8px);
 }

@@ -33,7 +33,7 @@ export default function IntroducaoPage() {
       <div className={styles.section}>
         <div className={styles.sectionTitle}>Sobre o jogo</div>
         <p className={styles.sectionText}>
-          Na Fábrica de Algoritmos, cada fase é um desafio novo. Você vai
+          No RoboBlocks, cada fase é um desafio novo. Você vai
           usar lógica e raciocínio para resolver problemas reais — do tipo
           que os computadores resolvem todo dia. Quanto mais você pratica,
           mais fácil fica!

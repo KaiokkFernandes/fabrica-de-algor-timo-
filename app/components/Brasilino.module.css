@@ -49,6 +49,10 @@
 }
 
 /* ── variantes de tamanho ────────────────────────────────────────── */
+.xlarge .avatar { width: 140px; padding: 16px 12px; }
+.xlarge .sprite { font-size: 80px; }
+.xlarge .name   { font-size: 8px;  margin-top: 5px; }
+
 .large  .avatar { width: 108px; padding: 12px 10px; }
 .large  .sprite { font-size: 58px; }
 .large  .name   { font-size: 7px;  margin-top: 4px; }
@@ -117,11 +121,34 @@
   color: #1a1a2e;
   line-height: 1.5;
   margin: 0;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* tamanhos por variante */
+.xlarge .balloonText { font-size: 22px; }
 .large  .balloonText { font-size: 18px; }
 .medium .balloonText { font-size: 16px; }
 .small  .balloonText { font-size: 15px; }
 .mini   .balloonText { font-size: 13px; }
+
+/* ── cursor piscante ─────────────────────────────────────────────── */
+.cursor {
+  display: inline-block;
+  color: var(--bc);
+  font-weight: 700;
+  animation: cursorBlink 0.7s step-end infinite;
+  margin-left: 1px;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* balão maior para xlarge */
+.xlarge .balloon {
+  max-width: 480px;
+  padding: 14px 20px;
+  border-radius: 18px;
+  border-width: 3px;
+}

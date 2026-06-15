@@ -1,6 +1,5 @@
 import "./globals.css";
-import { Press_Start_2P, Baloo_2 } from "next/font/google";
-import Nav from "./components/Nav";
+import { Press_Start_2P, Nunito } from "next/font/google";
 
 const pressStart = Press_Start_2P({
   subsets: ["latin"],
@@ -9,35 +8,24 @@ const pressStart = Press_Start_2P({
   display: "swap",
 });
 
-const baloo2 = Baloo_2({
+const nunito = Nunito({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-baloo2",
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-fredoka",
   display: "swap",
 });
 
 export const metadata = {
-  title: "Fábrica de Algoritmos",
+  title: "RoboBlocks",
   description: "Aprenda algoritmos jogando!",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
-      <body className={`${pressStart.variable} ${baloo2.variable}`}>
+      <body className={`${pressStart.variable} ${nunito.variable}`}>
         <div className="app-shell">
-          <header className="app-header">
-            <div className="brand">
-              <span>🏭</span>
-              <span>FÁBRICA DE ALGORITMOS</span>
-            </div>
-            <Nav />
-          </header>
           <main className="app-main">{children}</main>
-          <footer className="app-footer">
-            <span>Fábrica de Algoritmos</span>
-            <span className="footer-right">Aprendendo com diversão! 🚀</span>
-          </footer>
         </div>
       </body>
     </html>

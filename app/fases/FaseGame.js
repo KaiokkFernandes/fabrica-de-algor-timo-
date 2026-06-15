@@ -319,10 +319,10 @@ export default function FaseGame() {
   return (
     <div id="fases-root" className={styles.root}>
       <div id="game-title" className={styles.gameTitle}>
-        FABRICA DE ALGORITMOS
+        ROBOBLOCKS
       </div>
       <div id="game-subtitle" className={styles.gameSubtitle}>
-        Fase 1.1 — Esteira de Caixas
+        Fase 1 — Esteira de Caixas
       </div>
 
       <div id="wrap" className={styles.wrap}>

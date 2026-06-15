@@ -999,9 +999,9 @@ export default function Fase13Game() {
   // ── JSX SHELL ─────────────────────────────────────────────────────────────
   return (
     <div id="f13-root" className={styles.root}>
-      <div className={styles.gameTitle}>FABRICA DE ALGORITMOS</div>
+      <div className={styles.gameTitle}>ROBOBLOCKS</div>
       <div className={styles.gameSubtitle}>
-        FASE 1.3 — LAVADOR INDUSTRIAL &nbsp;|&nbsp; EF04CO03
+        FASE 3 — LAVADOR INDUSTRIAL &nbsp;|&nbsp; EF04CO03
       </div>
 
       <div className={styles.wrap}>
