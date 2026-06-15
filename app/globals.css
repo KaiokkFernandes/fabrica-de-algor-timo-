@@ -39,37 +39,6 @@ body {
   line-height: 1.5;
 }
 
-/* Telas estáticas: grain de papel (linhas quentes sutis) */
-body:not(.game-mode)::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent 0px,
-    transparent 4px,
-    rgba(130, 70, 10, 0.045) 4px,
-    rgba(130, 70, 10, 0.045) 5px
-  );
-  pointer-events: none;
-  z-index: 9990;
-}
-
-/* Telas de jogo: scanlines estilo CRT */
-body.game-mode::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent 0px,
-    transparent 3px,
-    rgba(0, 0, 0, 0.09) 3px,
-    rgba(0, 0, 0, 0.09) 4px
-  );
-  pointer-events: none;
-  z-index: 9990;
-}
 
 a {
   color: inherit;

@@ -863,20 +863,20 @@ export default function Fase13Game() {
 
       registerBlocks(Blockly, gen);
 
-      // Tema escuro compatível com a interface do jogo
+      // Tema claro vibrante
       let theme;
       try {
-        theme = Blockly.Theme.defineTheme("f13_dark", {
+        theme = Blockly.Theme.defineTheme("f13_light", {
           base: Blockly.Themes.Classic,
           componentStyles: {
-            workspaceBackgroundColour: "#1a1a2e",
-            toolboxBackgroundColour:   "#16213e",
-            toolboxForegroundColour:   "#e8d5a3",
-            flyoutBackgroundColour:    "#0d0d1a",
-            flyoutForegroundColour:    "#e8d5a3",
-            flyoutOpacity:             0.97,
-            scrollbarColour:           "#4a4a6a",
-            scrollbarOpacity:          0.5,
+            workspaceBackgroundColour: "#fff8e7",
+            toolboxBackgroundColour:   "#b8935a",
+            toolboxForegroundColour:   "#fff8e7",
+            flyoutBackgroundColour:    "#f0e4cc",
+            flyoutForegroundColour:    "#3d2b1a",
+            flyoutOpacity:             1,
+            scrollbarColour:           "#c8a87a",
+            scrollbarOpacity:          0.7,
           },
         });
       } catch (_) {
@@ -999,16 +999,10 @@ export default function Fase13Game() {
   // ── JSX SHELL ─────────────────────────────────────────────────────────────
   return (
     <div id="f13-root" className={styles.root}>
-      <div className={styles.gameTitle}>ROBOBLOCKS</div>
-      <div className={styles.gameSubtitle}>
-        FASE 3 — LAVADOR INDUSTRIAL &nbsp;|&nbsp; EF04CO03
-      </div>
-
       <div className={styles.wrap}>
         {/* HUD */}
         <div className={styles.hud}>
           <div>
-            <div className={styles.hudLabel}>ROUND</div>
             <div className={styles.hudVal} id="f13-round">1/5</div>
           </div>
           <div style={{ textAlign: "center" }}>

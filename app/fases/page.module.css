@@ -75,12 +75,6 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.10);
 }
 
-.card:hover .cardPlay {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
 .cardIcon {
   font-size: clamp(48px, 6vw, 80px);
   line-height: 1;
@@ -89,9 +83,13 @@
 
 .cardNum {
   font-family: var(--font-pixel);
-  font-size: clamp(8px, 0.9vw, 13px);
-  color: var(--accent);
+  font-size: clamp(9px, 1vw, 14px);
+  color: #fff;
+  background: var(--accent);
   letter-spacing: 2px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.18);
 }
 
 .cardName {
@@ -113,10 +111,17 @@
 .cardPlay {
   font-family: var(--font-pixel);
   font-size: clamp(8px, 0.85vw, 12px);
-  color: var(--accent);
+  color: #fff;
+  background: var(--accent);
   border: 2px solid var(--accent);
   padding: clamp(8px, 1.2vh, 14px) clamp(20px, 3vw, 36px);
   letter-spacing: 2px;
-  transition: background 0.15s, color 0.15s;
+  transition: filter 0.15s, transform 0.12s;
   margin-top: 4px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+}
+
+.card:hover .cardPlay {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
 }

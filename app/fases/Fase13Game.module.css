@@ -1,20 +1,20 @@
 /* Fase13Game.module.css — FASE 1.3 "Lavador Industrial" — EF04CO03 */
 
 .root {
-  --bg:     #1a1a2e;
-  --panel:  #16213e;
-  --text:   #e8d5a3;
-  --green:  #4caf50;
-  --yellow: #ffeb3b;
-  --red:    #f44336;
-  --border: #4a4a6a;
-  --gold:   #f0c040;
+  --bg:     #fff8e7;
+  --panel:  #fffdf5;
+  --text:   #3d2b1a;
+  --green:  #2e7d32;
+  --yellow: #f0a500;
+  --red:    #e53935;
+  --border: #c8a87a;
+  --gold:   #f57f17;
 
   width: 100vw;
   height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-pixel);
+  font-family: var(--font-body);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -29,13 +29,13 @@
   font-size: clamp(10px, 1.6vw, 20px);
   color: var(--yellow);
   letter-spacing: 2px;
-  text-shadow: 3px 3px 0 #000;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
   margin-bottom: 3px;
 }
 
 .gameSubtitle {
   font-size: clamp(6px, 0.85vw, 10px);
-  color: #7a8fa6;
+  color: #7a5c42;
   letter-spacing: 1px;
   margin-bottom: 6px;
 }
@@ -62,14 +62,16 @@
 }
 
 .hudLabel {
-  font-size: clamp(5px, 0.6vw, 8px);
-  color: #7a8fa6;
+  font-size: clamp(12px, 1vw, 15px);
+  font-weight: 700;
+  color: var(--text);
 }
 
 .hudVal {
   color: var(--yellow);
-  font-size: clamp(9px, 1.2vw, 15px);
-  margin-top: 3px;
+  font-size: clamp(16px, 1.8vw, 24px);
+  font-weight: 800;
+  margin-top: 2px;
 }
 
 /* ── Área principal ────────────────────────────────────────────────────── */
@@ -92,11 +94,12 @@
 }
 
 .panelLabel {
-  font-size: clamp(5px, 0.65vw, 8px);
-  color: #7a8fa6;
+  font-size: clamp(14px, 1.1vw, 18px);
+  font-weight: 700;
+  color: var(--text);
   background: var(--panel);
   border: 3px solid var(--border);
-  padding: clamp(3px, 0.5vh, 6px) 10px;
+  padding: clamp(6px, 0.8vh, 10px) 14px;
   flex-shrink: 0;
 }
 
@@ -119,8 +122,9 @@
   gap: 6px;
   background: var(--yellow);
   color: #000;
-  font-family: var(--font-pixel);
-  font-size: clamp(7px, 0.9vw, 11px);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 700;
   padding: 6px 12px;
   border-radius: 3px;
   pointer-events: none;
@@ -141,8 +145,8 @@
 }
 
 @keyframes f13hintPulse {
-  0%,  100% { box-shadow: 0 0 6px  3px rgba(255, 235, 59, 0.45); transform: scale(1);    }
-  50%       { box-shadow: 0 0 16px 6px rgba(255, 235, 59, 0.85); transform: scale(1.06); }
+  0%,  100% { box-shadow: 0 0 6px  3px rgba(240, 165, 0, 0.45); transform: scale(1);    }
+  50%       { box-shadow: 0 0 16px 6px rgba(240, 165, 0, 0.85); transform: scale(1.06); }
 }
 
 /* ── Painel direito (prédio + feedback) ────────────────────────────────── */
@@ -166,7 +170,7 @@
 .predioOuter {
   flex: 1;
   position: relative;
-  background: #0d0d1a;
+  background: #f0e8d0;
   border: 3px solid var(--border);
   min-height: 0;
   overflow: hidden;
@@ -194,19 +198,20 @@
   z-index: 10;
   /* left/top definidos por JS; transform para virar o robô */
   transition: transform 0.25s ease;
-  filter: drop-shadow(0 0 6px rgba(255,235,59,0.7));
+  filter: drop-shadow(0 0 6px rgba(240,165,0,0.6));
 }
 
 /* ── Feedback ──────────────────────────────────────────────────────────── */
 .feedback {
   background: var(--panel);
   border: 3px solid var(--border);
-  padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1.5vw, 16px);
-  font-size: clamp(5px, 0.7vw, 9px);
-  min-height: clamp(22px, 3vh, 36px);
+  padding: clamp(8px, 1vh, 14px) clamp(12px, 1.5vw, 20px);
+  font-size: clamp(15px, 1.2vw, 20px);
+  font-weight: 600;
+  min-height: clamp(44px, 5vh, 60px);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-shrink: 0;
   line-height: 1.5;
 }
@@ -219,42 +224,45 @@
 }
 
 .hintBtn {
-  background: #2a2a1a;
-  border: 3px solid #6a6a2a;
-  color: var(--yellow);
-  font-family: var(--font-pixel);
-  font-size: clamp(5px, 0.75vw, 9px);
-  padding: clamp(6px, 1vh, 11px) clamp(8px, 1.4vw, 18px);
+  background: #f5ead8;
+  border: 3px solid #c8a87a;
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 700;
+  padding: clamp(8px, 1vh, 13px) clamp(12px, 1.4vw, 20px);
   cursor: pointer;
   transition: background 0.15s;
 }
-.hintBtn:hover { background: #3a3a1a; }
+.hintBtn:hover { background: #e8dcc8; }
 
 .resetBtn {
-  background: #2a2a4a;
+  background: #e8dcc8;
   border: 3px solid var(--border);
   color: var(--text);
-  font-family: var(--font-pixel);
-  font-size: clamp(5px, 0.75vw, 9px);
-  padding: clamp(6px, 1vh, 11px) clamp(8px, 1.4vw, 18px);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 700;
+  padding: clamp(8px, 1vh, 13px) clamp(12px, 1.4vw, 20px);
   cursor: pointer;
   transition: background 0.15s;
 }
-.resetBtn:hover { background: #3a3a5a; }
+.resetBtn:hover { background: #d5c9b5; }
 .resetBtn:disabled { opacity: 0.4; cursor: default; }
 
 .runBtn {
   flex: 1;
   background: var(--green);
   border: 3px solid #2a7a2a;
-  color: #000;
-  font-family: var(--font-pixel);
-  font-size: clamp(6px, 0.85vw, 11px);
-  padding: clamp(6px, 1vh, 11px);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.1vw, 18px);
+  font-weight: 800;
+  padding: clamp(8px, 1vh, 13px);
   cursor: pointer;
   transition: background 0.15s;
 }
-.runBtn:hover    { background: #5ccc60; }
+.runBtn:hover    { background: #388e3c; }
 .runBtn:disabled { opacity: 0.4; cursor: default; }
 
 /* ── Modal ─────────────────────────────────────────────────────────────── */
@@ -281,9 +289,10 @@
 }
 
 .modalTitle {
-  font-size: clamp(10px, 1.5vw, 18px);
+  font-size: clamp(16px, 1.6vw, 22px);
+  font-weight: 800;
   color: var(--yellow);
-  text-shadow: 2px 2px 0 #000;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
   letter-spacing: 1px;
 }
 
@@ -302,45 +311,48 @@
 }
 
 .solutionBtn {
-  background: #1a1a3a;
+  background: #e8dcc8;
   border: 3px solid var(--gold);
   color: var(--gold);
-  font-family: var(--font-pixel);
-  font-size: clamp(6px, 0.8vw, 10px);
-  padding: clamp(8px, 1.2vh, 14px) clamp(12px, 2vw, 24px);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 700;
+  padding: clamp(10px, 1.2vh, 16px) clamp(14px, 2vw, 26px);
   cursor: pointer;
   width: 100%;
   transition: background 0.15s;
 }
-.solutionBtn:hover { background: #2a2a4a; }
+.solutionBtn:hover { background: #d5c9b5; }
 
 .retryBtn {
-  background: #2a2a4a;
+  background: #e8dcc8;
   border: 3px solid var(--border);
   color: var(--text);
-  font-family: var(--font-pixel);
-  font-size: clamp(6px, 0.8vw, 10px);
-  padding: clamp(7px, 1vh, 13px) clamp(10px, 1.8vw, 22px);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 700;
+  padding: clamp(9px, 1vh, 14px) clamp(14px, 1.8vw, 24px);
   cursor: pointer;
 }
-.retryBtn:hover { background: #3a3a5a; }
+.retryBtn:hover { background: #d5c9b5; }
 
 .advanceBtn {
   background: var(--green);
   border: 3px solid #2a7a2a;
-  color: #000;
-  font-family: var(--font-pixel);
-  font-size: clamp(6px, 0.8vw, 10px);
-  padding: clamp(7px, 1vh, 13px) clamp(10px, 1.8vw, 22px);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 800;
+  padding: clamp(9px, 1vh, 14px) clamp(14px, 1.8vw, 24px);
   cursor: pointer;
 }
-.advanceBtn:hover { background: #5ccc60; }
+.advanceBtn:hover { background: #388e3c; }
 
 /* ── Classes globais aplicadas por JS ──────────────────────────────────── */
 
 .root :global(.f13-janela) {
-  background: #3a2a1a;
-  border: 2px solid #6b4a2a;
+  background: #f5e6c8;
+  border: 2px solid #c8a87a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -350,8 +362,8 @@
 }
 
 .root :global(.f13-janela-limpa) {
-  background: #0a2a3a;
-  border-color: #2a8ab0;
+  background: #e3f2fd;
+  border-color: #1976d2;
 }
 
 .root :global(.f13-janela-flash) {
@@ -360,7 +372,7 @@
 
 @keyframes f13flash {
   0%   { background: #ffffaa; }
-  100% { background: #0a2a3a; }
+  100% { background: #e3f2fd; }
 }
 
 .root :global(.f13-modal-stars) {
@@ -374,13 +386,14 @@
 .root :global(.f13-stars-0) { color: #333; }
 
 .root :global(.f13-modal-msg) {
-  background: #0d0d1a;
+  background: #f0e8d0;
   border: 2px solid var(--border);
   border-left: 4px solid var(--yellow);
-  padding: clamp(5px, 0.8vh, 9px) 12px;
-  font-size: clamp(5px, 0.68vw, 9px);
+  padding: clamp(8px, 1vh, 14px) 14px;
+  font-size: clamp(14px, 1vw, 18px);
+  font-weight: 600;
   color: var(--text);
-  line-height: 1.8;
+  line-height: 1.7;
 }
 
 /* ── Popup de solução ideal ────────────────────────────────────────────── */
@@ -411,15 +424,16 @@
 }
 
 .demoTitle {
-  font-size: clamp(9px, 1.3vw, 15px);
+  font-size: clamp(15px, 1.3vw, 20px);
+  font-weight: 800;
   color: var(--gold);
   letter-spacing: 1px;
-  text-shadow: 2px 2px 0 #000;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
 }
 
 .demoCloseBtn {
   background: transparent;
-  border: 2px solid #4a4a6a;
+  border: 2px solid #c8a87a;
   color: var(--text);
   font-family: var(--font-pixel);
   font-size: 12px;
@@ -431,7 +445,7 @@
   justify-content: center;
   flex-shrink: 0;
 }
-.demoCloseBtn:hover { background: #2a2a4a; }
+.demoCloseBtn:hover { background: #e8dcc8; }
 
 .demoContent {
   display: flex;
@@ -441,7 +455,7 @@
 
 .demoOuter {
   position: relative;
-  background: #0d0d1a;
+  background: #f0e8d0;
   border: 3px solid var(--border);
   flex: 1;
   height: clamp(100px, 20vh, 180px);
@@ -456,14 +470,15 @@
 }
 
 .demoAlgoTitle {
-  font-size: clamp(5px, 0.65vw, 8px);
-  color: #7a8fa6;
+  font-size: clamp(12px, 0.9vw, 15px);
+  font-weight: 700;
+  color: var(--text);
   letter-spacing: 1px;
 }
 
 .demoAlgo {
   flex: 1;
-  background: #0d0d1a;
+  background: #f0e8d0;
   border: 2px solid var(--border);
   padding: 8px 6px;
   display: flex;
@@ -491,16 +506,17 @@
   pointer-events: none;
   z-index: 10;
   transition: transform 0.25s ease;
-  filter: drop-shadow(0 0 5px rgba(255,235,59,0.6));
+  filter: drop-shadow(0 0 5px rgba(240,165,0,0.5));
 }
 
 .demoStatus {
-  font-size: clamp(6px, 0.85vw, 10px);
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 600;
   color: var(--text);
-  background: #0d0d1a;
+  background: #f0e8d0;
   border: 2px solid var(--border);
-  padding: 8px 12px;
-  min-height: 34px;
+  padding: 10px 14px;
+  min-height: 42px;
   display: flex;
   align-items: center;
   line-height: 1.6;
@@ -513,20 +529,22 @@
 }
 
 .demoReplayBtn {
-  background: #1a1a3a;
+  background: #e8dcc8;
   border: 3px solid var(--gold);
   color: var(--gold);
-  font-family: var(--font-pixel);
-  font-size: clamp(6px, 0.8vw, 9px);
-  padding: clamp(6px, 1vh, 10px) clamp(10px, 1.8vw, 18px);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 700;
+  padding: clamp(8px, 1vh, 12px) clamp(14px, 1.8vw, 20px);
   cursor: pointer;
 }
-.demoReplayBtn:hover { background: #2a2a4a; }
+.demoReplayBtn:hover { background: #d5c9b5; }
 
 /* Passos do algoritmo no popup */
 .root :global(.f13-algo-step) {
-  font-size: clamp(6px, 0.75vw, 9px);
-  color: #4a4a6a;
+  font-size: clamp(12px, 0.9vw, 15px);
+  font-weight: 600;
+  color: #7a5c42;
   padding: 4px 6px;
   border-left: 3px solid transparent;
   line-height: 1.5;
@@ -536,7 +554,7 @@
 .root :global(.f13-algo-active) {
   color: var(--yellow);
   border-left-color: var(--yellow);
-  background: rgba(255, 235, 59, 0.08);
+  background: rgba(240, 165, 0, 0.12);
 }
 
 .root :global(.f13-algo-done) {
@@ -546,8 +564,8 @@
 
 /* Janelas dentro do popup de demo */
 .root :global(.f13-demo-janela) {
-  background: #3a2a1a;
-  border: 2px solid #6b4a2a;
+  background: #f5e6c8;
+  border: 2px solid #c8a87a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -557,13 +575,25 @@
 }
 
 .root :global(.f13-demo-limpa) {
-  background: #0a2a3a;
-  border-color: #2a8ab0;
+  background: #e3f2fd;
+  border-color: #1976d2;
+}
+
+/* ── Separadores visuais no Blockly ─────────────────────────────────────── */
+
+/* Linha divisória entre toolbox e flyout */
+.root :global(.blocklyToolboxDiv) {
+  border-right: 3px solid #8b6914 !important;
+}
+
+/* Linha divisória entre flyout e workspace */
+.root :global(.blocklyFlyout) {
+  filter: drop-shadow(3px 0 0 #c8a87a);
 }
 
 /* Label de seção dentro do flyout do Blockly */
 .root :global(.f13-tb-label .blocklyFlyoutLabelText) {
-  fill: #f0c040 !important;
+  fill: #f57f17 !important;
   font-size: 10px !important;
   font-weight: bold;
 }
