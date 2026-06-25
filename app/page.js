@@ -1,24 +1,19 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import Brasilino from "./components/Brasilino";
+import AnimacaoRoboblocks from "./components/animacao-roboblocks";
 
 export default function HomePage() {
   return (
     <div className={styles.screen}>
       {/* ── Hero central ── */}
       <div className={styles.hero}>
-        <h1 className={styles.gameTitle}>RoboBlocks</h1>
+        <div>
+          <AnimacaoRoboblocks showControls={false} autoPlay={true} />
+        </div>
         <p className={styles.gameSub}>
           Resolva desafios, descubra algoritmos e vire mestre dos robôs!
         </p>
-
-        <div className={styles.spinner}>
-          <div className={styles.sq1} />
-          <div className={styles.sq2} />
-          <div className={styles.sq3} />
-          <div className={styles.sq4} />
-          <div className={styles.sq5} />
-        </div>
 
         <Brasilino
           size="xlarge"
