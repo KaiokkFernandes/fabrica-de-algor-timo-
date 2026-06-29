@@ -818,6 +818,10 @@ export default function Fase13Game() {
     function startRound(idx, gen) {
       execId++;           // invalida qualquer tick() de execução anterior
       roundIdx  = idx;
+      try {
+        localStorage.setItem("current_phase", "3");
+        localStorage.setItem("current_round", String(idx + 1));
+      } catch (e) {}
       hintCount = 0;
       running   = false;
       stopTimer();
@@ -940,7 +944,13 @@ export default function Fase13Game() {
           if (roundIdx === 0) showRound1Hint();
         };
         const onNext     = () => startRound(roundIdx + 1, gen);
-        const onFinish   = () => { window.location.href = "/menu"; };
+        const onFinish   = () => {
+          try {
+            localStorage.removeItem("current_phase");
+            localStorage.removeItem("current_round");
+          } catch (e) {}
+          window.location.href = "/menu";
+        };
         const onSolution    = () => openDemoPopup(ROUNDS[roundIdx].numero);
         const onDemoClose   = () => { demoGen++; $("f13-demo-popup").style.display = "none"; };
         const onDemoReplay  = () => {
@@ -1052,6 +1062,12 @@ export default function Fase13Game() {
           <button id="f13-reset-btn" className={styles.resetBtn}>🔄 RESETAR</button>
           <button id="f13-run-btn"   className={styles.runBtn}>▶ EXECUTAR</button>
         </div>
+        <button
+          className={styles.footerMenuBtn}
+          onClick={() => (window.location.href = "/")}
+        >
+          🏠 MENU
+        </button>
       </div>
 
       {/* Popup de solução ideal — overlay independente */}

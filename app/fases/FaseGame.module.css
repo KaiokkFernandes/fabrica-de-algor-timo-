@@ -6,53 +6,37 @@
   --belt-bg:      #e8d5b0;   /* esteira bege */
   --text:         #3d2b1a;   /* marrom-escuro legível */
   --green:        #2e7d32;   /* verde vibrante */
-  --yellow:       #f0a500;   /* âmbar vibrante */
+  --yellow:       #c2410c;   /* Laranja Terracota padronizado */
   --red:          #e53935;   /* vermelho vibrante */
-  --card-gold:    #f57f17;   /* ouro vibrante */
+  --card-gold:    #c2410c;   /* Laranja Terracota para as cartas */
   --card-dark:    #fff9e6;   /* fundo de carta claro */
   width: 100vw;
   height: 100vh;
+  max-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  /* font-family NÃO definida aqui: body usa Fredoka, pixel aplicado só onde necessário */
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 16px;
+  justify-content: space-between; /* Distribui topo e rodapé */
+  padding: 0; /* Removido padding para colar elementos nas bordas */
 }
 
 .root * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  image-rendering: pixelated;
-}
-
-.gameTitle {
-  font-family: var(--font-pixel);
-  font-size: clamp(13px, 2vw, 28px);
-  color: var(--yellow);
-  text-align: center;
-  margin-bottom: 6px;
-  letter-spacing: 2px;
-  text-shadow: 3px 3px 0 #000;
-}
-
-.gameSubtitle {
-  font-size: clamp(15px, 1.2vw, 20px);
-  color: #7a5c42;
-  text-align: center;
-  margin-bottom: 12px;
 }
 
 .wrap {
   width: 100%;
-  max-width: min(98vw, 1440px);
+  height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: clamp(5px, 0.8vh, 12px);
+  justify-content: space-between;
+  gap: 0;
 }
 
 .hud {
@@ -60,65 +44,137 @@
   justify-content: space-between;
   align-items: center;
   background: var(--panel);
-  border: 3px solid #c8a87a;
-  padding: clamp(8px, 1.2vh, 16px) clamp(14px, 2vw, 28px);
-  font-size: clamp(13px, 1.1vw, 17px);
+  border-bottom: 4px solid var(--yellow); /* Borda inferior terracota colada */
+  padding: clamp(10px, 1.5vh, 16px) clamp(16px, 2.5vw, 32px);
+  font-size: clamp(12px, 1vw, 15px);
+  width: 100%;
+}
+
+.hudBtn {
+  font-family: var(--font-pixel);
+  font-size: clamp(8px, 0.8vw, 11px);
+  background: var(--yellow); /* Terracotta Orange */
+  color: #fff;
+  border: 2px solid #8c2d05;
+  padding: 6px 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #8c2d05;
+  transition: transform 0.1s, background 0.15s;
+  text-decoration: none;
+}
+
+.hudBtn:hover {
+  background: #a3350a;
+}
+
+.hudBtn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #8c2d05;
 }
 
 .hv {
-  font-family: var(--font-pixel);
+  font-family: var(--font-body);
+  font-weight: bold;
   color: var(--yellow);
-  font-size: clamp(14px, 1.6vw, 24px);
-  margin-top: 4px;
+  font-size: clamp(16px, 1.8vw, 24px);
+  margin-top: 2px;
+}
+
+.hudPhase {
+  font-family: var(--font-body);
+  font-weight: 800; /* Extra bold */
+  color: var(--yellow);
+  font-size: clamp(16px, 1.8vw, 24px);
+  margin-top: 2px;
 }
 
 .mission {
   background: #fff9e6;
-  border: 3px solid #c8a87a;
-  border-left: 6px solid var(--yellow);
-  padding: clamp(8px, 1.2vh, 16px) clamp(12px, 2vw, 24px);
-  font-size: clamp(16px, 1.2vw, 22px);
-  line-height: 1.6;
+  border-top: 4px solid var(--yellow); /* Borda superior terracota colada */
+  padding: clamp(12px, 2vh, 20px) clamp(16px, 2.5vw, 32px);
+  padding-right: clamp(120px, 16vw, 220px); /* Garante que o texto não sobreponha o botão */
+  font-size: clamp(22px, 2.2vw, 30px); /* Dobrado o tamanho para grande visibilidade */
+  font-weight: bold;
+  line-height: 1.5;
   color: #5d4037;
+  width: 100%;
+  text-align: center;
+  position: relative; /* Para posicionamento absoluto do botão MENU */
+}
+
+.footerMenuBtn {
+  position: absolute;
+  right: clamp(16px, 2.5vw, 32px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-pixel);
+  font-size: clamp(11px, 1.1vw, 15px); /* Maior no rodapé */
+  background: var(--yellow); /* Terracotta Orange */
+  color: #fff;
+  border: 3px solid #8c2d05;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #8c2d05;
+  transition: transform 0.1s, background 0.15s;
+  text-decoration: none;
+  z-index: 10;
+}
+
+.footerMenuBtn:hover {
+  background: #a3350a;
+}
+
+.footerMenuBtn:active {
+  transform: translateY(-50%) translateY(2px);
+  box-shadow: 0 1px 0 #8c2d05;
 }
 
 .mission span {
   color: var(--yellow);
 }
 
-.coordHint {
-  background: #fff3cc;
-  border: 2px solid #333;
-  padding: clamp(6px, 0.8vh, 10px) clamp(10px, 1.5vw, 18px);
-  font-size: clamp(14px, 1vw, 18px);
-  color: #7a5c42;
-  text-align: center;
-}
+
 
 .main {
   display: flex;
-  gap: clamp(8px, 1.5vw, 20px);
-  align-items: flex-start;
+  gap: clamp(12px, 1.8vw, 24px);
+  align-items: stretch;
+  flex: 1;
+  padding: clamp(12px, 2vh, 24px) clamp(16px, 2.5vw, 36px); /* Padding interno para a área de jogo */
+  min-height: 0;
 }
 
-.beltCol {
-  flex: 1;
+.leftColumn {
+  flex: 1.25;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  justify-content: space-between; /* Empurra as cartas de dica para baixo, próximas ao rodapé */
+  gap: clamp(8px, 1.2vh, 16px);
   min-width: 0;
 }
 
+.beltCol {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: clamp(10px, 2vh, 24px); /* Empurra a esteira um pouco para baixo */
+}
+
 .beltLabel {
-  font-size: clamp(6px, 0.8vw, 10px);
-  color: #7a5c42;
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: var(--yellow); /* Laranja Terracota */
   text-align: center;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
 }
 
 .beltBox {
   background: var(--belt-bg);
   border: 3px solid #555;
-  height: clamp(110px, 17vh, 200px);
+  height: clamp(115px, 15vh, 185px); /* Altura ideal para as caixas maiores */
   position: relative;
   overflow: hidden;
 }
@@ -169,15 +225,17 @@
   transform: translateY(-50%);
   left: 20px;
   right: 20px;
-  display: flex;
-  gap: clamp(6px, 1vw, 14px);
-  align-items: center;
-  padding: 0 4px;
+  height: 100%;
+  overflow: hidden;
 }
 
 .root :global(.bbox) {
-  width: clamp(80px, 9vw, 130px);
-  height: clamp(80px, 9vw, 130px);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: auto !important; /* Evita que o navegador sobreponha a propriedade right */
+  width: clamp(85px, 11vh, 130px); /* Caixas maiores! */
+  height: clamp(85px, 11vh, 130px);
   border: 3px solid;
   display: flex;
   flex-direction: column;
@@ -186,41 +244,43 @@
   cursor: grab;
   user-select: none;
   flex-shrink: 0;
-  transition: transform 0.1s;
-  font-size: clamp(9px, 0.9vw, 13px);
+  transition: right 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+              opacity 0.4s ease, 
+              transform 0.1s;
+  font-size: clamp(9px, 0.9vh, 13px);
 }
 
 .root :global(.bbox:hover) {
-  transform: scale(1.1);
+  transform: translateY(-50%) scale(1.04);
 }
 
 .root :global(.bbox:active) {
   cursor: grabbing;
-  transform: scale(0.93);
-}
-
-.root :global(.bbox.dragging) {
-  opacity: 0.35;
+  transform: translateY(-50%) scale(0.98);
 }
 
 .root :global(.bicon) {
-  font-size: clamp(32px, 4vw, 64px);
+  font-size: clamp(32px, 4.5vh, 60px); /* Ícones maiores para as caixas maiores */
   line-height: 1;
   margin-bottom: 4px;
 }
 
 .root :global(.bcoord) {
-  font-family: var(--font-pixel);
-  font-size: clamp(8px, 0.9vw, 13px);
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: clamp(9px, 1vh, 13px);
   color: rgba(255, 255, 255, 0.95);
   background: rgba(0, 0, 0, 0.65);
   padding: 2px 5px;
 }
 
 .shelfCol {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  justify-content: center; /* Centraliza a prateleira verticalmente ao lado da coluna esquerda */
+  align-items: center; /* Centraliza a prateleira horizontalmente sob o título */
 }
 
 .shelfLabel {
@@ -237,17 +297,18 @@
 .rowLabels {
   display: flex;
   flex-direction: column;
-  padding-top: clamp(18px, 2.5vw, 28px);
-  gap: clamp(3px, 0.5vw, 6px);
+  padding-top: clamp(18px, 2.5vh, 32px);
+  gap: clamp(3px, 0.5vh, 6px);
 }
 
 .root :global(.rlbl) {
-  height: clamp(80px, 9vw, 130px);
+  height: clamp(85px, 11vh, 130px);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-pixel);
-  font-size: clamp(10px, 1.1vw, 16px);
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: clamp(11px, 1.3vh, 16px);
   color: var(--yellow);
   width: clamp(20px, 2vw, 30px);
 }
@@ -255,22 +316,22 @@
 .shelfGridWrap {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 4px;
 }
 
 .colLabels {
   display: flex;
-  gap: clamp(3px, 0.5vw, 6px);
-  margin-bottom: 4px;
+  gap: clamp(4px, 0.5vh, 8px);
 }
 
 .root :global(.clbl) {
-  width: clamp(80px, 9vw, 130px);
+  width: clamp(85px, 11vh, 130px);
   text-align: center;
-  font-family: var(--font-pixel);
-  font-size: clamp(10px, 1.1vw, 16px);
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: clamp(11px, 1.3vh, 16px);
   color: var(--yellow);
-  height: clamp(24px, 2.5vw, 34px);
+  height: clamp(24px, 2.5vh, 34px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -278,111 +339,120 @@
 
 .sgrid {
   display: grid;
-  grid-template-columns: repeat(4, clamp(80px, 9vw, 130px));
-  grid-template-rows: repeat(3, clamp(80px, 9vw, 130px));
-  gap: clamp(4px, 0.5vw, 8px);
+  grid-template-columns: repeat(4, clamp(85px, 11vh, 130px)); /* Células muito maiores! */
+  grid-template-rows: repeat(3, clamp(85px, 11vh, 130px));
+  gap: clamp(4px, 0.5vh, 8px);
 }
 
 .root :global(.scell) {
-  border: 2px solid var(--shelf-border);
   background: var(--shelf-bg);
+  border: 3px solid var(--shelf-border);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s;
 }
 
+.root :global(.scell.dragover) {
+  background: #ecd5b8;
+  border-style: dashed;
+}
+
+/* Identificador discreto de coordenada de fundo na célula */
 .root :global(.scell::after) {
   content: attr(data-coord);
   position: absolute;
-  bottom: 3px;
-  right: 4px;
-  font-size: clamp(4px, 0.5vw, 7px);
-  color: rgba(0, 0, 0, 0.18);
   font-family: var(--font-pixel);
+  font-size: 8px;
+  color: rgba(139, 105, 20, 0.18);
+  pointer-events: none;
 }
 
-.root :global(.scell.over) {
-  background: #1a3a1a;
-  border-color: var(--green);
-}
-
-.root :global(.scell.wflash) {
-  animation: wf 0.45s ease forwards;
-}
-
-@keyframes wf {
-  0% {
-    background: #5a0a0a;
-    border-color: #f44336;
-  }
-  100% {
-    background: var(--shelf-bg);
-    border-color: var(--shelf-border);
-  }
-}
-
-.root :global(.scell.cflash) {
-  animation: cf 0.45s ease forwards;
-}
-
-@keyframes cf {
-  0% {
-    background: #0a5a0a;
-    border-color: #4caf50;
-  }
-  100% {
-    background: var(--shelf-bg);
-    border-color: var(--shelf-border);
-  }
-}
-
-.root :global(.scell.hint-glow) {
-  border-color: var(--card-gold);
-  background: #1a1500;
-}
-
-.root :global(.scell.hint-glow-box) {
-  border-color: #ff9800;
-  background: #1a0f00;
-}
-
+/* ── Caixa posicionada na prateleira ── */
 .root :global(.placed) {
   width: 78%;
   height: 78%;
-  border: 2px solid;
+  border: 3px solid;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: clamp(5px, 0.6vw, 8px);
-  animation: pa 0.2s ease;
+  position: relative;
+  cursor: grab;
+  animation: dropIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes pa {
-  0% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1);
-  }
+@keyframes dropIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.root :global(.placed.correct) {
+  background: var(--green) !important;
+  border-color: #1b5e20 !important;
+  color: #fff;
+}
+
+.root :global(.placed.wrong) {
+  background: var(--red) !important;
+  border-color: #b71c1c !important;
+  color: #fff;
+}
+
+.root :global(.picon) {
+  font-size: clamp(20px, 2.8vh, 44px);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.root :global(.pcoord) {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 1px 3px;
+}
+
+/* Botão de remoção (X) no topo direito da caixa posicionada */
+.root :global(.removeBtn) {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background: #333;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.root :global(.removeBtn:hover) {
+  background: #e53935;
 }
 
 .cardsSection {
   background: var(--panel);
   border: 3px solid #c8a87a;
-  padding: clamp(7px, 1vh, 14px) clamp(10px, 2vw, 20px);
+  padding: clamp(5px, 0.8vh, 10px) clamp(10px, 2vw, 20px);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+  font-weight: bold; /* Todo o texto do container em negrito */
 }
 
 .cardsHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: clamp(12px, 0.8vw, 14px);
+  font-size: clamp(11px, 0.8vh, 13px);
   color: #7a5c42;
 }
 
@@ -392,14 +462,14 @@
 
 .cardsRow {
   display: flex;
-  gap: clamp(8px, 1.2vw, 18px);
+  gap: clamp(6px, 1vh, 14px);
   align-items: flex-start;
 }
 
 .root :global(.hint-card) {
-  width: clamp(100px, 10vw, 160px);
-  height: clamp(120px, 13vw, 200px);
-  border: 3px solid var(--card-gold);
+  width: clamp(100px, 11vh, 135px); /* Aumentada largura para evitar quebras ruins */
+  height: clamp(110px, 12.5vh, 155px); /* Aumentada altura */
+  border: 3px solid var(--card-gold); /* Borda em Laranja Terracota */
   background: var(--card-dark);
   display: flex;
   flex-direction: column;
@@ -407,13 +477,15 @@
   justify-content: center;
   cursor: pointer;
   position: relative;
-  gap: 5px;
+  gap: 6px;
+  padding: 8px 4px;
   transition: transform 0.15s, filter 0.15s;
   flex-shrink: 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.08);
 }
 
 .root :global(.hint-card:hover:not(.used)) {
-  transform: translateY(-7px) scale(1.06);
+  transform: translateY(-5px) scale(1.04);
 }
 
 .root :global(.hint-card.used) {
@@ -423,51 +495,55 @@
 }
 
 .root :global(.hint-card .card-top) {
-  font-size: clamp(32px, 4vw, 60px);
+  font-size: clamp(26px, 3vh, 42px); /* Ícones ligeiramente maiores */
   line-height: 1;
 }
 
 .root :global(.hint-card .card-name) {
-  font-size: clamp(9px, 0.85vw, 13px);
-  color: var(--card-gold);
+  font-family: var(--font-body);
+  font-size: clamp(10px, 1.1vh, 13px); /* Aumentado significativamente */
+  color: var(--text); /* Marrom escuro com muito contraste (antes era laranja sobre fundo creme) */
+  font-weight: 800; /* Extra bold */
   text-align: center;
-  line-height: 1.5;
-  padding: 0 6px;
+  line-height: 1.2;
+  padding: 0 4px;
 }
 
 .root :global(.hint-card .card-cost) {
   position: absolute;
   bottom: 6px;
-  font-size: clamp(9px, 0.85vw, 13px);
-  color: #f44336;
+  font-family: var(--font-body);
+  font-size: clamp(9px, 1vh, 12px); /* Aumentado significativamente */
+  color: #d32f2f; /* Vermelho forte para excelente contraste */
+  font-weight: bold;
 }
 
 .root :global(.hint-card::before) {
   content: "?";
   position: absolute;
-  top: 4px;
-  left: 6px;
-  font-size: clamp(6px, 0.9vw, 10px);
-  color: rgba(180, 100, 0, 0.30);
+  top: 6px;
+  left: 8px;
+  font-size: clamp(8px, 0.9vw, 12px);
+  color: rgba(194, 65, 12, 0.25);
 }
 
 .root :global(.hint-card::after) {
   content: "?";
   position: absolute;
-  top: 4px;
-  right: 6px;
-  font-size: clamp(6px, 0.9vw, 10px);
-  color: rgba(180, 100, 0, 0.30);
+  top: 6px;
+  right: 8px;
+  font-size: clamp(8px, 0.9vw, 12px);
+  color: rgba(194, 65, 12, 0.25);
 }
 
 .hintResult {
   flex: 1;
-  min-height: clamp(120px, 13vw, 200px);
+  min-height: clamp(90px, 11vh, 140px);
   background: #fff9e6;
   border: 2px solid #d4b896;
-  padding: 14px;
-  font-size: clamp(15px, 1.1vw, 20px);
-  line-height: 1.6;
+  padding: 10px;
+  font-size: clamp(12px, 1vh, 15px);
+  line-height: 1.4;
   color: #5d4037;
   display: flex;
   align-items: center;
@@ -481,9 +557,9 @@
 .feedback {
   background: var(--panel);
   border: 3px solid #c8a87a;
-  padding: clamp(8px, 1.2vh, 16px) clamp(12px, 1.5vw, 20px);
-  font-size: clamp(16px, 1.2vw, 22px);
-  min-height: clamp(44px, 6vh, 70px);
+  padding: clamp(6px, 1vh, 12px) clamp(12px, 1.5vw, 20px);
+  font-size: clamp(13px, 1vh, 17px);
+  min-height: clamp(40px, 5vh, 60px);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -498,20 +574,20 @@
   gap: 3px;
   flex-shrink: 0;
   background: linear-gradient(160deg, #1b3a10, #2d5a1b);
-  border: 2px solid #f0c040;
+  border: 2px solid var(--yellow);
   border-radius: 4px;
   padding: 3px 5px;
 }
 
 .brasilino__avatar {
-  font-size: clamp(18px, 2.2vw, 26px);
+  font-size: clamp(16px, 2vh, 22px);
   line-height: 1;
 }
 
 .brasilino__name {
   font-family: var(--font-pixel);
   font-size: 4px;
-  color: #f0c040;
+  color: var(--yellow);
   letter-spacing: 0;
   line-height: 1;
 }
@@ -520,14 +596,15 @@
 .brasilino__balloon {
   flex: 1;
   background: #fffde7;
-  border: 2px solid #f0c040;
+  border: 2px solid var(--yellow);
   border-radius: 10px;
-  padding: 6px 12px;
+  padding: 4px 10px;
   position: relative;
   color: #1a1a2e;
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: clamp(12px, 0.95vw, 15px);
 }
 
 /* seta apontando para o avatar */
@@ -538,7 +615,7 @@
   top: 50%;
   transform: translateY(-50%);
   border: 6px solid transparent;
-  border-right-color: #f0c040;
+  border-right-color: var(--yellow);
 }
 
 .brasilino__balloon::after {
@@ -558,12 +635,12 @@
 .nextButton {
   display: none;
   background: var(--green);
-  border: 3px solid #2a7a2a;
-  color: #000;
-  /* Pixel font no botão curto de ação — decorativo */
-  font-family: var(--font-pixel);
-  font-size: clamp(7px, 1vw, 13px);
-  padding: clamp(8px, 1.2vh, 14px);
+  border-top: 4px solid #2a7a2a;
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: clamp(16px, 1.6vw, 22px);
+  padding: clamp(12px, 1.8vh, 20px);
   cursor: pointer;
   width: 100%;
   text-align: center;
@@ -576,7 +653,7 @@
 .ghost {
   position: fixed;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 12000;
   opacity: 0.85;
   transform: translate(-50%, -50%);
   display: none;
@@ -589,3 +666,393 @@
   font-family: var(--font-pixel);
   font-size: clamp(5px, 0.6vw, 8px);
 }
+
+/* ── Media Queries de Altura para Telas Pequenas ── */
+@media (max-height: 780px) {
+  .gameTitle {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  .gameSubtitle {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .hud {
+    padding: 8px 16px;
+  }
+  .mission {
+    padding: 10px 20px;
+    font-size: 20px;
+    line-height: 1.4;
+  }
+}
+
+@media (max-height: 680px) {
+  .mission {
+    padding: 8px 16px;
+    font-size: 17px;
+    line-height: 1.3;
+  }
+  .hud {
+    padding: 3px 10px;
+  }
+}
+
+/* ── Overlay de Diálogo Inicial (Brasilino) - Estilo Historia (Rodapé) ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Alinha a barra no rodapé da tela */
+  backdrop-filter: blur(3px);
+}
+
+.introDialog {
+  width: 100%;
+  min-height: 36vh;
+  background: var(--panel);
+  border-top: 4px solid var(--yellow); /* Usa o Laranja Terracota */
+  box-shadow: 0 -6px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: stretch;
+  padding: clamp(16px, 2.5vh, 32px) clamp(20px, 3.5vw, 48px);
+  gap: clamp(16px, 2.5vw, 40px);
+  animation: slideUp 0.3s ease-out;
+}
+
+.introAvatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.avatarEmoji {
+  font-size: clamp(64px, 8vw, 110px);
+  line-height: 1;
+}
+
+.avatarName {
+  font-family: var(--font-pixel);
+  font-size: clamp(7px, 0.75vw, 11px);
+  color: var(--yellow); /* Laranja Terracota */
+  letter-spacing: 1px;
+}
+
+.introContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(10px, 1.5vh, 20px);
+  min-width: 0;
+}
+
+.introText {
+  font-family: var(--font-body);
+  font-size: clamp(18px, 2.2vw, 32px); /* Tamanho de fonte idêntico ao da história */
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.cursor {
+  display: inline-block;
+  color: var(--yellow);
+  font-weight: 700;
+  animation: cursorBlink 0.7s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.introActions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.introBtn {
+  font-family: var(--font-pixel);
+  font-size: clamp(9px, 1vw, 15px);
+  background: var(--green);
+  color: #fff;
+  border: 3px solid #1b5e20;
+  padding: clamp(10px, 1.4vh, 18px) clamp(24px, 3vw, 44px);
+  cursor: pointer;
+  letter-spacing: 1.5px;
+  box-shadow: 0 4px 0 #1b5e20;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.introBtn:hover {
+  background: #388e3c;
+  transform: translateY(-2px);
+}
+
+.introBtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #1b5e20;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ── Timer do Round ── */
+.timer {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: clamp(18px, 2vw, 28px);
+  color: var(--yellow);
+  text-align: center;
+  padding: 0 12px;
+  transition: color 0.3s;
+}
+
+.timer:global(.urgent) {
+  color: var(--red);
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* ── Estrelas do Resultado do Round ── */
+.resultStars {
+  font-size: clamp(36px, 5vw, 60px);
+  color: #f0a500;
+  letter-spacing: 8px;
+  text-shadow: 0 2px 8px rgba(240, 165, 0, 0.4);
+}
+
+/* ── Container do Popup do Tutorial ── */
+.tutorialOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 11000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.tutorialBox {
+  background: var(--panel);
+  border: 4px solid var(--yellow);
+  border-radius: 12px;
+  width: min(92vw, 600px);
+  padding: clamp(16px, 3vh, 28px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 2vh, 20px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.tutorialTitle {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: clamp(20px, 2vw, 26px);
+  color: var(--yellow);
+  text-align: center;
+}
+
+/* Prateleira de Exemplo */
+.exampleShelfWrap {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  background: #fff8e7;
+  padding: 16px;
+  border: 3px solid #c8a87a;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.exampleGridWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exampleRowLabels {
+  display: flex;
+  flex-direction: column;
+  padding-top: 28px;
+  gap: 4px;
+}
+
+.exampleColLabels {
+  display: flex;
+  gap: 4px;
+}
+
+.exampleRowLabel {
+  width: 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--yellow);
+  transition: all 0.3s;
+}
+
+.exampleColLabel {
+  width: 64px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--yellow);
+  transition: all 0.3s;
+}
+
+.exampleGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(3, 64px);
+  gap: 4px;
+}
+
+.exampleCell {
+  background: var(--shelf-bg);
+  border: 2px solid var(--shelf-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+/* Destaques visuais */
+.highlightCol {
+  background: rgba(33, 150, 243, 0.35) !important;
+  border-color: #1e88e5 !important;
+}
+
+.highlightRow {
+  background: rgba(76, 175, 80, 0.35) !important;
+  border-color: #43a047 !important;
+}
+
+.highlightCell {
+  background: rgba(255, 215, 0, 0.45) !important;
+  border-color: #fbc02d !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.glowLabel {
+  background: var(--yellow) !important;
+  color: #fff !important;
+  border-radius: 4px;
+  box-shadow: 0 0 12px var(--yellow);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ── Elementos Visuais do Tutorial ── */
+.tutorialVisuals {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.exampleBelt {
+  background: var(--belt-bg);
+  border: 2px solid #555;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 90px;
+  margin-top: 8px;
+  z-index: 2;
+  position: relative;
+}
+
+.exampleBox {
+  width: 70px !important;
+  height: 70px !important;
+  border-width: 2px !important;
+  font-size: 10px !important;
+  border-radius: 4px;
+}
+
+.dragIndicator {
+  position: absolute;
+  bottom: 45px;
+  top: 37px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 3px dashed var(--yellow);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.dragHand {
+  position: absolute;
+  font-size: 28px;
+  left: -12px;
+  animation: dragSlide 1.8s infinite ease-in-out;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+@keyframes dragSlide {
+  0% {
+    bottom: 0%;
+    opacity: 0;
+  }
+  10% {
+    bottom: 0%;
+    opacity: 1;
+  }
+  80% {
+    bottom: 100%;
+    opacity: 1;
+  }
+  90%, 100% {
+    bottom: 100%;
+    opacity: 0;
+  }
+}
+
+

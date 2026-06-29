@@ -540,6 +540,10 @@ export default function Fase12Game() {
     // ── INÍCIO DO ROUND ──────────────────────────────────────────────────────
     function startRound(idx) {
       roundIdx = idx;
+      try {
+        localStorage.setItem("current_phase", "2");
+        localStorage.setItem("current_round", String(idx + 1));
+      } catch (e) {}
       stopAllTimers();
       timerIntervals = [];
       timesLeft = [];
@@ -601,7 +605,13 @@ export default function Fase12Game() {
     nextBtn?.addEventListener("click", nextHandler);
 
     const finishBtn = $("f12-modal-finish");
-    const finishHandler = () => { window.location.href = "/menu"; };
+    const finishHandler = () => {
+      try {
+        localStorage.removeItem("current_phase");
+        localStorage.removeItem("current_round");
+      } catch (e) {}
+      window.location.href = "/menu";
+    };
     finishBtn?.addEventListener("click", finishHandler);
 
     startRound(0);
@@ -673,6 +683,12 @@ export default function Fase12Game() {
             <span id="f12-fi" className={styles.brasilino__icon}>🚛</span>&nbsp;
             <span id="f12-ft">Carregue o caminhão com as caixas certas!</span>
           </div>
+          <button
+            className={styles.footerMenuBtn}
+            onClick={() => (window.location.href = "/")}
+          >
+            🏠 MENU
+          </button>
         </div>
       </div>
 

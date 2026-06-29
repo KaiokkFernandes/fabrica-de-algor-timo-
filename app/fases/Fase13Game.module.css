@@ -49,6 +49,7 @@
   gap: clamp(4px, 0.5vh, 7px);
   flex: 1;
   min-height: 0;
+  position: relative; /* Para posicionamento absoluto do botão MENU */
 }
 
 /* ── HUD ───────────────────────────────────────────────────────────────── */
@@ -59,6 +60,28 @@
   border: 3px solid var(--border);
   padding: clamp(4px, 0.6vh, 8px) clamp(10px, 2vw, 24px);
   flex-shrink: 0;
+}
+
+.hudBtn {
+  font-family: var(--font-pixel);
+  font-size: clamp(8px, 0.8vw, 11px);
+  background: var(--yellow); /* Terracotta Orange */
+  color: #fff;
+  border: 2px solid #8c2d05;
+  padding: 6px 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #8c2d05;
+  transition: transform 0.1s, background 0.15s;
+  text-decoration: none;
+}
+
+.hudBtn:hover {
+  background: #a3350a;
+}
+
+.hudBtn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #8c2d05;
 }
 
 .hudLabel {
@@ -605,4 +628,30 @@
 
 @keyframes f13blink {
   50% { opacity: 0; }
+}
+
+.footerMenuBtn {
+  position: absolute;
+  right: clamp(12px, 2vw, 24px);
+  bottom: clamp(12px, 2.2vh, 28px);
+  font-family: var(--font-pixel);
+  font-size: clamp(11px, 1.1vw, 15px);
+  background: var(--yellow); /* Terracotta Orange */
+  color: #fff;
+  border: 3px solid #8c2d05;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #8c2d05;
+  transition: transform 0.1s, background 0.15s;
+  text-decoration: none;
+  z-index: 10;
+}
+
+.footerMenuBtn:hover {
+  background: #a3350a;
+}
+
+.footerMenuBtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #8c2d05;
 }

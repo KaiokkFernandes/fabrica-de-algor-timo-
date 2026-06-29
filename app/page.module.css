@@ -1,9 +1,14 @@
+.introMode {}
+.normalMode {}
+
 .screen {
   min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--bg);
   position: relative;
+  overflow: hidden; /* Evita qualquer rolagem */
 }
 
 /* ── Hero central ── */
@@ -13,9 +18,54 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(16px, 2.4vh, 28px);
-  padding: clamp(32px, 5vh, 72px) clamp(24px, 6vw, 100px);
+  gap: clamp(8px, 1.2vh, 16px);
+  padding: clamp(12px, 2vh, 24px) clamp(24px, 6vw, 100px);
   text-align: center;
+  min-height: 80vh;
+}
+
+/* ── Transição de Introdução ── */
+.animationContainer {
+  width: 100%;
+  max-width: 1400px; /* Começa maior (próximo ao original de 1536px) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: max-width 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.normalMode .animationContainer {
+  max-width: 780px; /* Ajustado para 780px conforme solicitado */
+  transform: translateY(15px); /* Posicionada mais para baixo, sem mover o resto */
+}
+
+.contentBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.2vh, 14px); /* Reduzido o espaço entre os elementos internos */
+  width: 100%;
+  opacity: 1;
+  max-height: 1200px;
+  transform: translateY(0);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              max-height 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              margin-top 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.normalMode .contentBody {
+  transform: translateY(-50px); /* Sobe os botões e texto */
+  margin-top: -40px; /* Aproxima ainda mais da animação */
+}
+
+.introMode .contentBody {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(40px);
+  pointer-events: none;
 }
 
 .gameTitle {
@@ -71,6 +121,16 @@
   flex-direction: column;
   gap: 6px;
   align-items: flex-end;
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.introMode .sideLinks {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
 }
 
 .sideLink {
@@ -196,4 +256,43 @@
 @keyframes squarefadein {
   0%   { transform: scale(0.75); opacity: 0; }
   100% { transform: scale(1);    opacity: 1; }
+}
+
+/* ── Botão de continuar jogo — canto inferior esquerdo ── */
+.resumeContainer {
+  position: absolute;
+  bottom: clamp(16px, 3vh, 32px);
+  left: clamp(16px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: translateY(0);
+  z-index: 10;
+}
+
+.resumeBtn {
+  font-size: clamp(14px, 1.2vw, 20px);
+  font-weight: 700;
+  color: #fff;
+  padding: 10px 20px;
+  border: 2px solid #8c2d05;
+  border-radius: 8px;
+  background: var(--yellow); /* Laranja Terracota */
+  box-shadow: 0 4px 0 #8c2d05;
+  transition: color 0.12s, border-color 0.12s, background 0.12s, transform 0.1s;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.resumeBtn:hover {
+  background: #a3350a;
+}
+
+.resumeBtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #8c2d05;
 }
