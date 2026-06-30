@@ -244,6 +244,8 @@
   display: flex;
   gap: clamp(5px, 0.8vw, 12px);
   flex-shrink: 0;
+  position: relative; /* Essencial para ancorar o PhaseActionsButton */
+  align-items: stretch; /* Garante que os botões tenham a mesma altura */
 }
 
 .hintBtn {
@@ -274,7 +276,7 @@
 .resetBtn:disabled { opacity: 0.4; cursor: default; }
 
 .runBtn {
-  flex: 1;
+  flex-grow: 1; /* Permite que o botão cresça, mas não força a ocupar todo o espaço */
   background: var(--green);
   border: 3px solid #2a7a2a;
   color: #fff;

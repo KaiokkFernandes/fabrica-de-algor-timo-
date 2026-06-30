@@ -2,6 +2,7 @@ import "./globals.css";
 import { Press_Start_2P, Nunito } from "next/font/google";
 import localFont from "next/font/local";
 import ClickSound from "./components/ClickSound";
+import AudioSettingsButton from "./components/AudioSettingsButton";
 
 const pressStart = Press_Start_2P({
   subsets: ["latin"],
@@ -26,6 +27,14 @@ const jersey20 = localFont({
   adjustFontFallback: false,
 });
 
+const font_04B_30 = localFont({
+  src: "./fonts/04B_30__.ttf",
+  weight: "400",
+  variable: "--font-04b-30",
+  display: "swap",
+  adjustFontFallback: false,
+});
+
 export const metadata = {
   title: "RoboBlocks",
   description: "Aprenda algoritmos jogando!",
@@ -34,8 +43,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
-      <body className={`${pressStart.variable} ${nunito.variable} ${jersey20.variable}`}>
+      <body className={`${pressStart.variable} ${nunito.variable} ${jersey20.variable} ${font_04B_30.variable}`}>
         <ClickSound />
+        <AudioSettingsButton />
         <div className="app-shell">
           <main className="app-main">{children}</main>
         </div>

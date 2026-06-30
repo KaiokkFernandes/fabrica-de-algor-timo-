@@ -1,9 +1,8 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
-import { startTyping, stopTyping } from "../lib/sfx";
-
+import { playMenuMusic, startTyping, stopTyping, stopMusic } from "../lib/sfx";
 const SPEED = 38;
 
 const slides = [
@@ -50,6 +49,11 @@ export default function HistoriaPage() {
 
   const slide = slides[slideIdx];
   const isLast = slideIdx === slides.length - 1;
+
+  useEffect(() => {
+    playMenuMusic();
+    return () => stopMusic();
+  }, []);
 
   useEffect(() => {
     setDisplayed("");
