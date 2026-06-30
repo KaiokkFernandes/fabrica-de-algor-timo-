@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import styles from "./Fase12Game.module.css";
+import PhaseActionsButton from "../components/PhaseActionsButton";
+import { playRightAnswer, playWrongAnswer, startTyping, stopTyping, playGameplayMusic2, stopMusic } from "../lib/sfx";
 import {
   getBaseScore,
   startRoundAttempt,
@@ -9,6 +11,11 @@ import {
 } from "../lib/gameScore";
 
 export default function Fase12Game() {
+  useEffect(() => {
+    playGameplayMusic2();
+    return () => stopMusic();
+  }, []);
+
   useEffect(() => {
     // ── CATÁLOGO DE PRODUTOS ─────────────────────────────────────────────────
     const PRODUTOS = [
@@ -668,7 +675,7 @@ export default function Fase12Game() {
       finishBtn?.removeEventListener("click", finishHandler);
     };
   }, []);
-
+  
   return (
     <div id="f12-root" className={styles.root}>
       <div className={styles.gameTitle}>ROBOBLOCKS</div>
@@ -728,12 +735,7 @@ export default function Fase12Game() {
             <span id="f12-fi" className={styles.brasilino__icon}>🚛</span>&nbsp;
             <span id="f12-ft">Carregue o caminhão com as caixas certas!</span>
           </div>
-          <button
-            className={styles.footerMenuBtn}
-            onClick={() => (window.location.href = "/")}
-          >
-            🏠 MENU
-          </button>
+          <PhaseActionsButton />
         </div>
       </div>
 

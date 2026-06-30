@@ -1,5 +1,9 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
+import { playMenuMusic, stopMusic } from "../lib/sfx";
 
 const fases = [
   {
@@ -29,6 +33,11 @@ const fases = [
 ];
 
 export default function FaseSelectorPage() {
+  useEffect(() => {
+    playMenuMusic();
+    return () => stopMusic();
+  }, []);
+
   return (
     <div className={styles.screen}>
       <Link href="/" className={styles.backBtn}>← Voltar</Link>

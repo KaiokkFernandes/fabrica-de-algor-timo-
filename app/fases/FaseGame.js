@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import styles from "./FaseGame.module.css";
-import { startTyping, stopTyping } from "../lib/sfx";
+import PhaseActionsButton from "../components/PhaseActionsButton";
+import { playRightAnswer, playWrongAnswer, startTyping, stopTyping, playGameplayMusic1, stopMusic } from "../lib/sfx";
 import {
   getBaseScore,
   startRoundAttempt,
@@ -189,7 +190,10 @@ export default function FaseGame() {
   const [tutorialSelected, setTutorialSelected] = useState(false);
   const [tutorialDragging, setTutorialDragging] = useState(false);
 
-
+  useEffect(() => {
+      playGameplayMusic1();
+      return () => stopMusic();
+    }, []);
 
   const handleRoundEndRef = useRef(null);
   const roundConfig = ROUNDS[currentRound];
@@ -337,19 +341,6 @@ export default function FaseGame() {
     document.body.classList.add("game-mode");
     const ghost = document.getElementById("ghost");
     if (!ghost) return;
-
-    /* ── Sons de acerto/erro ── */
-    let sndRight = null, sndWrong = null;
-    try {
-      sndRight = new Audio("/sounds/right_answer.mp3");
-      sndWrong = new Audio("/sounds/wrong_answer.mp3");
-      sndRight.volume = 0.6;
-      sndWrong.volume = 0.6;
-    } catch (e) { /* Audio indisponível */ }
-    function playSound(snd) {
-      if (!snd) return;
-      try { snd.currentTime = 0; snd.play().catch(() => {}); } catch (e) {}
-    }
 
     /* ── Utilitário: shuffle ── */
     function shuffle(a) {
@@ -686,8 +677,8 @@ export default function FaseGame() {
     /* ── Pontuação flutuante ao lado do cursor ── */
     function showFloatPoints(x, y, text, color) {
       // Som: "+" = acerto, "-" = erro (cobre todos os modos de round)
-      if (typeof text === "string" && text[0] === "+") playSound(sndRight);
-      else if (typeof text === "string" && text[0] === "-") playSound(sndWrong);
+      if (typeof text === "string" && text[0] === "+") playRightAnswer();
+      else if (typeof text === "string" && text[0] === "-") playWrongAnswer();
       const el = document.getElementById("float-points");
       if (!el) return;
       el.textContent = text;
@@ -1920,12 +1911,7 @@ export default function FaseGame() {
               <span>cartas de dica 💡</span> se precisar de ajuda.
             </>
           )}
-          <button
-            className={styles.footerMenuBtn}
-            onClick={() => (window.location.href = "/")}
-          >
-            🏠 MENU
-          </button>
+          <PhaseActionsButton />
         </div>
       </div>
 

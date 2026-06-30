@@ -1,6 +1,8 @@
 "use client";
 import { useEffect } from "react";
 import styles from "./Fase13Game.module.css";
+import PhaseActionsButton from "../components/PhaseActionsButton";
+import { playRightAnswer, playWrongAnswer, startTyping, stopTyping, playGameplayMusic3, stopMusic } from "../lib/sfx";
 import {
   getBaseScore,
   startRoundAttempt,
@@ -8,6 +10,11 @@ import {
 } from "../lib/gameScore";
 
 export default function Fase13Game() {
+  useEffect(() => {
+    playGameplayMusic3();
+    return () => stopMusic();
+  }, []);
+
   useEffect(() => {
 
     // ── ROUNDS ───────────────────────────────────────────────────────────────
@@ -1103,19 +1110,15 @@ export default function Fase13Game() {
         </div>
 
         {/* Botões de ação */}
-        <div className={styles.actions}>
-          <button id="f13-hint-btn"  className={styles.hintBtn}>💡 DICA</button>
-          <button id="f13-reset-btn" className={styles.resetBtn}>🔄 RESETAR</button>
-          <button id="f13-run-btn"   className={styles.runBtn}>▶ EXECUTAR</button>
-        </div>
-        <button
-          className={styles.footerMenuBtn}
-          onClick={() => (window.location.href = "/")}
-        >
-          🏠 MENU
-        </button>
+          <div className={styles.actions}>
+            <button id="f13-hint-btn"  className={styles.hintBtn}>💡 DICA</button>
+            <button id="f13-reset-btn" className={styles.resetBtn}>🔄 RESETAR</button>
+            <button id="f13-run-btn"   className={styles.runBtn}>▶ EXECUTAR</button>
+            <PhaseActionsButton />
+          </div>
       </div>
-
+        
+      
       {/* Popup de solução ideal — overlay independente */}
       <div id="f13-demo-popup" className={styles.demoPopup} style={{ display: "none" }}>
         <div className={styles.demoBox}>
