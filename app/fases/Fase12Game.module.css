@@ -282,7 +282,7 @@
   align-items: center;
   gap: 6px;
   margin-right: 5%;
-}
+} 
 
 .brasilino__balloon::before {
   content: "";
