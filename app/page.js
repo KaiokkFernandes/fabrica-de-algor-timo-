@@ -66,6 +66,9 @@ export default function HomePage() {
         <Link href="/manual" className={styles.sideLink}>
           📖 Ajuda
         </Link>
+        <Link href="/brasilino-test" className={styles.sideLink} style={{ opacity: 0.5, fontSize: "0.8em" }}>
+          🤖 Preview rostos
+        </Link>
       </div>
 
       {/* ── Botão de continuar jogo — canto inferior esquerdo ── */}

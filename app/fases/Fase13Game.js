@@ -1,6 +1,11 @@
 "use client";
 import { useEffect } from "react";
 import styles from "./Fase13Game.module.css";
+import {
+  getBaseScore,
+  startRoundAttempt,
+  recordRoundComplete,
+} from "../lib/gameScore";
 
 export default function Fase13Game() {
   useEffect(() => {
@@ -96,6 +101,19 @@ export default function Fase13Game() {
     let tempoRestante = null;
     let hintCount = 0;
     let cleanupDone = false;
+
+    // ── Pontuação global ──────────────────────────────────────────────────────
+    let baseScore = 0;
+    let roundStartTime = 0;
+    let execErrors = 0; // execuções que falharam (robô caiu ou programa errou)
+
+    function updateScoreHUD(roundPts) {
+      const el = $("f13-score");
+      if (el) el.textContent = String(baseScore + Math.max(0, roundPts)).padStart(5, "0");
+    }
+
+    // Tabela de pontos por estrela
+    const PTS_POR_ESTRELA = { 3: 150, 2: 100, 1: 50, 0: 0 };
 
     function $(id) { return document.getElementById(id); }
 
@@ -495,6 +513,7 @@ export default function Fase13Game() {
 
     function stopWithError(msg) {
       running = false;
+      execErrors++;
       workspace?.highlightBlock(null);
       if ($("f13-run-btn"))   $("f13-run-btn").disabled   = false;
       if ($("f13-reset-btn")) $("f13-reset-btn").disabled = false;
@@ -767,7 +786,23 @@ export default function Fase13Game() {
       $("f13-modal-stars").textContent = "★".repeat(stars) + "☆".repeat(3 - stars);
       $("f13-modal-stars").className   = `f13-modal-stars f13-stars-${stars}`;
 
+      // ── Pontos padronizados ──────────────────────────────────────────────────
+      const pontosGanhos = PTS_POR_ESTRELA[stars] || 0;
+      const gsResult = recordRoundComplete(3, roundIdx + 1, {
+        score: pontosGanhos,
+        errors: execErrors,
+        hints: hintCount,
+        stars,
+        timeMs: Date.now() - roundStartTime,
+      });
+      updateScoreHUD(pontosGanhos);
+
       const msgs = [];
+      if (gsResult.isFirst && pontosGanhos > 0)
+        msgs.push(`🏆 +${pontosGanhos} pontos! Total acumulado: ${gsResult.totalScore} pts`);
+      else if (!gsResult.isFirst)
+        msgs.push(`🏆 Total acumulado: ${gsResult.totalScore} pts (round já concluído — pontos não adicionados)`);
+
       if (stars === 3) msgs.push("🤖 Brasilino diz: Programa perfeito! Você é um programador nato!");
       else if (stars === 2) msgs.push("🤖 Brasilino diz: Muito bem! Tente usar menos blocos na próxima.");
       else msgs.push("🤖 Brasilino diz: Funcionou! Tente o bloco Repetir para usar menos blocos.");
@@ -822,8 +857,15 @@ export default function Fase13Game() {
         localStorage.setItem("current_phase", "3");
         localStorage.setItem("current_round", String(idx + 1));
       } catch (e) {}
-      hintCount = 0;
-      running   = false;
+      hintCount   = 0;
+      execErrors  = 0;
+      running     = false;
+
+      // Pontuação global
+      baseScore      = getBaseScore(3, idx + 1);
+      roundStartTime = Date.now();
+      startRoundAttempt(3, idx + 1);
+      updateScoreHUD(0);
       stopTimer();
       $("f13-modal").style.display = "none";
 
@@ -1014,6 +1056,10 @@ export default function Fase13Game() {
         <div className={styles.hud}>
           <div>
             <div className={styles.hudVal} id="f13-round">1/5</div>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <div className={styles.hudLabel}>PONTOS</div>
+            <div className={styles.hudVal} id="f13-score">00000</div>
           </div>
           <div style={{ textAlign: "center" }}>
             <div className={styles.hudLabel}>JANELAS LIMPAS</div>

@@ -2,6 +2,11 @@
 
 import { useEffect } from "react";
 import styles from "./Fase12Game.module.css";
+import {
+  getBaseScore,
+  startRoundAttempt,
+  recordRoundComplete,
+} from "../lib/gameScore";
 
 export default function Fase12Game() {
   useEffect(() => {
@@ -30,6 +35,7 @@ export default function Fase12Game() {
     const ROUNDS = [
       {
         numero: 1,
+        pontosMaximos: 150,
         caminhoes: [{
           label: "🚛 Caminhão Frigorífico",
           aceita: ["refrigerado"],
@@ -42,6 +48,7 @@ export default function Fase12Game() {
       },
       {
         numero: 2,
+        pontosMaximos: 200,
         caminhoes: [{
           label: "🚛 Caminhão Refrigerado",
           aceita: ["refrigerado"],
@@ -53,6 +60,7 @@ export default function Fase12Game() {
       },
       {
         numero: 3,
+        pontosMaximos: 200,
         caminhoes: [{
           label: "🚛 Caminhão Misto",
           aceita: ["refrigerado", "congelado"],
@@ -65,6 +73,7 @@ export default function Fase12Game() {
       },
       {
         numero: 4,
+        pontosMaximos: 250,
         caminhoes: [{
           label: "🚛 Caminhão Expresso",
           aceita: ["refrigerado"],
@@ -76,6 +85,7 @@ export default function Fase12Game() {
       },
       {
         numero: 5,
+        pontosMaximos: 300,
         // Round 5: dois caminhões simultâneos
         caminhoes: [
           {
@@ -107,6 +117,10 @@ export default function Fase12Game() {
     let timesLeft = [];
     let dispatched = [];  // dispatched[t] = true se o caminhão t já foi despachado
     let roundScores = []; // pontuação de cada caminhão no round
+
+    // ── Pontuação global ──────────────────────────────────────────────────────
+    let baseScore = 0;       // total acumulado sem este round (carregado ao iniciar round)
+    let roundStartTime = 0;  // timestamp de início do round atual
 
     // ── UTILITÁRIOS ──────────────────────────────────────────────────────────
     function shuffle(a) {
@@ -190,6 +204,11 @@ export default function Fase12Game() {
     function hideGhost() { $("f12-ghost").style.display = "none"; }
 
     // ── RENDERIZAÇÃO ─────────────────────────────────────────────────────────
+    function updateScoreHUD(roundPts) {
+      const el = $("f12-score");
+      if (el) el.textContent = String(baseScore + Math.max(0, roundPts)).padStart(5, "0");
+    }
+
     function updateHUD() {
       const round = ROUNDS[roundIdx];
       const totalOccupied = cargo.reduce((s, slots) => s + slots.filter(Boolean).length, 0);
@@ -198,6 +217,8 @@ export default function Fase12Game() {
       $("f12-round").textContent = `ROUND ${round.numero}/5`;
       $("f12-slots").textContent = `${totalOccupied}/${totalCap}`;
       $("f12-lucro").textContent = `R$ ${lucroAtual}`;
+      // O score HUD é atualizado no showModal() ao final do round
+      updateScoreHUD(0);
     }
 
     function renderTruckPanels() {
@@ -459,14 +480,25 @@ export default function Fase12Game() {
       const stars = pct >= 0.9 ? 3 : pct >= 0.7 ? 2 : pct >= 0.5 ? 1 : 0;
       const isLast = roundIdx === ROUNDS.length - 1;
 
-      // Save stars
+      // ── Pontos padronizados ──────────────────────────────────────────────────
+      const pontosGanhos = Math.round(pct * (round.pontosMaximos || 200));
+      const gsResult = recordRoundComplete(2, roundIdx + 1, {
+        score: pontosGanhos,
+        errors: totalInvalid,
+        hints: 0,
+        stars,
+        timeMs: Date.now() - roundStartTime,
+      });
+      // Atualiza HUD com pontuação final do round
+      updateScoreHUD(pontosGanhos);
+
+      // Save stars (legado)
       try {
         const key = `fase12_round${round.numero}_stars`;
         const prev = parseInt(localStorage.getItem(key) || "0");
         if (stars > prev) localStorage.setItem(key, String(stars));
         if (isLast && stars > 0) localStorage.setItem("fase12_completed", "1");
-        // Best stars across all rounds for menu display
-        const allStars = ROUNDS.map((r, i) =>
+        const allStars = ROUNDS.map((r) =>
           parseInt(localStorage.getItem(`fase12_round${r.numero}_stars`) || "0")
         );
         localStorage.setItem("fase12_best_stars", String(Math.min(...allStars)));
@@ -485,6 +517,9 @@ export default function Fase12Game() {
       $("f12-modal-stars").className = `f12-modal-stars f12-stars-${stars}`;
       $("f12-modal-lucro").textContent = `R$ ${totalLucro} / R$ ${totalMax}`;
       $("f12-modal-pct").textContent = `${Math.round(pct * 100)}% do lucro máximo`;
+      $("f12-modal-pts").textContent = gsResult.isFirst
+        ? `+${pontosGanhos} pts 🎉 | 🏆 Total: ${gsResult.totalScore} pts`
+        : `${pontosGanhos} pts (round já concluído — pontos não adicionados) | 🏆 Total: ${gsResult.totalScore} pts`;
       $("f12-modal-msgs").innerHTML = msgs.map(m => `<div class="f12-modal-msg">${m}</div>`).join("");
       $("f12-modal-next").style.display = isLast ? "none" : "inline-block";
       $("f12-modal-finish").style.display = isLast ? "inline-block" : "none";
@@ -549,6 +584,12 @@ export default function Fase12Game() {
       timesLeft = [];
       dispatched = [];
       roundScores = [];
+
+      // Pontuação global
+      baseScore = getBaseScore(2, idx + 1);
+      roundStartTime = Date.now();
+      startRoundAttempt(2, idx + 1);
+      updateScoreHUD(0);
 
       const round = ROUNDS[idx];
 
@@ -643,6 +684,10 @@ export default function Fase12Game() {
             <div className={styles.hudVal} id="f12-round">1/5</div>
           </div>
           <div style={{ textAlign: "center" }}>
+            <div className={styles.hudLabel}>PONTOS</div>
+            <div className={styles.hudVal} id="f12-score">00000</div>
+          </div>
+          <div style={{ textAlign: "center" }}>
             <div className={styles.hudLabel}>ESPAÇOS</div>
             <div className={styles.hudVal} id="f12-slots">0/5</div>
           </div>
@@ -704,6 +749,7 @@ export default function Fase12Game() {
           <div id="f12-modal-stars" className="f12-modal-stars">★★★</div>
           <div id="f12-modal-lucro" className={styles.modalLucro}></div>
           <div id="f12-modal-pct" className={styles.modalPct}></div>
+          <div id="f12-modal-pts" style={{ fontSize: "0.85em", color: "#ffd700", fontWeight: "bold", margin: "4px 0" }}></div>
           <div id="f12-modal-msgs" className={styles.modalMsgs}></div>
           <div className={styles.modalBtns}>
             <button id="f12-modal-retry" className={styles.retryBtn}>↩ TENTAR DE NOVO</button>

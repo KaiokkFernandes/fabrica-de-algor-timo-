@@ -2,36 +2,44 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import { startTyping, stopTyping } from "../lib/sfx";
 
 const SPEED = 38;
 
 const slides = [
   {
+    imagem: "/historia/chegando_aeroporto.webp",
     imagemLabel: "BRASILINO CHEGANDO DAS FÉRIAS COM MALA E CHAPÉU DE PRAIA",
     fala: "UFA! Que férias incríveis! Finalmente de volta pra fábrica! 🏖️",
     mood: "excited",
   },
   {
+    imagem: "/historia/bagunca.webp",
     imagemLabel: "FÁBRICA EM BAGUNÇA TOTAL — CAIXAS ESPALHADAS, SUJEIRA",
-    fala: "Espera... o que aconteceu aqui?! A fábrica tá uma BAGUNÇA TOTAL! 😱",
-    mood: "sad",
-  },
-  {
-    imagemLabel: "CAIXAS FORA DO LUGAR, CAMINHÕES PARADOS, JANELAS SUJAS",
     fala: "As caixas estão tudo fora do lugar... os caminhões parados sem saber o que carregar... e nem me fala das janelas do prédio!",
     mood: "sad",
   },
   {
+    imagem: "/historia/chegando_viagem.webp",
+    imagemLabel: "CAIXAS FORA DO LUGAR, CAMINHÕES PARADOS, JANELAS SUJAS",
+    fala: "Espera... o que aconteceu aqui?! A fábrica tá uma BAGUNÇA TOTAL! 😱",
+    mood: "preocupado",
+  },
+  {
+    imagem: "/historia/esperancoso.webp",
     imagemLabel: "BRASILINO COM EXPRESSÃO ESPERANÇOSA OLHANDO PARA O JOGADOR",
     fala: "Eu preciso da sua ajuda! Você consegue me ajudar a organizar tudo de volta?",
     mood: "happy",
   },
 ];
 
-const MOODS = {
-  excited: "😄",
-  sad: "😰",
-  happy: "🤖",
+const MOOD_SPRITES = {
+  excited:    "feliz_gatinho.png",
+  sad:        "robo_triste.png",
+  happy:      "feliz_normal.png",
+  neutral:    "robo_neutral.png",
+  preocupado: "robo_preocupado.png",
+  brabo:      "robo_brabo.png",
 };
 
 export default function HistoriaPage() {
@@ -47,21 +55,27 @@ export default function HistoriaPage() {
     setDisplayed("");
     setDone(false);
     let i = 0;
+    startTyping();
     const id = setInterval(() => {
       i++;
       setDisplayed(slide.fala.slice(0, i));
       if (i >= slide.fala.length) {
         clearInterval(id);
         setDone(true);
+        stopTyping();
       }
     }, SPEED);
-    return () => clearInterval(id);
+    return () => {
+      clearInterval(id);
+      stopTyping();
+    };
   }, [slideIdx]);
 
   function skipOrNext() {
     if (!done) {
       setDisplayed(slide.fala);
       setDone(true);
+      stopTyping();
       return;
     }
     if (isLast) {
@@ -80,15 +94,27 @@ export default function HistoriaPage() {
             <span key={i} className={`${styles.dot} ${i === slideIdx ? styles.dotActive : ""}`} />
           ))}
         </div>
-        <div className={styles.imagePlaceholder}>
-          <span className={styles.imageLabel}>[ADICIONAR IMAGEM DE {slide.imagemLabel}]</span>
-        </div>
+        {slide.imagem ? (
+          <img
+            key={slide.imagem}
+            src={slide.imagem}
+            alt={slide.imagemLabel}
+            className={styles.image}
+          />
+        ) : (
+          <div className={styles.imagePlaceholder}>
+            <span className={styles.imageLabel}>[ADICIONAR IMAGEM DE {slide.imagemLabel}]</span>
+          </div>
+        )}
       </div>
 
       {/* ── Barra de diálogo ── */}
       <div className={styles.dialogBar} onClick={(e) => e.stopPropagation()}>
         <div className={styles.dialogSprite}>
-          <span className={styles.spriteEmoji}>{MOODS[slide.mood]}</span>
+          <div className={styles.face}>
+            <img src="/brasilino/robo_idle.png" className={styles.faceBase} alt="" />
+            <img src={`/brasilino/${MOOD_SPRITES[slide.mood] ?? "robo_idle.png"}`} className={styles.faceExpr} alt="" />
+          </div>
           <span className={styles.spriteName}>BRASILINO</span>
         </div>
 

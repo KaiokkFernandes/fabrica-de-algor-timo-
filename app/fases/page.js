@@ -39,8 +39,8 @@ export default function FaseSelectorPage() {
       </div>
 
       <div className={styles.grid}>
-        {fases.map((f) => (
-          <Link key={f.num} href={f.href} className={styles.card} style={{ "--accent": f.color }}>
+        {fases.map((f, i) => (
+          <Link key={f.num} href={f.href} className={styles.card} style={{ "--accent": f.color, "--i": i }}>
             <span className={styles.cardIcon}>{f.icon}</span>
             <span className={styles.cardNum}>{f.num}</span>
             <h2 className={styles.cardName}>{f.name}</h2>

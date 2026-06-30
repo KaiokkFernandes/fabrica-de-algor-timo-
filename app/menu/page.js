@@ -1,6 +1,11 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import Brasilino from "../components/Brasilino";
+import { getTotalScore, getFullReport } from "../lib/gameScore";
+import ReportDownload from "../components/ReportDownload";
 
 const stages = [
   {
@@ -8,7 +13,6 @@ const stages = [
     name: "INTRODUCAO",
     desc: "Contexto e objetivos do treinamento.",
     href: "/introducao",
-    stars: 3,
     locked: false,
     icon: "📋",
   },
@@ -17,7 +21,6 @@ const stages = [
     name: "ESTEIRA DE CAIXAS",
     desc: "Arraste caixas para as coordenadas corretas.",
     href: "/fases/1",
-    stars: 0,
     locked: false,
     icon: "⚙️",
   },
@@ -26,7 +29,6 @@ const stages = [
     name: "DESPACHANTE DA FABRICA",
     desc: "Arraste as caixas certas para o caminhao e maximize o lucro!",
     href: "/fases/2",
-    stars: 0,
     locked: false,
     icon: "🚛",
   },
@@ -35,7 +37,6 @@ const stages = [
     name: "LAVADOR INDUSTRIAL",
     desc: "Programe o Robozinho pra lavar todas as janelas do predio!",
     href: "/fases/3",
-    stars: 0,
     locked: false,
     icon: "🤖",
   },
@@ -44,25 +45,20 @@ const stages = [
     name: "EM BREVE",
     desc: "Novos desafios se aproximam.",
     href: "#",
-    stars: 0,
     locked: true,
     icon: "🔒",
   },
 ];
 
-function Stars({ count }) {
-  return (
-    <span className={styles.stars}>
-      {[1, 2, 3].map((i) => (
-        <span key={i} style={{ color: i <= count ? "#c07800" : "#c8a87a" }}>
-          ★
-        </span>
-      ))}
-    </span>
-  );
-}
-
 export default function MenuPage() {
+  const [totalScore, setTotalScore] = useState(0);
+  const [report, setReport] = useState(null);
+
+  useEffect(() => {
+    setTotalScore(getTotalScore());
+    setReport(getFullReport());
+  }, []);
+
   return (
     <div className={styles.screen}>
       <div className={styles.header}>
@@ -72,6 +68,12 @@ export default function MenuPage() {
           mood="happy"
           fala="Qual aventura você escolhe hoje? Eu te ajudo! 😄"
         />
+      </div>
+
+      {/* Placar global */}
+      <div className={styles.scoreBar}>
+        <span className={styles.scoreLabel}>🏆 PONTUAÇÃO TOTAL</span>
+        <span className={styles.scoreValue}>{totalScore} pts</span>
       </div>
 
       <div className={styles.list}>
@@ -87,7 +89,7 @@ export default function MenuPage() {
               <span className={styles.name}>{s.name}</span>
               <span className={styles.desc}>{s.desc}</span>
             </div>
-            <Stars count={s.stars} />
+            <span className={styles.stageIcon}>{s.icon}</span>
           </Link>
         ))}
       </div>
@@ -95,6 +97,9 @@ export default function MenuPage() {
       <div className={styles.hint}>
         Complete as fases para ganhar <span>⭐⭐⭐</span> e desbloquear novas aventuras!
       </div>
+
+      {/* Botão de relatório */}
+      {report && <ReportDownload report={report} />}
     </div>
   );
 }

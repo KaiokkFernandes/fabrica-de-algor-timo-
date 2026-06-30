@@ -34,6 +34,36 @@
   letter-spacing: 2px;
 }
 
+/* ── score bar ── */
+.scoreBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: var(--panel);
+  border: 3px solid var(--yellow);
+  border-left: 6px solid var(--yellow);
+}
+
+.scoreLabel {
+  font-family: var(--font-pixel);
+  font-size: clamp(10px, 0.9vw, 16px);
+  color: var(--yellow);
+  letter-spacing: 2px;
+}
+
+.scoreValue {
+  font-family: var(--font-pixel);
+  font-size: clamp(16px, 1.6vw, 28px);
+  color: var(--yellow);
+  text-shadow: 2px 2px 0 #000;
+}
+
+.stageIcon {
+  font-size: clamp(18px, 1.6vw, 28px);
+  flex-shrink: 0;
+}
+
 /* ── stage list ── */
 .list {
   display: flex;

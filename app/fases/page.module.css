@@ -54,6 +54,11 @@
   max-width: min(95vw, 1100px);
 }
 
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Card ── */
 .card {
   --accent: var(--yellow);
@@ -67,6 +72,8 @@
   text-align: center;
   transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  animation: cardFadeIn 0.55s ease both;
+  animation-delay: calc(var(--i, 0) * 0.7s);
 }
 
 .card:hover {
