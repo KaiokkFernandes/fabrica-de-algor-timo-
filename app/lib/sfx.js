@@ -10,7 +10,7 @@ const DEFAULT_SETTINGS = {
   musicMuted: false,
   effectsMuted: false,
   effectsVolume: 0.5,
-  musicVolume: 0.35,
+  musicVolume: 0.1, // ~30% do volume padrão original (era 0.35)
 };
 
 const AUDIO_SETTINGS_STORAGE_KEY = "roboblocks-audio-settings";

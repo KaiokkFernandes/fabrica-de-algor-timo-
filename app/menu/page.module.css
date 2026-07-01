@@ -1,157 +1,304 @@
+/* ═══════════════════════════════════════════════════════════════════
+   menu/page.module.css  —  Mapa de Fases (/menu)
+═══════════════════════════════════════════════════════════════════ */
+
 .screen {
-  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  align-items: stretch;
+  gap: clamp(20px, 3vh, 36px);
+  padding: clamp(60px, 7vh, 90px) clamp(16px, 3vw, 48px) clamp(32px, 4vh, 60px);
+  font-family: var(--font-body);
+  position: relative;
 }
 
-/* ── header ── */
+.backBtn {
+  position: absolute;
+  top: clamp(16px, 2.5vh, 28px);
+  left: clamp(16px, 2.5vw, 32px);
+  font-size: clamp(14px, 1.1vw, 18px);
+  font-weight: 700;
+  color: var(--text-dim);
+  transition: color 0.12s;
+  z-index: 10;
+}
+.backBtn:hover { color: var(--yellow); }
+
 .header {
-  padding: 22px 24px;
-  background: var(--panel);
-  border: 3px solid var(--border);
-  border-left: 6px solid var(--yellow);
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
   flex-wrap: wrap;
-}
-
-.eyebrow {
-  font-size: clamp(7px, 0.65vw, 13px);
-  color: var(--yellow);
-  letter-spacing: 4px;
+  gap: 12px;
 }
 
 .title {
-  /* Pixel para o título da tela de seleção */
-  font-family: var(--font-press-start);
-  font-size: clamp(13px, 1.8vw, 32px);
-  color: var(--text);
-  letter-spacing: 0.5px;
+  font-family: var(--font-pixel);
+  font-size: clamp(14px, 2vw, 26px);
+  color: var(--yellow);
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,.12);
 }
 
-/* ── score bar ── */
-.scoreBar {
+.totalScore {
+  font-size: clamp(13px, 1.1vw, 18px);
+  color: var(--text-dim);
+  background: var(--panel);
+  border: 2px solid var(--yellow);
+  padding: 6px 18px;
+  border-radius: 4px;
+}
+.totalScore strong { color: var(--yellow); }
+
+/* ══ Fase 1 — seção detalhada ══════════════════════════════════════ */
+.phase1Section {
+  background: var(--panel);
+  border: 3px solid var(--border);
+  border-left: 6px solid #f0c040;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: clamp(16px, 2.5vh, 28px) clamp(16px, 2.5vw, 32px);
+}
+
+.phase1Header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.phase1TitleRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.phase1Icon { font-size: clamp(32px, 4vw, 52px); line-height: 1; }
+
+.phase1Tag {
+  font-family: var(--font-pixel);
+  font-size: clamp(8px, 0.7vw, 11px);
+  color: #fff;
+  background: #f0c040;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.phase1Name {
+  font-size: clamp(18px, 1.8vw, 26px);
+  font-weight: 800;
+  color: var(--text);
+}
+
+.phase1Progress {
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: clamp(11px, 0.9vw, 14px);
+  color: var(--text-dim);
+}
+
+.progressBar {
+  height: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #f0c040, #f5a623);
+  border-radius: 6px;
+  transition: width 0.6s ease;
+  min-width: 4px;
+}
+
+/* ── Grid de rounds ─────────────────────────────────────────────── */
+.roundsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(10px, 1.5vw, 18px);
+}
+
+@media (max-width: 900px) { .roundsGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .roundsGrid { grid-template-columns: 1fr; } }
+
+.roundCard {
+  position: relative;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 12px 12px;
+  text-align: center;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.roundCard:hover { border-color: #f0c040; transform: translateY(-3px); }
+
+.roundDone   { border-color: rgba(240,192,64,0.35); background: rgba(240,192,64,0.05); }
+.roundPerfect { border-color: #f0c040 !important; background: rgba(240,192,64,0.1) !important; box-shadow: 0 0 16px rgba(240,192,64,0.2); }
+.roundLocked  { opacity: 0.55; }
+
+.perfectBadge {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: #f0c040;
+  color: #1a1a1a;
+  font-family: var(--font-pixel);
+  font-size: clamp(7px, 0.6vw, 10px);
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(240,192,64,0.4);
+}
+
+.inProgressBadge {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: #5a9e30;
+  color: #fff;
+  font-family: var(--font-pixel);
+  font-size: clamp(6px, 0.55vw, 9px);
+  padding: 3px 8px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.roundHeader { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: center; }
+.roundNum { font-family: var(--font-pixel); font-size: clamp(8px, 0.7vw, 11px); color: var(--text-dim); letter-spacing: 1px; }
+.roundIcon { font-size: clamp(20px, 2vw, 28px); }
+
+.roundName {
+  font-size: clamp(11px, 0.9vw, 14px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stars { display: flex; gap: 2px; }
+.stars_lg .starOn  { font-size: clamp(16px, 1.4vw, 22px); color: #f0c040; }
+.stars_lg .starOff { font-size: clamp(16px, 1.4vw, 22px); color: rgba(255,255,255,0.15); }
+.stars_md .starOn  { font-size: clamp(13px, 1.1vw, 17px); color: #f0c040; }
+.stars_md .starOff { font-size: clamp(13px, 1.1vw, 17px); color: rgba(255,255,255,0.15); }
+.stars_sm .starOn  { font-size: clamp(11px, 0.9vw, 14px); color: #f0c040; }
+.stars_sm .starOff { font-size: clamp(11px, 0.9vw, 14px); color: rgba(255,255,255,0.15); }
+
+.roundPts { font-size: clamp(11px, 0.9vw, 14px); display: flex; align-items: baseline; gap: 2px; }
+.ptsVal  { font-weight: 800; color: #f0c040; }
+.ptsMax  { font-weight: 800; color: #f0c040; }
+.ptsSep  { color: var(--text-dim); }
+.ptsMax2 { color: var(--text-dim); font-size: 0.85em; }
+
+.roundPtsEmpty { font-size: clamp(10px, 0.85vw, 13px); color: var(--text-dim); }
+
+.roundBtnPlay,
+.roundBtnRetry,
+.roundBtnReplay {
+  font-family: var(--font-pixel);
+  font-size: clamp(7px, 0.6vw, 10px);
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-top: 4px;
+  transition: filter 0.12s, transform 0.12s;
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+
+.roundBtnPlay   { background: #f0c040; color: #1a1a1a; border: 2px solid #c09a20; }
+.roundBtnRetry  { background: #e05a2b; color: #fff; border: 2px solid #b03a10; }
+.roundBtnReplay { background: transparent; color: var(--text-dim); border: 2px solid var(--border); }
+
+.roundBtnPlay:hover, .roundBtnRetry:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.roundBtnReplay:hover { border-color: var(--text-dim); color: var(--text); }
+
+/* ══ Cards de fase 2 e 3 ════════════════════════════════════════════ */
+.phaseSummaryRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 2vw, 24px);
+}
+
+@media (max-width: 680px) { .phaseSummaryRow { grid-template-columns: 1fr; } }
+
+.phaseCard {
+  --accent: var(--yellow);
+  background: var(--panel);
+  border: 3px solid var(--border);
+  border-left: 6px solid var(--accent);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 24px;
-  background: var(--panel);
-  border: 3px solid var(--yellow);
-  border-left: 6px solid var(--yellow);
-}
-
-.scoreLabel {
-  font-family: var(--font-press-start);
-  font-size: clamp(10px, 0.9vw, 16px);
-  color: var(--yellow);
-  letter-spacing: 2px;
-}
-
-.scoreValue {
-  font-family: var(--font-04b-30);
-  font-size: clamp(16px, 1.6vw, 28px);
-  color: var(--yellow);
-  text-shadow: 2px 2px 0 #9b2727;
-}
-
-.stageIcon {
-  font-size: clamp(18px, 1.6vw, 28px);
-  flex-shrink: 0;
-}
-
-/* ── stage list ── */
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.stage {
-  display: flex;
-  align-items: center;
+  padding: clamp(16px, 2.5vh, 24px) clamp(16px, 2.5vw, 28px);
   gap: 16px;
-  padding: 16px 20px;
-  background: var(--panel);
-  border: 3px solid var(--border);
-  transition: border-color 0.1s, transform 0.1s;
+  transition: border-color 0.15s, transform 0.15s;
 }
 
-.stage:not(.locked):hover {
-  border-color: var(--yellow);
-  transform: translateX(6px);
-}
+.phaseCard:hover { border-color: var(--accent); transform: translateY(-3px); }
 
-.locked {
-  opacity: 0.4;
-  pointer-events: none;
-  cursor: not-allowed;
-}
+.phaseCardLeft { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0; }
+.phaseIcon { font-size: clamp(28px, 3.5vw, 48px); line-height: 1; flex-shrink: 0; }
 
-.arrow {
-  font-size: clamp(12px, 1.2vw, 22px);
-  color: var(--text-dim);
-  flex-shrink: 0;
-  width: 20px;
-  transition: color 0.1s, transform 0.1s;
-}
-
-.stage:not(.locked):hover .arrow {
-  color: var(--yellow);
-  transform: translateX(4px);
-}
-
-.info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 0;
-}
-
-.code {
-  font-size: clamp(7px, 0.6vw, 12px);
-  color: var(--text-dim);
-  letter-spacing: 3px;
-}
-
-.name {
-  /* Pixel para nome da fase — curto e decorativo */
+.phaseNum {
   font-family: var(--font-pixel);
-  font-size: clamp(10px, 1.1vw, 18px);
-  color: var(--text);
-  letter-spacing: 1px;
+  font-size: clamp(7px, 0.6vw, 10px);
+  color: #fff;
+  background: var(--accent);
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-bottom: 4px;
 }
 
-.desc {
-  /* Baloo 2 para descrição da fase */
-  font-size: clamp(14px, 0.9vw, 16px);
-  color: var(--text-dim);
-  line-height: 1.5;
-  letter-spacing: 0;
+.phaseName { font-size: clamp(14px, 1.3vw, 20px); font-weight: 800; color: var(--text); line-height: 1.2; }
+.phaseDesc { font-size: clamp(12px, 0.9vw, 15px); color: var(--text-dim); line-height: 1.5; margin-top: 3px; }
+
+.phaseCardRight { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
+.phaseStats { display: flex; gap: 20px; align-items: flex-end; }
+.phaseStat { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+
+.phaseStatVal { font-family: var(--font-pixel); font-size: clamp(12px, 1.2vw, 18px); color: var(--text); }
+.phaseStatLbl { font-size: clamp(9px, 0.7vw, 11px); color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+
+.phasePlay {
+  font-family: var(--font-pixel);
+  font-size: clamp(7px, 0.65vw, 11px);
+  color: #fff;
+  background: var(--accent);
+  padding: 6px 16px;
+  border-radius: 4px;
+  letter-spacing: 2px;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.18);
+  transition: filter 0.12s;
 }
 
-.stars {
-  font-size: clamp(12px, 1.3vw, 24px);
-  letter-spacing: 3px;
-  flex-shrink: 0;
-}
-
-/* ── footer hint ── */
-.hint {
-  /* Baloo 2 para dica de rodapé */
-  font-size: clamp(14px, 0.9vw, 16px);
-  color: var(--text-dim);
-  text-align: center;
-  letter-spacing: 0;
-  padding: 12px;
-  border: 2px solid var(--border);
-  background: var(--panel);
-}
-
-.hint span {
-  color: var(--yellow);
-}
+.phaseCard:hover .phasePlay { filter: brightness(1.1); }

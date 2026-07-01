@@ -60,6 +60,29 @@
   z-index: 2;
 }
 
+/* Configurações — mesmo estilo e canto usado na landing (sideLink) */
+.settingsBtn {
+  position: fixed;
+  bottom: clamp(16px, 3vh, 32px);
+  right: clamp(16px, 3vw, 40px);
+  z-index: 5;
+  font-family: var(--font-body);
+  font-size: clamp(16px, 1.3vw, 22px);
+  font-weight: 700;
+  color: var(--text-dim);
+  padding: 10px 20px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.settingsBtn:hover {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: var(--bg2);
+}
+
 .dot {
   width: 12px;
   height: 12px;

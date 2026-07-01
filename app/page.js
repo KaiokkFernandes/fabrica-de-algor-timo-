@@ -66,6 +66,14 @@ export default function HomePage() {
         <Link href="/manual" className={styles.sideLink}>
           📖 Ajuda
         </Link>
+        <button
+          type="button"
+          className={styles.sideLink}
+          style={{ cursor: "pointer", fontFamily: "inherit" }}
+          onClick={() => window.dispatchEvent(new Event("roboblocks:audio-settings-open"))}
+        >
+          ⚙️ Configurações
+        </button>
         <Link href="/brasilino-test" className={styles.sideLink} style={{ opacity: 0.5, fontSize: "0.8em" }}>
           🤖 Preview rostos
         </Link>

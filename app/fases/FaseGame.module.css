@@ -364,9 +364,13 @@
 }
 
 .shelfLabel {
-  font-size: clamp(6px, 0.8vw, 10px);
-  color: #7a5c42;
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: var(--yellow); /* Laranja Terracota, igual ao rótulo da esteira */
   text-align: center;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
 }
 
 .shelfWrap {
@@ -932,6 +936,31 @@
   border-color: #555;
 }
 
+.root :global(.hint-card.locked) {
+  filter: grayscale(0.7) brightness(0.75);
+  cursor: not-allowed;
+  border-color: #999;
+}
+.root :global(.hint-card.locked:hover) {
+  transform: none;
+}
+.root :global(.hint-card.locked .card-cost) {
+  display: none;
+}
+
+.root :global(.card-lock-msg) {
+  display: none;
+  position: absolute;
+  bottom: 6px;
+  font-family: var(--font-body);
+  font-size: clamp(9px, 1vh, 12px);
+  color: var(--text-dim);
+  font-weight: bold;
+}
+.root :global(.hint-card.locked .card-lock-msg) {
+  display: block;
+}
+
 .root :global(.hint-card .card-top) {
   font-size: clamp(26px, 3vh, 42px); /* Ícones ligeiramente maiores */
   line-height: 1;
@@ -1174,6 +1203,26 @@
 .avatarEmoji {
   font-size: clamp(64px, 8vw, 110px);
   line-height: 1;
+}
+
+.avatarFace {
+  position: relative;
+  width: clamp(64px, 8vw, 110px);
+  height: clamp(64px, 8vw, 110px);
+  flex-shrink: 0;
+}
+
+.avatarFaceBase,
+.avatarFaceExpr {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.avatarFaceExpr {
+  position: absolute;
+  inset: 0;
 }
 
 .avatarName {

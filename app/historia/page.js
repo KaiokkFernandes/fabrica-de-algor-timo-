@@ -93,6 +93,16 @@ export default function HistoriaPage() {
     <div className={styles.screen} onClick={skipOrNext}>
       {/* ── Área da imagem ── */}
       <div className={styles.imageArea}>
+        <button
+          type="button"
+          className={styles.settingsBtn}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.dispatchEvent(new Event("roboblocks:audio-settings-open"));
+          }}
+        >
+          ⚙️ Configurações
+        </button>
         <div className={styles.dots}>
           {slides.map((_, i) => (
             <span key={i} className={`${styles.dot} ${i === slideIdx ? styles.dotActive : ""}`} />

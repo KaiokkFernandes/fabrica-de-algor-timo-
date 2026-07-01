@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Fragment } from "react";
 import styles from "./FaseGame.module.css";
 import PhaseActionsButton from "../components/PhaseActionsButton";
 import { playRightAnswer, playWrongAnswer, startTyping, stopTyping, playGameplayMusic1, stopMusic } from "../lib/sfx";
@@ -9,6 +9,28 @@ import {
   startRoundAttempt,
   recordRoundComplete,
 } from "../lib/gameScore";
+
+/* ── Expressões do Brasilino (mesmo set usado na história) ── */
+const MOOD_SPRITES = {
+  happy:      "feliz_normal.png",
+  excited:    "feliz_gatinho.png",
+  sad:        "robo_triste.png",
+  neutral:    "robo_neutral.png",
+  preocupado: "robo_preocupado.png",
+  brabo:      "robo_brabo.png",
+};
+function moodFile(mood) {
+  return MOOD_SPRITES[mood] ?? "robo_idle.png";
+}
+/* ── Expressão do resultado: depende de estrelas e se completou no tempo ── */
+function resultMood(data) {
+  if (!data) return "happy";
+  if (!data.completed) return "preocupado"; // tempo esgotado
+  if (data.stars >= 3) return "excited";
+  if (data.stars === 2) return "happy";
+  if (data.stars === 1) return "neutral";
+  return "sad"; // 0 estrelas
+}
 
 /* ── Tipos de caixa disponíveis ── */
 const BOX_TYPES = [
@@ -69,7 +91,8 @@ const ROUNDS = [
     timer: null,
     pointsCorrect: 100,
     pointsWrong: 10,
-    hintCosts: [0, 0, 0],
+    hintCosts: [100, 100, 100],
+    mood: "happy",
     introText:
       "Que bom que você aceitou me ajudar! 🤖 A esteira de caixas está travada porque as coisas foram colocadas fora de ordem. Para destravar a fábrica, precisamos guardar essas primeiras caixas nos seus devidos endereços de prateleira!",
   },
@@ -82,7 +105,8 @@ const ROUNDS = [
     timer: null,
     pointsCorrect: 100,
     pointsWrong: 20,
-    hintCosts: [0, 0, 30],
+    hintCosts: [100, 100, 100],
+    mood: "excited",
     introText:
       "Muito bem! A fábrica cresceu! 📦 Agora temos 3 linhas e 3 colunas. Preste atenção: mais lugares possíveis significa que você precisa olhar com cuidado para a letra E o número!",
   },
@@ -96,7 +120,8 @@ const ROUNDS = [
     timer: null,
     pointsCorrect: 100,
     pointsWrong: 30,
-    hintCosts: [0, 20, 50],
+    hintCosts: [100, 100, 100],
+    mood: "preocupado",
     introText:
       "Eita! 😮 Algumas etiquetas da prateleira caíram! Onde aparecer um '?', você vai precisar CONTAR as linhas e colunas a partir das etiquetas que sobraram. A caixa mostra o endereço certinho — descubra qual lugar é esse!",
   },
@@ -109,7 +134,8 @@ const ROUNDS = [
     timer: null,
     pointsCorrect: 100,
     pointsWrong: 30,
-    hintCosts: [0, 20, 50],
+    hintCosts: [100, 100, 100],
+    mood: "neutral",
     introText:
       "Agora as caixas vêm com o endereço escrito por extenso! 📝 'Linha 2' quer dizer a SEGUNDA linha — conte de cima pra baixo: A é a 1ª, B é a 2ª, C é a 3ª. 'Coluna 4' é a quarta coluna. Traduza e guarde cada caixa no lugar certo!",
   },
@@ -124,6 +150,7 @@ const ROUNDS = [
     pointsCorrect: 150,
     pointsWrong: 40,
     hintCosts: [0, 0, 0],
+    mood: "excited",
     introText:
       "Chegou a hora de PROVAR que você é mestre! 🏆 Agora EU coloco as caixas na prateleira e VOCÊ me diz o endereço de cada uma. Olhe a linha (letra) e a coluna (número) e escolha a resposta certa!",
   },
@@ -139,6 +166,7 @@ const ROUNDS = [
     pointsCorrect: 150,
     pointsWrong: 40,
     hintCosts: [0, 0, 0],
+    mood: "brabo",
     introText:
       "Agora é o desafio dos MESTRES! 🕵️ As etiquetas da prateleira sumiram TODAS — só sobrou '?' no lugar. Eu coloco a caixa e você descobre o endereço CONTANDO a partir do canto de cima: a primeira linha é A, depois B, C, D... e a primeira coluna da esquerda é 1, 2, 3, 4. Confie no que você já aprendeu!",
   },
@@ -154,6 +182,7 @@ const ROUNDS = [
     pointsCorrect: 150,
     pointsWrong: 40,
     hintCosts: [0, 0, 0],
+    mood: "happy",
     introText:
       "Hora de CONSTRUIR o endereço com as suas próprias mãos! 🛠️ Eu coloco a caixa na prateleira e você monta a resposta: use o controle de COLUNA (que desliza pro lado) e o de LINHA (que desliza pra cima e pra baixo). Quando o endereço estiver certinho, aperte Confirmar!",
   },
@@ -169,14 +198,28 @@ const ROUNDS = [
     pointsCorrect: 200,
     pointsWrong: 50,
     hintCosts: [0, 0, 0],
+    mood: "excited",
     introText:
       "O DESAFIO FINAL chegou! 🏆 Agora a prateleira é gigante: 5 linhas e 5 colunas E as etiquetas sumiram — só tem '?'. Conte a partir do canto de cima pra descobrir cada endereço e monte a resposta com os controles. Você é o Mestre da Fábrica agora!",
   },
 ];
 
 export default function FaseGame() {
+  /* ── Deep-link: ?r=N inicia no round N (1-based) ── */
+  function getInitialRound() {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      const n = parseInt(p.get("r") || "1", 10);
+      if (n >= 1 && n <= ROUNDS.length) return n - 1;
+    } catch {}
+    return 0;
+  }
+
   /* ── Estados React ── */
-  const [currentRound, setCurrentRound] = useState(0);
+  const [currentRound, setCurrentRound] = useState(() => {
+    if (typeof window === "undefined") return 0;
+    return getInitialRound();
+  });
   const [showIntro, setShowIntro] = useState(true);
   const [introText, setIntroText] = useState("");
   const [introDone, setIntroDone] = useState(false);
@@ -647,6 +690,7 @@ export default function FaseGame() {
         updateScoreDisplay(score);
         bumpHud("score", "negative");
         showFloatPoints(cursorX, cursorY, `-${pointsWrong}`, "#ff5252");
+        updateHintCardsUI();
 
         // 4. Toast "Tente Novamente!"
         const toast = document.getElementById("wrong-toast");
@@ -710,9 +754,24 @@ export default function FaseGame() {
         .forEach((c) => c.classList.remove("hint-glow", "hint-glow-box"));
     }
 
+    /* ── Dicas liberadas progressivamente por erro: dica 1 após 1º erro,
+       dica 2 após o 2º, dica 3 após o 3º ── */
+    function hintUnlocked(idx) {
+      return errors > idx;
+    }
+
+    function updateHintCardsUI() {
+      HINT_CARDS.forEach((c, i) => {
+        const cardEl = document.getElementById("card-" + i);
+        if (!cardEl || c.used) return;
+        cardEl.classList.toggle("locked", !hintUnlocked(i));
+      });
+    }
+
     /* ── Usar carta de dica ── */
     function useCard(idx) {
       if (HINT_CARDS[idx].used) return;
+      if (!hintUnlocked(idx)) return;
       const unplaced = batch.filter((b) => !b.placed);
       if (unplaced.length === 0) return;
 
@@ -1210,6 +1269,7 @@ export default function FaseGame() {
       const cardEl = document.getElementById("card-" + i);
       if (cardEl) cardEl.classList.remove("used");
     });
+    updateHintCardsUI();
     const hintResult = document.getElementById("hint-result");
     if (hintResult) {
       hintResult.classList.remove("active");
@@ -1608,7 +1668,10 @@ export default function FaseGame() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.introAvatar}>
-              <span className={styles.avatarEmoji}>🤖</span>
+              <div className={styles.avatarFace}>
+                <img src="/brasilino/robo_idle.png" className={styles.avatarFaceBase} alt="" />
+                <img src={`/brasilino/${moodFile(ROUNDS[currentRound].mood)}`} className={styles.avatarFaceExpr} alt="" />
+              </div>
               <span className={styles.avatarName}>BRASILINO</span>
             </div>
             <div className={styles.introContent}>
@@ -1636,13 +1699,10 @@ export default function FaseGame() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.introAvatar}>
-              <span className={styles.avatarEmoji}>
-                {resultData.stars >= 3
-                  ? "🏆"
-                  : resultData.stars >= 2
-                  ? "⭐"
-                  : "🤖"}
-              </span>
+              <div className={styles.avatarFace}>
+                <img src="/brasilino/robo_idle.png" className={styles.avatarFaceBase} alt="" />
+                <img src={`/brasilino/${moodFile(resultMood(resultData))}`} className={styles.avatarFaceExpr} alt="" />
+              </div>
               <span className={styles.avatarName}>BRASILINO</span>
             </div>
             <div className={styles.introContent}>
@@ -1765,7 +1825,7 @@ export default function FaseGame() {
           {/* Coluna esquerda: esteira + cartas OU painel de quiz (Round 5) */}
           <div className={styles.leftColumn}>
             {roundConfig.mode === "name" ? (
-              <div id="quiz-panel" className={styles.quizPanel}>
+              <div key="panel-name" id="quiz-panel" className={styles.quizPanel}>
                 <div className={styles.quizHeader}>🎯 NOMEIE O ENDEREÇO</div>
                 <div id="quiz-progress" className={styles.quizProgress}>
                   Pergunta 1 de {roundConfig.boxCount}
@@ -1779,7 +1839,7 @@ export default function FaseGame() {
                 </div>
               </div>
             ) : roundConfig.mode === "produce" ? (
-              <div id="produce-panel" className={styles.producePanel}>
+              <div key="panel-produce" id="produce-panel" className={styles.producePanel}>
                 <div className={styles.quizHeader}>🛠️ CONSTRUA O ENDEREÇO</div>
                 <div id="produce-progress" className={styles.quizProgress}>
                   Pergunta 1 de {roundConfig.boxCount}
@@ -1826,7 +1886,7 @@ export default function FaseGame() {
                 </div>
               </div>
             ) : (
-              <>
+              <Fragment key="panel-belt">
                 <div id="belt-col" className={styles.beltCol}>
                   <div id="belt-lbl" className={styles.beltLabel}>
                     ◄ ESTEIRA DE ENTRADA ►
@@ -1846,33 +1906,36 @@ export default function FaseGame() {
                     <span id="cards-left">3 cartas restantes</span>
                   </div>
                   <div id="cards-row" className={styles.cardsRow}>
-                    <div className="hint-card" id="card-0">
+                    <div className="hint-card locked" id="card-0">
                       <div className="card-top">🔦</div>
                       <div className="card-name">ILUMINAR CÉLULA</div>
                       <div className="card-cost">
                         -{roundConfig.hintCosts[0]} pts
                       </div>
+                      <div className="card-lock-msg">🔒 erre 1x</div>
                     </div>
-                    <div className="hint-card" id="card-1">
+                    <div className="hint-card locked" id="card-1">
                       <div className="card-top">📍</div>
                       <div className="card-name">MARCAR CAIXA</div>
                       <div className="card-cost">
                         -{roundConfig.hintCosts[1]} pts
                       </div>
+                      <div className="card-lock-msg">🔒 erre 2x</div>
                     </div>
-                    <div className="hint-card" id="card-2">
+                    <div className="hint-card locked" id="card-2">
                       <div className="card-top">🗺️</div>
                       <div className="card-name">MAPA COMPLETO</div>
                       <div className="card-cost">
                         -{roundConfig.hintCosts[2]} pts
                       </div>
+                      <div className="card-lock-msg">🔒 erre 3x</div>
                     </div>
                     <div id="hint-result" className={styles.hintResult}>
                       Clique em uma carta para receber uma dica!
                     </div>
                   </div>
                 </div>
-              </>
+              </Fragment>
             )}
           </div>
 
