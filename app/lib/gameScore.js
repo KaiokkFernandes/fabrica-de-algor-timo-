@@ -138,12 +138,21 @@ export function recordRoundComplete(phase, round, { score, errors, hints, stars,
   const rd = ph.rounds[String(round)] || defaultRound();
 
   const isFirst = !rd.completed;
-  const pointsAdded = isFirst ? (score || 0) : 0;
+  const prevBest = rd.scoreEarned || 0;
+  const newScore = score || 0;
+  const bestScore = Math.max(prevBest, newScore);
+  // Só soma ao total a diferença entre o novo melhor e o recorde anterior do
+  // round — evita "farmar" pontos replayando o round várias vezes, mas
+  // ainda reflete no mapa quando o jogador consegue uma pontuação melhor.
+  const pointsAdded = bestScore - prevBest;
 
   if (isFirst) {
     rd.completed = true;
     rd.firstCompletedAt = Date.now();
-    rd.scoreEarned = score || 0;
+  }
+
+  if (pointsAdded > 0) {
+    rd.scoreEarned = bestScore;
     data.totalScore = (data.totalScore || 0) + pointsAdded;
   }
 

@@ -318,7 +318,7 @@ export default function FaseGame() {
       timeMs: data.timeMs || 0,
     });
 
-    setResultData({ ...data, isFirst: result.isFirst, totalScore: result.totalScore });
+    setResultData({ ...data, isFirst: result.isFirst, pointsAdded: result.pointsAdded, totalScore: result.totalScore });
     setShowResult(true);
   };
 
@@ -1729,9 +1729,9 @@ export default function FaseGame() {
                       : "⏰ Tempo esgotado! Veja onde cada caixa deveria ir."}
                   </div>
                   <div style={{ marginTop: "4px", fontSize: "0.8em" }}>
-                    {resultData.isFirst
-                      ? `+${resultData.score} pts neste round`
-                      : `${resultData.score} pts (round já concluído — pontos não adicionados)`}
+                    {resultData.pointsAdded > 0
+                      ? `+${resultData.pointsAdded} pts neste round`
+                      : `${resultData.score} pts (não superou seu recorde neste round — pontos não adicionados)`}
                     {resultData.timeBonus > 0 &&
                       ` (inclui bônus de ${resultData.timeBonus} pts pelo tempo!)`}
                   </div>

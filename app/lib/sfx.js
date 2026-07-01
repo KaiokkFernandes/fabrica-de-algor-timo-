@@ -21,6 +21,7 @@ const activeEffectAudios = new Set();
 let activeEffectCount = 0;
 let resumeMusicAfterEffects = false;
 let audioSettings = { ...DEFAULT_SETTINGS };
+let musicFadeInterval = null;
 
 function isClientSide() {
   return typeof window !== "undefined";
@@ -146,7 +147,57 @@ export function playEffect(src, { loop = false, reset = true, volume } = {}) {
   }
 }
 
-export function playMusic(src, { loop = true, reset = true, volume } = {}) {
+/* Navegadores bloqueiam audio.play() sem interação prévia do usuário.
+   Se a chamada falhar por isso, tenta de novo assim que o usuário
+   clicar/tocar/apertar qualquer tecla na página pela primeira vez.
+   onStart roda só quando a reprodução realmente começa (para o fade
+   não "andar" enquanto o áudio ainda está bloqueado, pausado). */
+function playWithUnlockFallback(audio, onStart) {
+  const attempt = () => {
+    const result = audio.play();
+    if (result && typeof result.then === "function") {
+      result.then(() => onStart && onStart()).catch(() => {
+        const retry = () => {
+          // Só retoma se esta ainda for a música ativa (usuário pode ter
+          // trocado de página, chamado stopMusic(), antes do 1º clique)
+          if (audio !== activeMusicAudio) return;
+          audio.play().then(() => onStart && onStart()).catch(() => {});
+        };
+        ["pointerdown", "keydown", "touchstart"].forEach((evt) =>
+          document.addEventListener(evt, retry, { once: true, passive: true })
+        );
+      });
+    } else {
+      onStart && onStart();
+    }
+  };
+  attempt();
+}
+
+function clearMusicFade() {
+  if (musicFadeInterval) {
+    clearInterval(musicFadeInterval);
+    musicFadeInterval = null;
+  }
+}
+
+/* Sobe o volume de 0 até o volume-alvo (já respeitando o slider do usuário)
+   ao longo de fadeMs, em vez de começar tocando no volume cheio. */
+function fadeMusicIn(audio, targetVolume, fadeMs) {
+  clearMusicFade();
+  if (fadeMs <= 0 || targetVolume <= 0) return;
+  const steps = 30;
+  const stepMs = fadeMs / steps;
+  let i = 0;
+  audio.volume = 0;
+  musicFadeInterval = setInterval(() => {
+    i++;
+    audio.volume = Math.min(targetVolume, (targetVolume * i) / steps);
+    if (i >= steps) clearMusicFade();
+  }, stepMs);
+}
+
+export function playMusic(src, { loop = true, reset = true, volume, fadeMs = 0 } = {}) {
   if (!isClientSide()) return null;
   try {
     if (activeMusicAudio && activeMusicAudio.src.endsWith(src)) {
@@ -156,7 +207,10 @@ export function playMusic(src, { loop = true, reset = true, volume } = {}) {
         resumeMusicAfterEffects = true;
         activeMusicAudio.pause();
       } else {
-        activeMusicAudio.play().catch(() => {});
+        const targetVolume = activeMusicAudio.volume;
+        playWithUnlockFallback(activeMusicAudio, () => {
+          if (fadeMs > 0) fadeMusicIn(activeMusicAudio, targetVolume, fadeMs);
+        });
       }
       return activeMusicAudio;
     }
@@ -169,7 +223,10 @@ export function playMusic(src, { loop = true, reset = true, volume } = {}) {
       resumeMusicAfterEffects = true;
       activeMusicAudio.pause();
     } else {
-      activeMusicAudio.play().catch(() => {});
+      const targetVolume = activeMusicAudio.volume;
+      playWithUnlockFallback(activeMusicAudio, () => {
+        if (fadeMs > 0) fadeMusicIn(activeMusicAudio, targetVolume, fadeMs);
+      });
     }
     return activeMusicAudio;
   } catch (e) {
@@ -180,6 +237,7 @@ export function playMusic(src, { loop = true, reset = true, volume } = {}) {
 export function stopMusic() {
   if (!isClientSide()) return;
   try {
+    clearMusicFade();
     if (activeMusicAudio) {
       activeMusicAudio.pause();
       activeMusicAudio.currentTime = 0;
@@ -229,8 +287,8 @@ export function playClick() {
   return playEffect("/sounds/button_click.mp3", { volume: 0.5 });
 }
 
-export function playMenuMusic() {
-  return playMusic("/sounds/menu_song.mp3", { loop: true, volume: 0.32 });
+export function playMenuMusic({ fadeMs = 0 } = {}) {
+  return playMusic("/sounds/menu_song.mp3", { loop: true, volume: 0.32, fadeMs });
 }
 
 export function playGameplayMusic1() {

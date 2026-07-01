@@ -5,6 +5,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import Brasilino from "./components/Brasilino";
 import AnimacaoRoboblocks from "./components/animacao-roboblocks";
+import { playMenuMusic, stopMusic } from "./lib/sfx";
 
 export default function HomePage() {
   const [introActive, setIntroActive] = useState(true);
@@ -16,18 +17,24 @@ export default function HomePage() {
       setIntroActive(false);
     }, 2800);
 
+    // Música de fundo, começa baixinho e sobe devagar até o volume normal
+    playMenuMusic({ fadeMs: 3000 });
+
     // Recuperar fase e round salvos na cache
     try {
       const phase = localStorage.getItem("current_phase");
       const round = localStorage.getItem("current_round");
       if (phase && round) {
-        setSavedGame({ phase, round, url: `/fases/${phase}` });
+        setSavedGame({ phase, round, url: `/fases/${phase}?r=${round}` });
       }
     } catch (e) {
       // localStorage pode estar desativado
     }
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      stopMusic();
+    };
   }, []);
 
   return (
@@ -47,6 +54,7 @@ export default function HomePage() {
             size="large"
             mood="excited"
             fala="Oi! Eu sou o Brasilino! Vamos consertar a fábrica juntos? 🔧"
+            typing={false}
           />
 
           <Link href="/historia" className={styles.playBtn}>
