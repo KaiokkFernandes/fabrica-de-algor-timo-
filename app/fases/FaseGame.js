@@ -94,7 +94,7 @@ const ROUNDS = [
     hintCosts: [100, 100, 100],
     mood: "happy",
     introText:
-      "Que bom que você aceitou me ajudar! 🤖 A esteira de caixas está travada porque as coisas foram colocadas fora de ordem. Para destravar a fábrica, precisamos guardar essas primeiras caixas nos seus devidos endereços de prateleira!",
+      "Olá, {nome}! Que bom que você aceitou me ajudar! 🤖 A esteira de caixas está travada porque as coisas foram colocadas fora de ordem. Para destravar a fábrica, precisamos guardar essas primeiras caixas nos seus devidos endereços de prateleira!",
   },
   {
     title: "Mais Prateleiras",
@@ -152,7 +152,7 @@ const ROUNDS = [
     hintCosts: [0, 0, 0],
     mood: "excited",
     introText:
-      "Chegou a hora de PROVAR que você é mestre! 🏆 Agora EU coloco as caixas na prateleira e VOCÊ me diz o endereço de cada uma. Olhe a linha (letra) e a coluna (número) e escolha a resposta certa!",
+      "Chegou a hora de PROVAR que você é mestre, {nome}! 🏆 Agora EU coloco as caixas na prateleira e VOCÊ me diz o endereço de cada uma. Olhe a linha (letra) e a coluna (número) e escolha a resposta certa!",
   },
   {
     title: "Mestre sem Etiquetas",
@@ -256,7 +256,14 @@ export default function FaseGame() {
     if (!showIntro) return;
     setIntroText("");
     setIntroDone(false);
-    const text = ROUNDS[currentRound].introText;
+    let raw = ROUNDS[currentRound].introText;
+    try {
+      const nome = localStorage.getItem("player_name");
+      raw = nome
+        ? raw.replace("{nome}", nome)
+        : raw.replace(", {nome}", "").replace("{nome}, ", "").replace("{nome}", "");
+    } catch {}
+    const text = raw;
     let i = 0;
     startTyping();
     const id = setInterval(() => {

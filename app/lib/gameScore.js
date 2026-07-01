@@ -168,6 +168,26 @@ export function getFullReport() {
 }
 
 /**
+ * Retorna o nome do jogador salvo, ou null se não definido.
+ */
+export function getPlayerName() {
+  try {
+    return localStorage.getItem("player_name") || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Salva o nome do jogador.
+ */
+export function setPlayerName(name) {
+  try {
+    localStorage.setItem("player_name", name.trim());
+  } catch {}
+}
+
+/**
  * Reseta toda a sessão (usado para "novo jogo").
  */
 export function resetSession() {
