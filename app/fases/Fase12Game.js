@@ -48,7 +48,6 @@ export default function Fase12Game() {
           aceita: ["refrigerado"],
           recusa: [],
           capacidade: 5,
-          tempoLimite: null,
         }],
         caixaIds: [0, 1, 2, 3, 4],
         tutorialMsg: "🤖 Brasilino diz: Olá! Veja a ficha de cada caixa e arraste as que o caminhão aceita para os slots dele!",
@@ -61,7 +60,6 @@ export default function Fase12Game() {
           aceita: ["refrigerado"],
           recusa: ["fragil"],
           capacidade: 5,
-          tempoLimite: null,
         }],
         caixaIds: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10],
       },
@@ -73,7 +71,6 @@ export default function Fase12Game() {
           aceita: ["refrigerado", "congelado"],
           recusa: [],
           capacidade: 8,
-          tempoLimite: null,
         }],
         // 15 caixas, 8 slots — player must choose most valuable
         caixaIds: [0, 1, 2, 3, 4, 5, 12, 13, 14, 15, 6, 7, 8, 9, 10],
@@ -86,7 +83,6 @@ export default function Fase12Game() {
           aceita: ["refrigerado"],
           recusa: ["fragil", "pesado"],
           capacidade: 8,
-          tempoLimite: 90,
         }],
         caixaIds: [0, 0, 0, 2, 2, 3, 3, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
       },
@@ -96,18 +92,16 @@ export default function Fase12Game() {
         // Round 5: dois caminhões simultâneos
         caminhoes: [
           {
-            label: "🚛 Caminhão Frio (sai em 30s)",
+            label: "🚛 Caminhão Frio",
             aceita: ["refrigerado", "congelado"],
             recusa: ["fragil"],
             capacidade: 6,
-            tempoLimite: 30,
           },
           {
-            label: "🚚 Caminhão Seco (sai em 60s)",
+            label: "🚚 Caminhão Seco",
             aceita: ["seco"],
             recusa: ["fragil"],
             capacidade: 6,
-            tempoLimite: 60,
           },
         ],
         caixaIds: [0, 2, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 15, 1, 5, 9],
@@ -120,8 +114,6 @@ export default function Fase12Game() {
     // cargo[t] = array de tamanho capacidade, cada slot é null ou box
     let cargo = [[]];
     let dragging = null;  // { box, fromTruck: null|number, fromSlot: null|number }
-    let timerIntervals = [];
-    let timesLeft = [];
     let dispatched = [];  // dispatched[t] = true se o caminhão t já foi despachado
     let roundScores = []; // pontuação de cada caminhão no round
 
@@ -195,8 +187,10 @@ export default function Fase12Game() {
     }
 
     function setFeedback(icon, text, color) {
-      $("f12-fi").textContent = icon;
+      const fi = $("f12-fi");
+      if (fi) fi.textContent = icon;
       const ft = $("f12-ft");
+      if (!ft) return;
       ft.textContent = text;
       ft.style.color = color || "var(--text)";
     }
@@ -218,11 +212,8 @@ export default function Fase12Game() {
 
     function updateHUD() {
       const round = ROUNDS[roundIdx];
-      const totalOccupied = cargo.reduce((s, slots) => s + slots.filter(Boolean).length, 0);
-      const totalCap = round.caminhoes.reduce((s, t) => s + t.capacidade, 0);
       const lucroAtual = cargo.reduce((s, slots) => s + slots.filter(Boolean).reduce((a, b) => a + b.valor, 0), 0);
       $("f12-round").textContent = `ROUND ${round.numero}/5`;
-      $("f12-slots").textContent = `${totalOccupied}/${totalCap}`;
       $("f12-lucro").textContent = `R$ ${lucroAtual}`;
       // O score HUD é atualizado no showModal() ao final do round
       updateScoreHUD(0);
@@ -243,7 +234,6 @@ export default function Fase12Game() {
         header.className = "f12-truck-header";
         header.innerHTML = `
           <div class="f12-truck-label">${truck.label}</div>
-          <div class="f12-truck-timer" id="f12-timer-${t}">--</div>
         `;
         panel.appendChild(header);
 
@@ -295,14 +285,6 @@ export default function Fase12Game() {
             }
           } else if (!dispatched[t]) {
             slot.innerHTML = `<div class="f12-slot-empty">vago</div>`;
-            slot.addEventListener("dragover", e => { e.preventDefault(); slot.classList.add("f12-slot-over"); });
-            slot.addEventListener("dragleave", () => slot.classList.remove("f12-slot-over"));
-            slot.addEventListener("drop", e => {
-              e.preventDefault();
-              slot.classList.remove("f12-slot-over");
-              if (dragging && dragging.fromTruck === null) dropOnTruck(t, i, dragging.box);
-            });
-            slot.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
           }
           slotsEl.appendChild(slot);
         }
@@ -319,26 +301,18 @@ export default function Fase12Game() {
 
         container.appendChild(panel);
       });
-
-      updateTimerDisplays();
     }
 
     function renderDepot() {
-      const round = ROUNDS[roundIdx];
       const grid = $("f12-depot-grid");
       grid.innerHTML = "";
 
       depot.forEach(box => {
-        // Check validity against any undispatched truck
-        const anyValid = round.caminhoes.some((truck, t) => !dispatched[t] && isValid(box, truck));
-
         const el = document.createElement("div");
-        el.className = "f12-box" + (anyValid ? " f12-box-valid" : "");
+        el.className = "f12-box";
         el.id = "f12-box-" + box.uid;
-        el.draggable = true;
         el.dataset.uid = box.uid;
-
-        const attrs = getBoxAttrs(box);
+        el.style.touchAction = "none";
 
         el.innerHTML = `
           <div class="f12-box-emoji">${box.emoji}</div>
@@ -349,46 +323,18 @@ export default function Fase12Game() {
         el.addEventListener("mouseenter", () => showBoxTooltip(box, el));
         el.addEventListener("mouseleave", hideBoxTooltip);
 
-        // Desktop drag
-        el.addEventListener("dragstart", () => {
+        // Arrasto unificado (mouse/touch/caneta) via Pointer Events — evita o
+        // ghost feio do drag-and-drop nativo do navegador (mesmo padrão da Fase 1)
+        el.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          el.setPointerCapture(e.pointerId);
           hideBoxTooltip();
           dragging = { box, fromTruck: null, fromSlot: null };
           el.classList.add("f12-dragging");
           showGhost(box);
-        });
-        el.addEventListener("dragend", () => {
-          el.classList.remove("f12-dragging");
-          hideGhost();
-          dragging = null;
-        });
-
-        // Touch: show ghost on touchstart, drag on touchmove, drop on touchend
-        el.addEventListener("touchstart", e => {
-          hideBoxTooltip();
-          dragging = { box, fromTruck: null, fromSlot: null };
-          const t = e.touches[0];
-          showGhost(box);
           const g = $("f12-ghost");
-          g.style.left = t.clientX + "px";
-          g.style.top = t.clientY + "px";
-        }, { passive: true });
-
-        el.addEventListener("touchmove", e => {
-          const t = e.touches[0];
-          const g = $("f12-ghost");
-          g.style.left = t.clientX + "px";
-          g.style.top = t.clientY + "px";
-        }, { passive: false });
-
-        el.addEventListener("touchend", e => {
-          hideGhost();
-          const touch = e.changedTouches[0];
-          const tgt = document.elementFromPoint(touch.clientX, touch.clientY)
-            ?.closest(".f12-slot:not(.f12-slot-filled)");
-          if (tgt && dragging) {
-            dropOnTruck(parseInt(tgt.dataset.truck), parseInt(tgt.dataset.slot), dragging.box);
-          }
-          dragging = null;
+          g.style.left = e.clientX + "px";
+          g.style.top = e.clientY + "px";
         });
 
         grid.appendChild(el);
@@ -444,7 +390,6 @@ export default function Fase12Game() {
     function dispatchTruck(truckIdx) {
       const round = ROUNDS[roundIdx];
       const truck = round.caminhoes[truckIdx];
-      stopTimer(truckIdx);
       dispatched[truckIdx] = true;
 
       const cargoBoxes = cargo[truckIdx].filter(Boolean);
@@ -536,59 +481,34 @@ export default function Fase12Game() {
 
     function hideModal() { $("f12-modal").style.display = "none"; }
 
-    // ── TIMER ────────────────────────────────────────────────────────────────
-    function startTimer(truckIdx, seconds) {
-      timesLeft[truckIdx] = seconds;
-      updateTimerDisplays();
-      timerIntervals[truckIdx] = setInterval(() => {
-        timesLeft[truckIdx]--;
-        updateTimerDisplays();
-        if (timesLeft[truckIdx] <= 0) {
-          stopTimer(truckIdx);
-          setFeedback("⏰", "Tempo esgotado! O caminhão saiu!", "var(--red)");
-          dispatchTruck(truckIdx);
-        }
-      }, 1000);
-    }
+    // ── [SOMENTE TESTES — REMOVER ANTES DO LANÇAMENTO] ── navegação livre de round
+    function renderDevNav() {
+      const nav = $("f12-dev-nav");
+      if (!nav) return;
+      nav.innerHTML = "";
 
-    function stopTimer(truckIdx) {
-      if (timerIntervals[truckIdx]) {
-        clearInterval(timerIntervals[truckIdx]);
-        timerIntervals[truckIdx] = null;
-      }
-    }
+      const label = document.createElement("span");
+      label.className = "f12-dev-nav-label";
+      label.textContent = "🧪 DEV";
+      nav.appendChild(label);
 
-    function stopAllTimers() {
-      timerIntervals.forEach((_, t) => stopTimer(t));
-    }
-
-    function updateTimerDisplays() {
-      const round = ROUNDS[roundIdx];
-      round.caminhoes.forEach((truck, t) => {
-        const el = $(`f12-timer-${t}`);
-        if (!el) return;
-        if (timesLeft[t] == null || timesLeft[t] === undefined) {
-          el.textContent = "--";
-          el.className = "f12-truck-timer";
-          return;
-        }
-        const m = Math.floor(timesLeft[t] / 60);
-        const s = timesLeft[t] % 60;
-        el.textContent = `⏱ ${m}:${String(s).padStart(2, "0")}`;
-        el.className = "f12-truck-timer" + (timesLeft[t] <= 15 ? " f12-timer-urgent" : "");
+      ROUNDS.forEach((r, i) => {
+        const btn = document.createElement("button");
+        btn.className = "f12-dev-nav-btn" + (roundIdx === i ? " f12-dev-nav-btn-active" : "");
+        btn.textContent = `R${i + 1}`;
+        btn.addEventListener("click", () => startRound(i));
+        nav.appendChild(btn);
       });
     }
 
     // ── INÍCIO DO ROUND ──────────────────────────────────────────────────────
     function startRound(idx) {
       roundIdx = idx;
+      renderDevNav();
       try {
         localStorage.setItem("current_phase", "2");
         localStorage.setItem("current_round", String(idx + 1));
       } catch (e) {}
-      stopAllTimers();
-      timerIntervals = [];
-      timesLeft = [];
       dispatched = [];
       roundScores = [];
 
@@ -608,15 +528,10 @@ export default function Fase12Game() {
 
       cargo = round.caminhoes.map(truck => new Array(truck.capacidade).fill(null));
       dispatched = round.caminhoes.map(() => false);
-      timesLeft = round.caminhoes.map(t => t.tempoLimite);
 
       renderTruckPanels();
       renderDepot();
       updateHUD();
-
-      round.caminhoes.forEach((truck, t) => {
-        if (truck.tempoLimite) startTimer(t, truck.tempoLimite);
-      });
 
       if (round.tutorialMsg) {
         setFeedback("🤖", round.tutorialMsg, "var(--yellow)");
@@ -629,12 +544,35 @@ export default function Fase12Game() {
     document.body.classList.add("game-mode");
     if (!$("f12-root")) return;
 
-    const onDragOver = e => {
+    const onPointerMove = e => {
+      if (!dragging) return;
       const g = $("f12-ghost");
       g.style.left = e.clientX + "px";
       g.style.top = e.clientY + "px";
+
+      document.querySelectorAll(".f12-slot-over").forEach(s => s.classList.remove("f12-slot-over"));
+      const hoverSlot = document.elementFromPoint(e.clientX, e.clientY)?.closest(".f12-slot:not(.f12-slot-filled)");
+      if (hoverSlot) hoverSlot.classList.add("f12-slot-over");
     };
-    document.addEventListener("dragover", onDragOver);
+
+    const onPointerUp = e => {
+      if (!dragging) return;
+      const draggedBox = dragging;
+      dragging = null;
+      hideGhost();
+      document.querySelectorAll(".f12-slot-over").forEach(s => s.classList.remove("f12-slot-over"));
+
+      const el = $("f12-box-" + draggedBox.box.uid);
+      if (el) el.classList.remove("f12-dragging"); // restaura antes (drop falho mantém a caixa no depósito)
+
+      const dropTarget = document.elementFromPoint(e.clientX, e.clientY)?.closest(".f12-slot:not(.f12-slot-filled)");
+      if (dropTarget) {
+        dropOnTruck(parseInt(dropTarget.dataset.truck), parseInt(dropTarget.dataset.slot), draggedBox.box);
+      }
+    };
+
+    document.addEventListener("pointermove", onPointerMove);
+    document.addEventListener("pointerup", onPointerUp);
 
     const dispatchBtn = $("f12-dispatch");
     const dispatchHandler = () => dispatchAll();
@@ -666,8 +604,8 @@ export default function Fase12Game() {
 
     return () => {
       document.body.classList.remove("game-mode");
-      document.removeEventListener("dragover", onDragOver);
-      stopAllTimers();
+      document.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerup", onPointerUp);
       dispatchBtn?.removeEventListener("click", dispatchHandler);
       resetBtn?.removeEventListener("click", resetHandler);
       retryBtn?.removeEventListener("click", retryHandler);
@@ -678,12 +616,10 @@ export default function Fase12Game() {
   
   return (
     <div id="f12-root" className={styles.root}>
-      <div className={styles.gameTitle}>ROBOBLOCKS</div>
-      <div className={styles.gameSubtitle}>
-        Fase 2 — Despachante da Fábrica
-      </div>
-
       <div className={styles.wrap}>
+        {/* ── [SOMENTE TESTES — REMOVER ANTES DO LANÇAMENTO] ── */}
+        <div id="f12-dev-nav" className={styles.devNav}></div>
+
         {/* HUD */}
         <div className={styles.hud}>
           <div>
@@ -694,26 +630,22 @@ export default function Fase12Game() {
             <div className={styles.hudLabel}>PONTOS</div>
             <div className={styles.hudVal} id="f12-score">00000</div>
           </div>
-          <div style={{ textAlign: "center" }}>
-            <div className={styles.hudLabel}>ESPAÇOS</div>
-            <div className={styles.hudVal} id="f12-slots">0/5</div>
-          </div>
           <div style={{ textAlign: "right" }}>
             <div className={styles.hudLabel}>LUCRO ATUAL</div>
             <div className={styles.hudVal} id="f12-lucro">R$ 0</div>
           </div>
         </div>
 
-        {/* Main: trucks + depot */}
+        {/* Main: depot + trucks */}
         <div className={styles.main}>
-          <div id="f12-trucks-container" className={styles.trucksContainer}></div>
-
           <div className={styles.depotPanel}>
             <div className={styles.depotTitle}>
               📦 Depósito — passe o mouse sobre cada caixa para ver os detalhes
             </div>
             <div id="f12-depot-grid" className={styles.depotGrid}></div>
           </div>
+
+          <div id="f12-trucks-container" className={styles.trucksContainer}></div>
         </div>
 
         {/* Action buttons */}
@@ -724,19 +656,7 @@ export default function Fase12Game() {
           </button>
         </div>
 
-        {/* ── Brasilino: barra de feedback ── */}
-        <div className={styles.feedback}>
-          {/* TODO sprite */}
-          <div className={styles.brasilino}>
-            <div className={styles.brasilino__avatar}>🤖</div>
-            <span className={styles.brasilino__name}>BRASILINO</span>
-          </div>
-          <div className={styles.brasilino__balloon}>
-            <span id="f12-fi" className={styles.brasilino__icon}>🚛</span>&nbsp;
-            <span id="f12-ft">Carregue o caminhão com as caixas certas!</span>
-          </div>
-          <PhaseActionsButton />
-        </div>
+        <PhaseActionsButton />
       </div>
 
       {/* End-round modal */}

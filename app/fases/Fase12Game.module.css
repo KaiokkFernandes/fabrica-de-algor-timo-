@@ -10,7 +10,7 @@
   --panel:  #fffdf5;
   --text:   #3d2b1a;
   --green:  #2e7d32;
-  --yellow: #f0a500;
+  --yellow: #c2410c; /* Laranja Terracota padronizado (igual à Fase 1) */
   --red:    #e53935;
   --border: #c8a87a;
   --gold:   #f57f17;
@@ -35,36 +35,50 @@
   image-rendering: pixelated;
 }
 
-/* ── CABEÇALHO ─────────────────────────────────────────────────────────── */
-.gameTitle {
-  font-family: var(--font-pixel);
-  font-size: clamp(10px, 1.8vw, 22px);
-  color: var(--yellow);
-  text-align: center;
-  margin-bottom: 4px;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
-}
-
-.gameSubtitle {
-  /* Baloo 2 herdado — mais legível para a criança */
-  font-size: clamp(13px, 0.95vw, 15px);
-  color: #7a5c42;
-  text-align: center;
-  margin-bottom: 6px;
-  letter-spacing: 0;
-}
-
 /* ── WRAPPER CENTRAL ───────────────────────────────────────────────────── */
 .wrap {
   width: 100%;
-  max-width: min(99vw, 1200px);
   display: flex;
   flex-direction: column;
   gap: clamp(4px, 0.6vh, 8px);
   flex: 1;
   min-height: 0;          /* permite que filhos flex encolham */
+  position: relative;     /* Ancora o PhaseActionsButton */
 }
+
+/* ── Dev nav (remover antes do lançamento) ── */
+.devNav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1a0a00;
+  border-bottom: 2px dashed #c2410c;
+  padding: 5px 14px;
+  flex-shrink: 0;
+}
+
+.root :global(.f12-dev-nav-label) {
+  font-size: 10px;
+  font-weight: 700;
+  color: #c2410c;
+  letter-spacing: 1px;
+  margin-right: 4px;
+  opacity: 0.8;
+}
+
+.root :global(.f12-dev-nav-btn) {
+  font-size: 11px;
+  font-weight: 700;
+  background: #2a1000;
+  color: #888;
+  border: 1px solid #444;
+  padding: 2px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.root :global(.f12-dev-nav-btn:hover) { background: #3a1800; color: #c2410c; border-color: #c2410c; }
+.root :global(.f12-dev-nav-btn-active) { background: #c2410c !important; color: #fff !important; border-color: #c2410c !important; }
 
 /* ── HUD (topo: round / slots / lucro) ─────────────────────────────────── */
 .hud {
@@ -72,8 +86,10 @@
   justify-content: space-between;
   align-items: center;
   background: var(--panel);
-  border: 3px solid var(--border);
-  padding: clamp(4px, 0.7vh, 10px) clamp(10px, 2vw, 24px);
+  border-bottom: 4px solid var(--yellow); /* Borda inferior terracota colada, igual à Fase 1 */
+  padding: clamp(10px, 1.5vh, 16px) clamp(16px, 2.5vw, 32px);
+  font-size: clamp(12px, 1vw, 15px);
+  width: 100%;
   flex-shrink: 0;
 }
 
@@ -100,18 +116,16 @@
 }
 
 .hudLabel {
-  /* Baloo 2 para rótulo do HUD — tamanho maior, mais legível */
   font-size: clamp(11px, 0.75vw, 13px);
-  color: #7a5c42;
-  letter-spacing: 0;
 }
 
 .hudVal {
-  /* Pixel font para o valor numérico — elemento decorativo do HUD */
-  font-family: var(--font-pixel);
+  font-family: var(--font-body);
+  font-weight: bold;
   color: var(--yellow);
-  font-size: clamp(9px, 1.3vw, 16px);
-  margin-top: 3px;
+  font-size: clamp(16px, 1.8vw, 24px);
+  margin-top: 2px;
+  display: inline-block;
 }
 
 /* ── ÁREA PRINCIPAL (caminhões ← | → depósito) ─────────────────────────── */
@@ -129,7 +143,7 @@
   display: flex;
   flex-direction: column;
   gap: clamp(5px, 0.8vh, 10px);
-  width: clamp(200px, 30vw, 380px);
+  width: clamp(280px, 44vw, 560px);
   flex-shrink: 0;
   overflow-y: auto;
   height: 100%;
@@ -158,9 +172,9 @@
 
 .depotGrid {
   display: grid;
-  /* 4 a 5 colunas dependendo do espaço; mínimo 68px por caixa */
-  grid-template-columns: repeat(auto-fill, minmax(clamp(68px, 8.5vw, 110px), 1fr));
-  gap: clamp(4px, 0.7vw, 10px);
+  /* 4 a 5 colunas dependendo do espaço; mínimo 102px por caixa (1.5x original) */
+  grid-template-columns: repeat(auto-fill, minmax(clamp(102px, 12.75vw, 165px), 1fr));
+  gap: clamp(6px, 1vw, 15px);
   overflow-y: auto;
   flex: 1;
   padding: 4px;
@@ -178,9 +192,10 @@
   background: #e8dcc8;
   border: 3px solid var(--border);
   color: var(--text);
-  font-family: var(--font-pixel);
-  font-size: clamp(5px, 0.8vw, 10px);
-  padding: clamp(6px, 1vh, 12px) clamp(10px, 1.8vw, 22px);
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.1vw, 18px);
+  font-weight: 700;
+  padding: clamp(10px, 1.4vh, 16px) clamp(14px, 2.2vw, 26px);
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -190,60 +205,18 @@
   flex: 1;
   background: var(--green);
   border: 3px solid #2a7a2a;
-  color: #000;
-  font-family: var(--font-pixel);
-  font-size: clamp(5px, 0.8vw, 10px);
-  padding: clamp(6px, 1vh, 12px);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.1vw, 18px);
+  font-weight: 800;
+  padding: clamp(10px, 1.4vh, 16px);
   cursor: pointer;
   text-align: center;
   transition: background 0.15s;
 }
 .dispatchBtn:hover { background: #5ccc60; }
 
-/* ── BARRA DE FEEDBACK ─────────────────────────────────────────────────── */
-.feedback {
-  background: var(--panel);
-  border: 3px solid var(--border);
-  padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1.5vw, 16px);
-  padding-right: clamp(100px, 12vw, 160px); /* Garante que o texto do balão não sobreponha o botão */
-  font-size: clamp(13px, 0.9vw, 15px);
-  min-height: clamp(22px, 3.2vh, 46px);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  line-height: 1.5;
-  position: relative; /* Para o botão MENU absoluto */
-}
-
-.footerMenuBtn {
-  position: absolute;
-  right: clamp(8px, 1.5vw, 16px);
-  top: 50%;
-  transform: translateY(-50%);
-  font-family: var(--font-pixel);
-  font-size: clamp(11px, 1.1vw, 15px);
-  background: var(--yellow); /* Terracotta Orange */
-  color: #fff;
-  border: 3px solid #8c2d05;
-  padding: 8px 16px;
-  cursor: pointer;
-  box-shadow: 0 3px 0 #8c2d05;
-  transition: transform 0.1s, background 0.15s;
-  text-decoration: none;
-  z-index: 10;
-}
-
-.footerMenuBtn:hover {
-  background: #a3350a;
-}
-
-.footerMenuBtn:active {
-  transform: translateY(-50%) translateY(2px);
-  box-shadow: 0 1px 0 #8c2d05;
-}
-
-/* ── Brasilino inline (gameplay + modal) ── */
+/* ── Brasilino (modal) ── */
 .brasilino {
   display: flex;
   flex-direction: column;
@@ -267,45 +240,6 @@
   color: #f0c040;
   letter-spacing: 0;
   line-height: 1;
-}
-
-/* balão de fala */
-.brasilino__balloon {
-  flex: 1;
-  background: #fffde7;
-  border: 2px solid #f0c040;
-  border-radius: 10px;
-  padding: 6px 12px;
-  position: relative;
-  color: #3d2b1a;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-right: 5%;
-} 
-
-.brasilino__balloon::before {
-  content: "";
-  position: absolute;
-  left: -11px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: 6px solid transparent;
-  border-right-color: #f0c040;
-}
-
-.brasilino__balloon::after {
-  content: "";
-  position: absolute;
-  left: -7px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: 5px solid transparent;
-  border-right-color: #fffde7;
-}
-
-.brasilino__icon {
-  flex-shrink: 0;
 }
 
 /* Brasilino no modal — maior */
@@ -402,31 +336,32 @@
 }
 .advanceBtn:hover { background: #5ccc60; }
 
-/* ── GHOST (proxy de drag) ─────────────────────────────────────────────── */
+/* ── GHOST (proxy de drag) — mesmo estilo de arrasto da Fase 1 ──────────── */
 .ghost {
   position: fixed;
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.88;
-  transform: translate(-50%, -50%);
+  z-index: 12000;
+  opacity: 0.92;
+  transform: translate(-50%, -50%) rotate(-5deg) scale(1.08);
   display: none;           /* JS seta display:flex ao arrastar */
-  width: clamp(62px, 8vw, 92px);
-  height: clamp(62px, 8vw, 92px);
+  width: clamp(102px, 12.75vw, 150px);
+  height: clamp(102px, 12.75vw, 150px);
   background: #fff8e7;
   border: 3px solid var(--gold);
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 4px 10px rgba(0, 0, 0, 0.35);
 }
 
 .ghostEmoji {
-  font-size: clamp(20px, 2.8vw, 34px);
+  font-size: clamp(27px, 3.6vw, 45px);
   line-height: 1;
 }
 
 .ghostName {
-  font-size: clamp(4px, 0.55vw, 7px);
+  font-size: clamp(16px, 1vw, 20px);
   color: var(--text);
   text-align: center;
 }
@@ -462,22 +397,6 @@
   font-size: clamp(13px, 0.85vw, 15px);
   font-weight: 600;
   color: var(--yellow);
-}
-
-.root :global(.f12-truck-timer) {
-  /* Pixel font para o timer — número curto */
-  font-family: var(--font-pixel);
-  font-size: clamp(6px, 0.75vw, 10px);
-  color: #7a5c42;
-}
-
-.root :global(.f12-timer-urgent) {
-  color: var(--red);
-  animation: f12blink 0.5s step-end infinite;
-}
-
-@keyframes f12blink {
-  50% { opacity: 0; }
 }
 
 /* ── Critérios do caminhão ─────────────────────────────────────────────── */
@@ -548,8 +467,8 @@
 }
 
 .root :global(.f12-slot) {
-  width:  clamp(40px, 5.2vw, 64px);
-  height: clamp(40px, 5.2vw, 64px);
+  width:  clamp(102px, 12.75vw, 150px);
+  height: clamp(102px, 12.75vw, 150px);
   border: 2px dashed var(--border);
   background: #f0e8d0;
   display: flex;
@@ -586,17 +505,19 @@
 }
 
 .root :global(.f12-slot-empty) {
-  font-size: clamp(4px, 0.45vw, 6px);
+  font-size: clamp(8px, 0.9vw, 12px);
   color: var(--border);
 }
 
 .root :global(.f12-slot-emoji) {
-  font-size: clamp(16px, 2.1vw, 26px);
+  font-size: clamp(27px, 3.6vw, 45px);
   line-height: 1;
 }
 
 .root :global(.f12-slot-val) {
-  font-size: clamp(4px, 0.45vw, 6px);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(14px, 1.1vw, 18px);
   color: var(--green);
   margin-top: 2px;
 }
@@ -625,12 +546,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(4px, 0.7vh, 8px) 4px;
+  padding: clamp(6px, 1.05vh, 12px) 6px;
   cursor: grab;
   user-select: none;
   transition: transform 0.1s, border-color 0.15s;
-  gap: 3px;
-  min-height: clamp(68px, 8.5vw, 100px);
+  gap: 5px;
+  min-height: clamp(102px, 12.75vw, 150px);
 }
 
 .root :global(.f12-box:hover) {
@@ -643,34 +564,28 @@
   transform: scale(0.95);
 }
 
-/* Caixa que pode ir neste caminhão: destaque verde sutil */
-.root :global(.f12-box-valid) {
-  border-color: var(--green);
-  background: #e8f5e9;
-}
-
 /* Caixa sendo arrastada fica translúcida */
 .root :global(.f12-box.f12-dragging) {
   opacity: 0.32;
 }
 
 .root :global(.f12-box-emoji) {
-  font-size: clamp(18px, 2.4vw, 30px);
+  font-size: clamp(27px, 3.6vw, 45px);
   line-height: 1;
 }
 
 .root :global(.f12-box-name) {
   /* Baloo 2 para nomes de produto — crianças precisam ler isso */
-  font-size: clamp(11px, 0.65vw, 13px);
+  font-size: clamp(16px, 1vw, 20px);
   font-weight: 600;
   color: var(--text);
   text-align: center;
 }
 
 .root :global(.f12-box-val) {
-  /* Pixel para valor em reais — número curto */
-  font-family: var(--font-pixel);
-  font-size: clamp(5px, 0.6vw, 8px);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(14px, 1.1vw, 18px);
   color: var(--yellow);
 }
 

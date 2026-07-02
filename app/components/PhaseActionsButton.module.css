@@ -1,9 +1,8 @@
-/* Ocupa o slot já reservado no rodapé da fase (padding-right do .mission) */
+/* Ancorado no canto inferior direito do container posicionado mais próximo */
 .root {
   position: absolute;
   right: clamp(16px, 2.5vw, 32px);
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: clamp(16px, 2.5vw, 32px);
   z-index: 10;
 }
 
@@ -12,7 +11,7 @@
   height: clamp(40px, 4.4vw, 52px);
   border-radius: 50%;
   font-size: clamp(18px, 1.8vw, 24px);
-  background: var(--yellow);
+  background: #c2410c; /* Laranja Terracota padronizado (igual à Fase 1) */
   color: #fff;
   border: 3px solid #8c2d05;
   box-shadow: 0 3px 0 #8c2d05;
@@ -43,7 +42,7 @@
 .menuItem {
   font-family: var(--font-pixel);
   font-size: clamp(10px, 1vw, 13px);
-  background: var(--yellow);
+  background: #c2410c; /* Laranja Terracota padronizado (igual à Fase 1) */
   color: #fff;
   border: 3px solid #8c2d05;
   box-shadow: 0 3px 0 #8c2d05;
